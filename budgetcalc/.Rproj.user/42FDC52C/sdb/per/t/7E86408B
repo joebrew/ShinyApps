@@ -1,0 +1,17 @@
+{
+    "contents" : "###################\n# 1. USE THE FOLLOWING SCRIPT TO READ IN THE FLU DATA\n###################\n\nlibrary(RCurl)\noptions(RCurlOptions = list(cainfo = system.file(\"CurlSSL\", \"cacert.pem\", package = \"RCurl\")))\n\nmyLink <- paste0(\"https://docs.google.com/spreadsheets/d/1KpUK8IX0E5L9MhGvdS5jbtqDh2GB0PGx4ii\",\n                 \"wux89Nqk/export?&format=csv\")\n\nmyCsv <- getURL(myLink)\nir <- read.csv(textConnection(myCsv))\n\nrm(myCsv, myLink)\n\n\n\nlibrary(googleVis)\nM <- gvisMotionChart(data = ir, \n                     idvar = \"school\", \n                     timevar = \"year\",\n                     xvar = \"year\",\n                     yvar = \"immRate\",\n                     sizevar = \"totMem\")\nplot(M)\n\n\n#####################\n# 1. READ IN THE MOSQUITO DATA\n#####################\nmosq <- read.csv(\"https://raw.githubusercontent.com/joebrew/fdoh/master/public/mosquito/cesar/time_series.csv\")\nmosq <- mosq[,c(\"date\", \"nTraps\", \"tot\", \"year\", \"day\")]\n\nrt <- read.csv(\"https://raw.githubusercontent.com/joebrew/fdoh/master/public/mosquito/rainAndTemp/rainAndTempUpdated.csv\")\nid <- read.csv(\"https://github.com/joebrew/fdoh/blob/master/public/mosquito/id.csv\")\n\n#####################\n#\n#####################\n\n\n#####################\n#\n#####################\n\n#####################\n#\n#####################\n\n#####################\n#\n#####################\n\n",
+    "created" : 1408029443534.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4292154717",
+    "id" : "7E86408B",
+    "lastKnownWriteTime" : 1408051524,
+    "path" : "E:/fun/ben_learning/flu2.R",
+    "project_path" : null,
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

@@ -1,0 +1,17 @@
+{
+    "contents" : "#######################\n# ATTACH LIBRARIES\n#######################\n\nlibrary(RCurl)\nlibrary(RColorBrewer)\nsuppressPackageStartupMessages(library(googleVis))\n\n#######################\n# READ IN IMMUNIZATION HISTORY FROM GOOGLE\n#######################\n\noptions(RCurlOptions = list(cainfo = system.file(\"CurlSSL\", \"cacert.pem\", package = \"RCurl\")))\nmyLink <- \"https://docs.google.com/spreadsheets/d/1W3j0WVtGfT3-oQr3vqt45hRMbmbDzJL2spToWD2XtE8/export?&format=csv\"\nmyCsv <- getURL(myLink)\n\nir <- read.csv(textConnection(myCsv), skip=0)\nrm(myCsv, myLink)\n\n#######################\n# PLOT\n#######################\nM <- gvisMotionChart(data = ir, \n                     idvar = \"school\", \n                     timevar = \"year\",\n                     xvar = \"p.vfc\",\n                     yvar = \"immRate\",\n                     colorvar = \"pubPriv\",\n                     sizevar = \"totMem\")\nplot(M)\n\nM <- gvisMotionChart(data = ir, idvar=\"school\", timevar=\"year\")\n\n\nplot(M)\n\n#######################\n#\n#######################\n\n\n#######################\n#\n#######################",
+    "created" : 1406690522342.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3344297197",
+    "id" : "B148204",
+    "lastKnownWriteTime" : 1406692420,
+    "path" : "~/ShinyApps/controlflu/helper.R",
+    "project_path" : "helper.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

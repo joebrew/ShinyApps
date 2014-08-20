@@ -1,0 +1,16 @@
+{
+    "contents" : "\n# This is the user-interface definition of a Shiny web application.\n# You can find out more about building applications with Shiny here:\n#\n# http://shiny.rstudio.com\n#\n\nlibrary(shiny)\n\nshinyUI(fluidPage(\n\n  # Application title\n  titlePanel(\"Budget calculator\"),\n\n  # Sidebar with a slider input for number of bins\n  sidebarLayout(\n    sidebarPanel(\n      \n      textInput(\"b4\",\n                \"Total budget:\",\n                value = \"300000\"),\n      \n      sliderInput(\"b5\",\n                  \"Number of messages:\",\n                  min = 1,\n                  max = 10,\n                  value = 1),\n      \n      sliderInput(\"b10\",\n                  \"Cost of EIP mail per target:\",\n                  min = 0.00,\n                  max = 5.00,\n                  value = 2.00, \n                  step=0.10),\n      \n      sliderInput(\"b11\",\n                  \"Cost of post-EIP mail per target:\",\n                  min = 0.00,\n                  max = 5.00,\n                  value = 1.50, \n                  step=0.10),\n      \n      sliderInput(\"b13\",\n                  \"Phone survey contact rate:\",\n                  min = 0,\n                  max = 100,\n                  value = 10, \n                  step=1),\n      \n      textInput(\"b14\",\n                  \"Number of interviews per condition:\",\n                  value = 2000),\n      \n      sliderInput(\"b15\",\n                  \"Cost of phone survey per complete:\",\n                  min = 0,\n                  max = 10,\n                  value = 4.00, \n                  step=0.1),\n      \n      sliderInput(\"b18\",\n                  \"Persuasive effect of mail without EIP:\",\n                  min = 0,\n                  max = 10,\n                  value = 3.5, \n                  step=0.1),\n      \n      sliderInput(\"b19\",\n                  \"Persuasive effect of mail with targeting EIP (one treatment):\",\n                  min = 0,\n                  max = 20,\n                  value = 10, \n                  step=0.1),\n      \n      sliderInput(\"b20\",\n                  \"Persuasive effect of mail with targeting EIP (2 or more treatments):\",\n                  min = 0,\n                  max = 25,\n                  value = 13, \n                  step=0.1)\n      \n    ),\n\n    # Show a plot of the generated distribution\n    mainPanel(\n      plotOutput(\"a\", width = \"80%\"),\n      tableOutput(\"b\")\n    )\n  )\n))\n",
+    "created" : 1407946346304.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "404949080",
+    "id" : "5D92165",
+    "lastKnownWriteTime" : 1407967048,
+    "path" : "~/ShinyApps/budget/ui.R",
+    "project_path" : "ui.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

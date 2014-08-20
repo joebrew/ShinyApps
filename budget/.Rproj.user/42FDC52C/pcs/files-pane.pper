@@ -1,0 +1,9 @@
+{
+    "path" : "~/ShinyApps/budget",
+    "sortOrder" : [
+        {
+            "ascending" : true,
+            "columnIndex" : 2
+        }
+    ]
+}
