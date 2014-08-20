@@ -91,14 +91,7 @@ names(x) <- "myNames"
 x$myValues <- myValues
 
 
-# x <- myValues
-# names(x) <- myNames
-# x <- data.frame(x)
 
-#   x <- as.data.frame(rbind(myValues))
-#    names(x) <- myNames
-#   #x <- as.data.frame(rbind(myFullNames,  myValues))
-#   
 #   # RETURN
    return(x)
 

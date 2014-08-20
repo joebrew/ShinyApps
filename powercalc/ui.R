@@ -59,45 +59,6 @@ shinyUI(fluidPage(
                          tags$a(href="mailto:jberezin@analystinstitute.org", "jberezin@analystinstitute.org")                         
                          
                          
-                         #tags$a(href="joshberezin@analystinstitute.org", "Josh Berezin"),
-                         #"with a brief description of your experiment. Thank you.")
-                         
-                         #                          tags$div(title="If you enter in your universe sizes and other features of your program, the calculator will tell you (in the graph) the \"minimal detectable effect\" (MDE) that you can expect to observe with your design. For instance, if you specify a power of 80% and a confidence interval of 90% (along with other aspects of your design), and the calculator shows you an MDE of 2 percentage points, that means if your treatment effect is truly 2 percentage points then 80% of the time you run your experiment, you will identify a statistically significant effect at the 90% confidence level.",
-                         #                                   h4("Minimum detectable effects", align="center")),
-                         #                          
-                         #                          plotOutput("cplot"),
-                         #                          br(),
-                         #                          
-                         #                          tags$div(title ="The Intent to Treat (ITT) effect is the treatment effect (e.g., impact of voter contact) on everyone assigned to the treatment condition. Think of this effect as the impact of a canvass on a precinct; even though you won't talk to everyone in the precinct, the canvass will have a small \"ITT\" effect on the precinct as a whole.",
-                         #                                   p("ITT: intention to treat", align="center")),
-                         #                          
-                         #                          tags$div(title ="The Treatment on Treated (ToT) effect is the treatment effect (e.g., impact of voter contact) on individuals who actually received the intended treatment. For instance, think of this effect as the impact of a canvass on an inviduals who answered their door and had a conversation with the canvasser. For intensive treatments, such as a personal canvass, the ToT effect might be quite large. The ToT effect is the ITT effect multiplied by the contact rate of your treatment.",
-                         #                                   p("ToT: treatment on treated", align="center")),
-                         #                          
-                         #                          
-                         #                          br(),
-                         #                          br(),
-                         #                           
-                         #                          h4(textOutput("zDetails")),
-                         #                          
-                         #                          h5(textOutput("zNumber.of.outcome.measurements")),
-                         #                          h4(textOutput("zb5")),
-                         #                          h5(textOutput("zS.E.")),
-                         #                          h4(textOutput("zb14")),
-                         #                          h5(textOutput("zITT.MDE")),
-                         #                          h4(textOutput("zb16")),
-                         #                          h5(textOutput("zTOT.MDE")),
-                         #                          h4(textOutput("zb17")),
-                         #                          h5(textOutput("zAverage.cluster.size")),
-                         #                          h4(textOutput("zb20")),
-                         #                          h5(textOutput("zSquare.root.of.variance.inflation.factor")),
-                         #                          h4(textOutput("zb22")),
-                         #                          h5(textOutput("zAdjusted.S.E.")),
-                         #                          h4(textOutput("zb23")),
-                         #                          h5(textOutput("zAdj.ITT.MDE")),
-                         #                          h4(textOutput("zb25")),
-                         #                          h5(textOutput("zAdj.TOT.MDE")),
-                         #                          h4(textOutput("zb26"))
                        )
               ),
               
@@ -150,12 +111,7 @@ shinyUI(fluidPage(
                            sliderInput("confidence.interval", "Confidence interval to use (2-tailed)",
                                        min=0, max=100, value=90, step=1)),
                   
-                  #                   tags$div(title="Leave at 0 unless your treatment units are groups of individuals such as precincts. This is the number of groups (or \"clusters\") at the level of randomization. If you are randomizing at the household level (often smart to avoid intra-household contamination), you can usually safely ignore this option even if multiple voters per household are in your experiment.",
-                  #                            textInput("number.of.clusters", "Number of clusters (optional)", value = 0)),
-                  #                   
-                  #                   tags$div(title="The correlation between individuals within your clusters. Lower if the clusters of individuals are heterogeneous (e.g., suburban precincts with a mix of voters); higher if the clusters are homogeneous (e.g., households, precincts in the south where virtually the entire precinct votes R or D).",
-                  #                            sliderInput("intra.cluster.correlation.coefficient", "Intra-cluster correlation coefficient (optional)", 
-                  #                                        min=0, max=1, value=0.1, step=0.01)),
+                
                   
                   checkboxInput("checkbox", label = "Show details", value = FALSE),
                   
@@ -171,58 +127,7 @@ shinyUI(fluidPage(
                   condition = "input.tabs == 'Continuous outcome'",
                   
                   
-                  #                   tags$div(title="The universe size is the toal number of individuals involved in the experiment, regardless of whether they are in the treatment or control group. The treatment group consists of everyone you will attempt to contact, not just those who are successfully reached.",
-                  #                            textInput("ztotal.n", "Universe size (total n)", value = 2000)),
-                  #                   
-                  #                   tags$div(title="The percent of individuals in your universe who you will collect an outcome variable for. Example 1: for a GOTV study on registered voters with the voter rolls being the outcome, the outcome collection rate will be 100% because you will know whether every registered voter did or did not vote. Example 2: for a persuasion experiment with a survey as the outcome measure, indicate your expected survey response rate here (perhaps in the 5%-15% range -- don't forget that some of your phone numbers may be disconnected or wrong).",
-                  #                            sliderInput("zdv.variable.contact.rate", "Outcome collection rate (%) (e.g., survey response rate)",
-                  #                                        min=0, max=100, value=100, step=1)),
-                  #                   
-                  #                   
-                  #                   br(),
-                  #                   
-                  #                   tags$div(title="The percent of individuals in your universe who you will collect an outcome variable for. Example 1: for a GOTV study on registered voters with the voter rolls being the outcome, the outcome collection rate will be 100% because you will know whether every registered voter did or did not vote. Example 2: for a persuasion experiment with a survey as the outcome measure, indicate your expected survey response rate here (perhaps in the 5%-15% range -- don't forget that some of your phone numbers may be disconnected or wrong).",
-                  #                            sliderInput("zpercent.in.treatment", "Percent (%) in treatment group",
-                  #                                        min=0, max=100, value=50, step=1)),
-                  #                   
-                  #                   
-                  #                   tags$div(title="The expected standard deviation of your outcome measure; grab some older sample, through it into your favorite stats package (or even Excel), calculate the standard deviation and enter it here." ,
-                  #                            sliderInput("zstandard.deviation.of.observations.across.units", "Standard deviation of observations across units",
-                  #                                        min=0, max=100, value=20, step=1)),
-                  #                   
-                  #                   
-                  #                   tags$div(title="The contact (or \"treatment application\" rate) is the percent of individuals assigned to be treated who are actually treated. For a mail experiment, this might be as high as 95% (if 5% of addresses are bad). For canvass experiments, your canvass contact rate might be between 10% and 20% -- note this is the percent of canvass conversations out of all targets; it is *not* the ratio of conversations to doors knocked.",
-                  #                            sliderInput("ztreatment.application.rate", "Contact (i.e, treatment application) rate (%)",
-                  #                                        min=0, max=100, value=100, step=1)),
-                  #                   
-                  #                   
-                  #                   tags$div(title="Inexperienced users: keep at 0. Experienced users: if you have covariates that can explain some of the natural variance of actions (e.g., propensity scores for GOTV experiments, partisanship scores for persuasion experiments), then estimate the cumulative r-squared of those covariates here. For panel experiments, where you pre-survey respondents, estimating an r-sqaured of 0.9 for the pre-survey on the post-survey is reasonable.",
-                  #                            sliderInput("zr.squared", "Predictive power of individual-level covariates (R-squared)",
-                  #                                        min=0, max=1, value=0.0, step=0.01)),
-                  #                   
-                  #                   
-                  #                   tags$div(title="For advanced users: the percent of the time that you're aiming to find statsitically significant results (at the confidence level set below). Do not set below 50 or at 100.",
-                  #                            sliderInput("zpower", "Desired power of experiment",
-                  #                                        min=0, max=100, value=80, step=1)),
-                  #                   
-                  #                   
-                  #                   tags$div(title="For advanced users: the two-tailed confidence interval with which \"statistical signifance\" will be calculated. We do not recommend values below 75 or above 95.",
-                  #                            sliderInput("zconfidence.interval", "Confidence interval to use (2-tailed)",
-                  #                                        min=0, max=100, value=90, step=1)),
-                  #                   
-                  #                   
-                  #                   
-                  #                   tags$div(title="Leave at 0 unless your treatment units are groups of individuals such as precincts. This is the number of groups (or \"clusters\") at the level of randomization. If you are randomizing at the household level (often smart to avoid intra-household contamination), you can usually safely ignore this option even if multiple voters per household are in your experiment.",
-                  #                            textInput("znumber.of.clusters", "Number of clusters (optional)", value = 0)),
-                  #                   
-                  #                   
-                  #                   tags$div(title="The correlation between individuals within your clusters. Lower if the clusters of individuals are heterogeneous (e.g., suburban precincts with a mix of voters); higher if the clusters are homogeneous (e.g., households, precincts in the south where virtually the entire precinct votes R or D).",
-                  #                            sliderInput("zintra.cluster.correlation.coefficient", "Intra-cluster correlation coefficient (optional)", 
-                  #                                        min=0, max=1, value=0.1, step=0.01)),
-                  #                   
-                  #                   
-                  #                   checkboxInput("zcheckbox", label = "Show details", value = FALSE),
-                  #                   "",
+                
                   tags$img(src="https://analystinstitute.org/wp-content/themes/analystg/images/analyst-logo.png", height="500px")
                   
                   
