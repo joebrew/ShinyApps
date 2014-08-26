@@ -1,55 +1,118 @@
 library(shiny)
-source("helper.R")
+suppressPackageStartupMessages(library(googleVis))
 
 
 shinyServer(function (input, output) {
   
+  source("helper.R")
   
+  ########
+  mydata <- reactive({
+    ir[which(ir$team2014 == as.numeric(as.character(input$team))),]
+    })
   
-#   dataInput <- reactive({
-#     
-#     #myteam <- subset(ir, input$team %in% ir$team2014)
-#     #myteam <- ir[which(grepl(input$team, ir$team2014)),]
-#     myteam <- ir[which(ir$team2014 == input$team),]
-# 
-#     return(myteam)
-#   })
+  #######
+  mydata13 <- reactive({
+    mydata()[which(mydata()$year == 2013),]
+    })
   
-#   output$plot1 <- renderPlot({
-#     plot(dataInput()[,"totMem"], dataInput()[,"immRate"])
-#   })
-#   
-  
+  #######
   output$plot1 <- renderPlot({
-    myData <- ir[which(ir$team2014 == input$team),]
-    
-    plot(myData$p.vfc, myData$immRate)
-  })
+    TeamFun(team = as.numeric(input$team), data = mydata(), bar=FALSE)
+    })
   
-  output$text1 <- renderText({
-    paste(input$team)
-  })
-  
-#   data.mc <- reactive({
-#     b <- subset(raw.data, Region %in% input$region & ch06 >= input$minedad &
-#                   ch06 <= input$maxedad & ch04 %in% input$gender)
-#     b <- droplevels(b)
-#     return(b)
-#   })
-  
-#   output$motionchart <- renderGvis({
-# #     gvisMotionChart(data = dataInput(), 
-# #                     idvar = "school", 
-# #                     timevar = "year",
-# #                     xvar = "year",
-# #                     yvar = "immRate",
-# #                     colorvar = "p.vfc",
-# #                     sizevar = "totMem")
-#     
-#     gvisScatterChart(dataInput())
-# 
-#   })
+  #######
+  output$plot2 <- renderPlot({
+    par(mar=c(9,4,1,1))
 
+    TeamFun(team = as.numeric(input$team), data = mydata(), bar=TRUE)
+  })
+  
+  #######
+  output$plot3 <- renderPlot({
+    TeamFun(team = as.numeric(input$team), data = mydata(), cf=TRUE, bar=FALSE)
+  })
+  
+  #######
+  output$plot4 <- renderPlot({
+    par(mar=c(9,4,1,1))
+    
+    TeamFun(team = as.numeric(input$team), data = mydata(), cf=TRUE, bar=TRUE)
+  })
+  
+  
+
+  ########
+  output$text1 <- renderText({
+    paste("Team", input$team, "immunization rate overview")
+  })
+  
+  ########
+  output$text2 <- renderText({
+    paste("Team", input$team, "consent form return rate overview")
+  })
+  
+
+  ########
+  output$table1 <- renderDataTable({
+    x <- as.data.frame(mydata())
+    x[which(x$team2014 == input$team),]
+    x <- x[,c("school", "year", "immRate", "cfrr", "totMem")]
+    x <- x[order(x$school),]
+  })
+  
+  ########
+  output$table2 <- renderDataTable({
+    x <- as.data.frame(mydata13())
+    x[which(x$team2014 == input$team),]
+    x <- x[,c("school", "year", "immRate", "doses", "totMem")]
+    x <- x[order(x$school),]
+  })
+  
+
+  
+  ########
+  output$motionchart1 <- renderGvis({
+    
+    gvisMotionChart(data = mydata(), 
+                    idvar = "school", 
+                    timevar = "year",
+                    xvar = "year",
+                    yvar = "immRate",
+                    colorvar = "cfrr",
+                    sizevar = "totMem")
+
+  })
+  
+  ########
+  output$motionchart2 <- renderGvis({
+    
+    gvisMotionChart(data = ir, #mydata(), 
+                    idvar = "school", 
+                    timevar = "year",
+                    xvar = "year",
+                    yvar = "immRate",
+                    colorvar = "team2014",
+                    sizevar = "totMem")
+    
+  })
+  
+  ########
+  output$motionchart3 <- renderGvis({
+    
+    gvisMotionChart(data = mydata(), 
+                    idvar = "school", 
+                    timevar = "year",
+                    xvar = "year",
+                    yvar = "immRate",
+                    colorvar = "p.vfc",
+                    sizevar = "totMem")
+    
+  })
+
+
+  
+  
 #     plot(M)
 #     
 #     return (gvisMotionChart(cast.1,"jurisdiccion",timevar="Anio",xvar="ipcf_mean",yvar="ginis",date.format="%Y"))
@@ -193,7 +256,9 @@ shinyServer(function (input, output) {
 #     return(ed.output)
 #   })
   
-  outputOptions(output, "motionchart", suspendWhenHidden = FALSE)
+  #outputOptions(output, "motionchart", suspendWhenHidden = FALSE)
+
+
 #   outputOptions(output, "edades", suspendWhenHidden = FALSE)
 #   outputOptions(output, "tabla1", suspendWhenHidden = FALSE)
 #   outputOptions(output, "tabla2", suspendWhenHidden = FALSE)
