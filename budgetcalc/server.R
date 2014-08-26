@@ -41,10 +41,10 @@ shinyServer(function(input, output) {
                   horiz=TRUE,
                   xlab="Dollars",
                   border=FALSE,
-                  col=adjustcolor("grey", alpha.f=0.2))
+                  col=adjustcolor("grey", alpha.f=0.3))
     title(main="Cost breakdown", 
           cex.main=1, 
-          col=adjustcolor("black", alpha.f=0.5))
+          col.main=adjustcolor("black", alpha.f=0.5))
     
     text(x=0, y=bp[,1],  pos=4,
          col=adjustcolor("black", alpha.f=0.7),
@@ -52,33 +52,35 @@ shinyServer(function(input, output) {
          cex=1)
     
     par(mar=c(5,3,1,1))
+    #####################################
+    PlotFun(x$b38)
     
-    bp <- barplot(x$b38,
-                  col = my_color,
-                  border=FALSE,
-                  ylim=c(0, x$b38 + 5))
-    title(main="% increase in persuaded voters", 
-          cex.main=1, 
-          col=adjustcolor("black", alpha.f=0.5))
-    
-    
-    text(x=bp[,1], y=ifelse(x$b38 > 0, 10, -10),
-         col=adjustcolor("black", alpha.f=0.5),
-         labels=paste(round(x$b38, digits=2), "%"),
-         cex=1.5)
-    #box("plot")
-    
-    abline(h=100, col=adjustcolor("darkgreen", alpha.f=0.4), lwd=2)
-    abline(h=0, col=adjustcolor("darkred", alpha.f=0.4), lwd=2)
-    
+    #####################################
+#     bp <- barplot(x$b38,
+#                   col = my_color,
+#                   border=FALSE,
+#                   ylim=c(0, x$b38 + 5))
+#     title(main="% increase in persuaded voters", 
+#           cex.main=1, 
+#           col.main=adjustcolor("black", alpha.f=0.5))
+#     
+#     
+#     text(x=bp[,1], y=ifelse(x$b38 > 0, 10, -10),
+#          col=adjustcolor("black", alpha.f=0.5),
+#          labels=paste(round(x$b38, digits=2), "%"),
+#          cex=1.5)
+#     #box("plot")
+#     
+#     abline(h=0, col=adjustcolor(ifelse(x$b38 >0, "darkgreen", "darkred"), alpha.f=0.4), lwd=2)
+#     
     bp <- barplot(x$b34,
-                  col = adjustcolor("grey", alpha.f=0.2),
+                  col = adjustcolor("grey", alpha.f=0.3),
                   border=FALSE,
                   ylim=c(0, x$b34 + 5)) 
     
     title(main="Total budget after EIP",
           cex.main=1, 
-          col=adjustcolor("black", alpha.f=0.5))
+          col.main=adjustcolor("black", alpha.f=0.5))
     
     
     text(x=bp[,1], y=0.1*x$b34,
@@ -87,11 +89,11 @@ shinyServer(function(input, output) {
          cex=1.5)
     
     bp <- barplot(x$b36,
-                  col = adjustcolor("grey", alpha.f=0.2),
+                  col = adjustcolor("grey", alpha.f=0.3),
                   border=FALSE)
     title(main="Persuaded voters", 
           cex.main=1, 
-          col=adjustcolor("black", alpha.f=0.5))
+          col.main=adjustcolor("black", alpha.f=0.5))
     
     
     text(x=bp[,1], y=0.1*x$b36,
@@ -100,7 +102,7 @@ shinyServer(function(input, output) {
          cex=1.5)
   })
   
-  output$b <- renderTable({
+  output$b <- renderDataTable(
     BudgetFun(tot = as.numeric(input$b4),
               n.messages = input$b5, 
               cost.eip.mail = input$b10,
@@ -110,8 +112,11 @@ shinyServer(function(input, output) {
               phone.cost = input$b15,
               effect.without.eip = input$b18,
               effect.with.eip.1 = input$b19,
-              effect.with.eip.2 = input$b20)
-  },include.rownames=FALSE)
+              effect.with.eip.2 = input$b20),
+    options = list(#aLengthMenu = list(c(5,15,-1), c('5', '15', 'ALL')),
+      #iDisplayLength = 20,
+      bPaginate = FALSE, bFilter = FALSE)
+  )
   
   
   # tot
