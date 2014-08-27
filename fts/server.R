@@ -67,6 +67,31 @@ text(x=4, y=5, labels="this plot is just a \n placeholder")
     
     
   })
+
+
+############
+output$plot3 <- renderPlot({
+  par(mfrow=c(1,1))
+  
+    
+    #mycols <- adjustcolor(colorRampPalette(brewer.pal(8, "Dark2"))(nrow(farm)), alpha.f=0.8)
+    
+    map("county", "fl", fill=TRUE, col="grey", border="white")
+    
+    for(i in 1:nrow(farm)){
+      points(farm$lon[i], farm$lat[i], 
+             col=adjustcolor("darkred", alpha.f=0.6), #mycols[i],
+             pch=16)
+    }
+    
+#     barplot(1:10, col="white", border="white", xlab=NA, ylab=NA, xaxt="n", yaxt="n")
+#     legend("center", col=mycols, pch=16, border=FALSE, bty="n",
+#            legend=farm$Farm.name., cex=0.7, pt.cex=1.5,
+#            ncol=2)
+
+  
+  
+})
   
   ############
   output$table1 <- renderDataTable({

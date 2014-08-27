@@ -29,15 +29,20 @@ shinyUI(fluidPage(
     # Show a plot of the generated distribution
     mainPanel(
       tabsetPanel(
-        tabPanel("Overview",
+        tabPanel("Monthly Overview",
           plotOutput("plot1"),
           dataTableOutput("table1")
           ),
         
-        tabPanel("Details",
+        tabPanel("Monthly Details",
                  plotOutput("plot2"),
                  dataTableOutput("table2")
+        ),
+        
+        tabPanel("All farms",
+                 plotOutput("plot3")
         )
+        
         
 
         )
