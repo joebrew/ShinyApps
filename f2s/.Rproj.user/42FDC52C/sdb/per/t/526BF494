@@ -1,0 +1,16 @@
+{
+    "contents" : "\n# This is the server logic for a Shiny web application.\n# You can find out more about building applications with Shiny here:\n#\n# http://shiny.rstudio.com\n#\n\nlibrary(shiny)\n\nshinyServer(function(input, output) {\n  \n  source(\"farmers.R\")\n  \n  ########\n  mydata <- reactive({\n    farm[which(farm$month == input$month),]\n  })\n  \n\n  ############\n  output$plot1 <- renderPlot({\n    par(mfrow=c(1,2))\n    \n    if(nrow(mydata()) > 0){\n      \n      mycols <- adjustcolor(colorRampPalette(brewer.pal(8, \"Dark2\"))(nrow(mydata())), alpha.f=0.8)\n      \n      map(\"county\", \"fl\", fill=TRUE, col=\"grey\", border=\"white\")\n      \n      for(i in 1:nrow(mydata())){\n        points(mydata()$lon[i], mydata()$lat[i], \n               col=mycols[i],\n               pch=16)\n      }\n      \n      barplot(1:10, col=\"white\", border=\"white\", xlab=NA, ylab=NA, xaxt=\"n\", yaxt=\"n\")\n      legend(\"center\", col=mycols, pch=16, border=FALSE, bty=\"n\",\n             legend=mydata()$Farm.name., cex=0.7, pt.cex=1.5,\n             ncol=2)\n   }else{\n     barplot(1:10, col=\"white\", border=\"white\", xlab=NA, ylab=NA, xaxt=\"n\", yaxt=\"n\")\n     text(5,5, labels=\"No data collected this month\")\n   }\n    \n\n  })\n  \n  ############\n  output$plot2 <- renderPlot({\n    \n    if(nrow(mydata()) > 0){\n      \nbarplot(1:10)\n    }else{\n      plot(1:10, 1:10, type=\"n\", xlab=NA, ylab=NA, xaxt=\"n\", yaxt=\"n\")\n      text(5,5, labels=\"No data collected this month\")\n    }\n    \n    \n  })\n  \n  ############\n  output$table1 <- renderDataTable({\n    x <- as.data.frame(mydata())\n    x <- x[,c(\"Farm.name.\", \"Farmer.name.\")]\n\n  })\n  \n  ############\n  output$table2 <- renderDataTable({\n    x <- as.data.frame(mydata())\n    \n  })\n\n###########\n\n# output$downloadData <- downloadHandler(\n#   filename = function() { paste(input$month, '.csv', sep='') },\n#   content = function(file) {\n#     write.csv(mydata(), file)\n#   }\n# )\n\noutput$downloadData <- downloadHandler(\n  \n  # This function returns a string which tells the client\n  # browser what name to use when saving the file.\n  filename = function() {\n    paste(input$month, \".csv\", sep = \"\")\n  },\n  \n  # This function should write data to a file given to it by\n  # the argument 'file'.\n  content = function(file) {\n    sep <- \"csv\"\n    \n    # Write to a file specified by the 'file' argument\n    write.table(mydata(), file, sep = sep,\n                row.names = FALSE)\n  }\n)\n\n###########\n\noutput$downloadData2 <- downloadHandler(\n  filename = function() { paste(\"all_months\", '.csv', sep='') },\n  content = function(file) {\n    write.csv(farm, file)\n  }\n)\n\n})\n",
+    "created" : 1409142294943.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2235451457",
+    "id" : "526BF494",
+    "lastKnownWriteTime" : 1409146005,
+    "path" : "~/ShinyApps/f2s/server.R",
+    "project_path" : "server.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}
