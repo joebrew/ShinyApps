@@ -1,5 +1,30 @@
 library(RColorBrewer)
 
+PlotFun <- function(z, col="darkgreen"){
+  
+y <- ifelse(z > 100, 1.1*z,ifelse(z < -100, -1.1*z, 100) )
+  
+  plot(seq(-1,1,length=length(-100:100)), -100:100, type="n",
+       xaxt="n", xlab=NA, ylab="Percent increase / decrese",
+       xlim=c(-0.2, 0.2),
+       ylim=c(-y, y))
+  points(0, z, pch=16, col=adjustcolor(col, alpha.f=0.99))
+  lines(c(0,0), c(0, z), col=adjustcolor(col, alpha.f=0.6), lwd=3)
+  abline(h=0, col=adjustcolor("darkred", alpha.f=0.4))
+  title(main="% change in persuaded voters", 
+        cex.main=1, 
+        col.main=adjustcolor("black", alpha.f=0.5))  
+
+    text(x=0, y=ifelse(z> 0, -0.2*y, 0.2*y),
+         col=adjustcolor("black", alpha.f=0.5),
+         labels=paste(round(z, digits=2), "%"),
+         cex=1.5)
+
+abline(h=seq(-y, y, 0.25*y), 
+       col=adjustcolor("black", alpha.f=0.1))
+}
+
+
 BudgetFun <- function(tot,
                       n.messages = 1, 
                       cost.eip.mail = 2.00,
@@ -9,7 +34,8 @@ BudgetFun <- function(tot,
                       phone.cost = 4.00,
                       effect.without.eip = 3.5,
                       effect.with.eip.1 = 10,
-                      effect.with.eip.2 = 13){
+                      effect.with.eip.2 = 13,
+                      short = TRUE){
   
   # SPREADSHEET COPY
   b4 <- tot
@@ -82,8 +108,8 @@ BudgetFun <- function(tot,
                    "Persuasive effect of mail with targeting EIP (one treatment)",
                    "Persusasive effect of mail with messaging EIP (2 + treatments)",
                    "Total budget: ",
-                   "Number of targets afforded: ",
-                   "Persuaded voters: ",
+                   "Number of targets afforded without EIP: ",
+                   "Number of persuaded voters without EIP: ",
                    #####
                    "Total budget: ",
                    "Total cost of EIP mail: ",
@@ -91,7 +117,7 @@ BudgetFun <- function(tot,
                    "Total cost of analysis and roboscreen: ",
                    "Total budget after EIP",
                    "Number of targets afforded post-EIP",
-                   "Persuaded voters: ",
+                   "Number of persuaded voters without EIP: ",
                    "Percent increase in persuaded voters: ")
   
   myValues <- c(b4,
@@ -125,7 +151,14 @@ BudgetFun <- function(tot,
   x$myValues <- as.numeric(as.character(x$myValues))
   x$myValues <- round(x$myValues, digits=2)
   names(x) <- c(" ", " ")
+  
+  if(short){
+    x <- x[-c(1:12, 15),]
+  }
+  x[,2] <- as.character(x[,2])
+  
   return(x)
+  
   
 }
 
@@ -224,8 +257,8 @@ BudgetFunList <- function(tot,
                    "Persuasive effect of mail with targeting EIP (one treatment)",
                    "Persusasive effect of mail with messaging EIP (2 + treatments)",
                    "Total budget: ",
-                   "Number of targets afforded: ",
-                   "Persuaded voters: ",
+                   "Number of targets afforded without EIP: ",
+                   "Number of persuaded voters without EIP: ",
                    #####
                    "Total budget: ",
                    "Total cost of EIP mail: ",
@@ -233,7 +266,7 @@ BudgetFunList <- function(tot,
                    "Total cost of analysis and roboscreen: ",
                    "Total budget after EIP",
                    "Number of targets afforded post-EIP",
-                   "Persuaded voters: ",
+                   "Number of persuaded voters without EIP: ",
                    "Percent increase in persuaded voters: ")
   
   myValues <- c(b4,
