@@ -1,0 +1,16 @@
+{
+    "contents" : "\n# This is the user-interface definition of a Shiny web application.\n# You can find out more about building applications with Shiny here:\n#\n# http://shiny.rstudio.com\n#\n\nlibrary(shiny)\n\nshinyUI(fluidPage(\n\n  # Application title\n  titlePanel(\"F2s\"),\n\n  # Sidebar with a slider input for number of bins\n  sidebarLayout(\n    sidebarPanel(\n      selectInput(\"month\", \"Month\",c(\n        \"January\", \"February\", \"March\", \"April\",\n        \"May\", \"June\", \"July\", \"August\",\n        \"September\", \"October\", \"November\", \"Decmber\"), selected=\"August\"),\n      \n      h6(\"Download month\"),\n      downloadButton('downloadData1', 'Download'),\n      h6(\"Download all months\"),\n      downloadButton('downloadData2', 'Download')\n    ),\n\n    # Show a plot of the generated distribution\n    mainPanel(\n      tabsetPanel(\n        tabPanel(\"Overview\",\n          plotOutput(\"plot1\"),\n          dataTableOutput(\"table1\")\n          ),\n        \n        tabPanel(\"Details\",\n                 plotOutput(\"plot2\"),\n                 dataTableOutput(\"table2\")\n        )\n        \n\n        )\n      \n\n    )\n  )\n))\n",
+    "created" : 1409146202964.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1508401503",
+    "id" : "463470B9",
+    "lastKnownWriteTime" : 1409146551,
+    "path" : "~/ShinyApps/fts/ui.R",
+    "project_path" : "ui.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

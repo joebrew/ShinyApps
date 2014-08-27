@@ -16,6 +16,13 @@ shinyServer(function(input, output) {
     farm[which(farm$month == input$month),]
   })
   
+  
+  ########
+  mydata_goodcolumns <- reactive({
+    farm2[which(farm2$month == input$month),]
+  })
+  
+
 
   ############
   output$plot1 <- renderPlot({
@@ -70,7 +77,8 @@ text(x=4, y=5, labels="this plot is just a \n placeholder")
   
   ############
   output$table2 <- renderDataTable({
-    x <- as.data.frame(mydata())
+    x <- as.data.frame(mydata_goodcolumns())
+    #x <- x[,names(july)]
     
   })
 
@@ -86,9 +94,11 @@ text(x=4, y=5, labels="this plot is just a \n placeholder")
 ###########
 
 output$downloadData1 <- downloadHandler(
+  
+  
   filename = function() { paste(input$month, '.csv', sep='') },
   content = function(file) {
-    write.csv(mydata(), file)
+    write.csv(mydata_goodcolumns(), file)
   }
 )
 
@@ -96,9 +106,11 @@ output$downloadData1 <- downloadHandler(
 ###########
 
 output$downloadData2 <- downloadHandler(
+
+  
   filename = function() { paste("all_months", '.csv', sep='') },
   content = function(file) {
-    write.csv(farm, file)
+    write.csv(farm2, file)
   }
 )
 

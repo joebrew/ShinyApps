@@ -4,7 +4,7 @@ library(RColorBrewer)
 ##########
 # SET WD
 ##########
-# setwd("C:/Users/BrewJR/Documents/ShinyApps/f2s")
+# setwd("C:/Users/BrewJR/Documents/ShinyApps/fts")
 
 ############
 # monthify function
@@ -64,7 +64,6 @@ july <- read.csv("report_july.csv", skip=1)
 # ASSIGN NAMES OF JULY TO NAMES OF FARM
 ###########
 names(farm) <- names(july)
-rm(july)
 
 ##############
 # ADD BACK IN TIMESTAMP
@@ -176,4 +175,6 @@ farm <- join(x = farm,
           type = "left",
           match = "first")
 
+# REORDER COLUMN NAMES
+farm2 <- farm[,c(names(july), "month")]
 
