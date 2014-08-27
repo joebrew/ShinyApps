@@ -20,9 +20,9 @@ shinyUI(fluidPage(
         "May", "June", "July", "August",
         "September", "October", "November", "Decmber"), selected="August"),
       
-      h6("Download month"),
+      h6("Download report (one month only)"),
       downloadButton('downloadData1', 'Download'),
-      h6("Download all months"),
+      h6("Download report (all months)"),
       downloadButton('downloadData2', 'Download')
     ),
 
@@ -40,7 +40,12 @@ shinyUI(fluidPage(
         ),
         
         tabPanel("All farms",
-                 plotOutput("plot3")
+                 plotOutput("plot3"),
+                 br(),
+                 br(),
+                 br(),
+                 br(),
+                 dataTableOutput("table3")
         )
         
         

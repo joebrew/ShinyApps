@@ -72,17 +72,45 @@ text(x=4, y=5, labels="this plot is just a \n placeholder")
 ############
 output$plot3 <- renderPlot({
   par(mfrow=c(1,1))
-  
+  par(mar=c(0,0,0,0))
+  par(oma=c(0,0,0,0))
     
     #mycols <- adjustcolor(colorRampPalette(brewer.pal(8, "Dark2"))(nrow(farm)), alpha.f=0.8)
-    
-    map("county", "fl", fill=TRUE, col="grey", border="white")
+  mysize <- ifelse(farm$What.is.your.farm.s.total.harvestable.acreage. == "", 1,
+                   ifelse(farm$What.is.your.farm.s.total.harvestable.acreage. == "1-9", 2,
+                          ifelse(farm$What.is.your.farm.s.total.harvestable.acreage. == "1.5 Acres", 2,
+                                 ifelse(farm$What.is.your.farm.s.total.harvestable.acreage. == "10-49", 3,
+                                        ifelse(farm$What.is.your.farm.s.total.harvestable.acreage. == "50-179", 4,
+                                               ifelse(farm$What.is.your.farm.s.total.harvestable.acreage. == "180-499", 5,
+                                                      ifelse(farm$What.is.your.farm.s.total.harvestable.acreage. == "500-999", 6,
+                                                             ifelse(farm$What.is.your.farm.s.total.harvestable.acreage.  == "1000+", 7,
+                                                                    1)))))))) 
+  
+  mycols <- ifelse(farm$Have.you.ever.tried.to.sell.to.schools. == "", "black",
+                   ifelse(farm$Have.you.ever.tried.to.sell.to.schools. == "No", "darkred",
+                          ifelse(farm$Have.you.ever.tried.to.sell.to.schools. == "Yes", "darkgreen",
+                                 "black")))
+  mycols <- adjustcolor(mycols, alpha.f=0.3)
+  
+    map("county", "fl", fill=TRUE, col="white", border="darkgrey")
     
     for(i in 1:nrow(farm)){
       points(farm$lon[i], farm$lat[i], 
-             col=adjustcolor("darkred", alpha.f=0.6), #mycols[i],
-             pch=16)
+             col=mycols[i],
+             pch=16,cex = mysize[i] / 1.5)
     }
+  
+  legend("bottomleft", pch=16, col=adjustcolor(c("black", "darkred", "darkgreen"), alpha.f=0.7),
+         legend=c("Unknown", "No", "Yes"),
+         title = "Ever tried to sell to schools?",
+         bty="n", border=FALSE, cex=0.9)
+  
+  legend("left", pch=16, col=adjustcolor("grey", alpha.f=0.5), pt.cex=(1:7)/1.5,
+         legend=c("Unknown", "1-9", "10-49", "50-179", "180-499", "500-999", "1000+"),
+         title = "Total harverstable acreage",
+         bty="n", border=FALSE, cex=0.9, y.intersp=1.6, ncol=2)
+  
+  
     
 #     barplot(1:10, col="white", border="white", xlab=NA, ylab=NA, xaxt="n", yaxt="n")
 #     legend("center", col=mycols, pch=16, border=FALSE, bty="n",
@@ -91,7 +119,7 @@ output$plot3 <- renderPlot({
 
   
   
-})
+}, height=600)
   
   ############
   output$table1 <- renderDataTable({
@@ -106,6 +134,14 @@ output$plot3 <- renderPlot({
     #x <- x[,names(july)]
     
   })
+
+############
+output$table3 <- renderDataTable({
+  x <- as.data.frame(farm2)
+  #x <- x[,names(july)]
+  
+})
+
 
 ###########
 
