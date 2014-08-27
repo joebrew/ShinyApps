@@ -46,6 +46,64 @@ ir$immRate_grade.1 <- factor(ir$immRate_grade.1)
 # FUNCTION FOR PLOTTING BY GRADE
 #######################
 
+grades <- c(".1", 0:12)
+gradecols <- colorRampPalette(brewer.pal(8, "Dark2"))(length(grades)) 
+gradecols <- adjustcolor(gradecols, alpha.f=0.7)
+
+
+par(mfrow=c(1,2))
+plot(2006:2013, 2006:2013, 
+     type="n", ylim=c(0,100), xlim=c(2011,2013),
+     xlab= "Year", ylab= "Immunization rate",
+     xaxt="n")
+axis(side=1, at=2011:2013, labels=2011:2013)
+for (i in 1:length(grades)){
+  
+  myVals <- as.numeric(as.character(ir[which(ir$school == "LITTLEWOOD ELEM."), paste0("immRate_grade", grades[i])]))
+  myYears <- as.numeric(as.character(ir$year[which(ir$school == "LITTLEWOOD ELEM.")]))
+  myPoints <- 12:25
+  lines(myYears, myVals, type = "l", col=gradecols[i])
+  points(myYears, myVals, col=gradecols[i],pch=myPoints)
+  
+  
+  
+}
+
+legend(x="topright", col=gradecols, lty=1,
+       legend=c("Pre-K", "K", grades[-c(1,2)]), ncol=2,
+       border=FALSE, bty="n", pch=myPoints, cex=0.75)
+
+plot(2006:2013, 2006:2013, 
+     type="n", ylim=c(0,100), xlim=c(2011,2013),
+     xlab= "Year", ylab= "Consent form return rate", xaxt="n")
+axis(side=1, at=2011:2013, labels=2011:2013)
+
+for (i in 1:length(grades)){
+  
+  myVals <- as.numeric(as.character(ir[which(ir$school == "LITTLEWOOD ELEM."), paste0("cfrr_grade", grades[i])]))
+  myYears <- as.numeric(as.character(ir$year[which(ir$school == "LITTLEWOOD ELEM.")]))
+  
+  lines(myYears, myVals, type = "l", col=gradecols[i])
+  points(myYears, myVals, col=gradecols[i], pch=myPoints)
+  
+}
+
+par(mfrow=c(1,1))
+tempVals <- vector(length=length(grades), mode="numeric")
+tempImm <- vector(length=length(grades), mode="numeric")
+
+for (i in 1:length(grades)){
+  tempVals[i] <- as.numeric(as.character(ir[which(ir$school == "LITTLEWOOD ELEM." & 
+                                               ir$year == 2013),
+                                       paste0("cfrr_grade", grades[i])]))
+  tempImm[i] <- as.numeric(as.character(ir[which(ir$school == "LITTLEWOOD ELEM." & 
+                                                   ir$year == 2013),
+                                           paste0("immRate_grade", grades[i])]))
+
+}
+barplot(tempVals[which(!is.na(tempVals))], names.arg=grades[which(!is.na(tempVals))])
+barplot(tempImm[which(!is.na(tempImm))], col=adjustcolor("blue", alpha.f=0.6), add=TRUE)
+
 
 # 
 # 
