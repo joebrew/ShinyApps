@@ -77,7 +77,13 @@ shinyUI(pageWithSidebar(
                ),
       tabPanel("By grade",
                plotOutput("plot5"),
-               plotOutput("plot6"))
+               plotOutput("plot6"),
+               plotOutput("plot7"),
+               br(),  br(),  br(),  br(),  br(),  br(),  br(),  br(),  br(),  br(), 
+               br(),  br(),  br(),  br(),  br(),  br(),  br(),  br(),  br(),  br(), 
+               br(),  br(),  br(),  br(),  br(),  br(),  br(),  br(),  br(),  br(), 
+               
+               plotOutput("plot8"))
       
       #,
       #tabPanel("Details",htmlOutput("linech")

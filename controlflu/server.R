@@ -74,6 +74,39 @@ shinyServer(function (input, output) {
     
   })
   
+  #######
+  output$plot7 <- renderPlot({
+    
+    x <- ir[which(as.numeric(ir$team2014) == as.numeric(input$team) ),]
+    x <- unique(sort(x$school[which(!is.na(x$immRate[which(x$year == 2013)]))]))
+    x <- x[which(x != "NEWBERRY ELEM.")] #NOT SURE WHY NEWBERRY ELEM DOESN'T WORK
+    x <- x[1:3]
+    
+    par(mfrow=c(length(x), 2))
+    
+    for (i in x){
+      GradeFun(i, 2013, bar=FALSE)
+    }
+    
+  }, height=1000)
+  
+  #######
+  output$plot8 <- renderPlot({
+    
+    x <- ir[which(as.numeric(ir$team2014) == as.numeric(input$team) ),]
+    x <- unique(sort(x$school[which(!is.na(x$immRate[which(x$year == 2013)]))]))
+    x <- x[which(x != "NEWBERRY ELEM.")] #NOT SURE WHY NEWBERRY ELEM DOESN'T WORK
+    x <- x[4:6]
+    
+    par(mfrow=c(length(x), 2))
+    
+    for (i in x){
+      GradeFun(i, 2013, bar=FALSE)
+    }
+    
+  }, height = 1000)
+  
+  
   
   
   

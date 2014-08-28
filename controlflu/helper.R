@@ -57,11 +57,14 @@ GradeFun <- function(school, year, bar=TRUE){
     
     
     if(!bar){
-    par(mfrow=c(1,2))
+    #par(mfrow=c(1,2))
+      par(mar=c(4,4,0,0))
     plot(2006:2013, 2006:2013, 
          type="n", ylim=c(0,100), xlim=c(2011,2013),
-         xlab= "Year", ylab= "Immunization rate",
-         xaxt="n")
+         xlab= NA, ylab= "Immunization rate",
+         xaxt="n", cex.axis=1.5)
+    text(x=2012, y = 10, labels=paste0("Immunization rate ","(", school, ")" ), cex=1.5)
+    
     axis(side=1, at=2011:2013, labels=2011:2013)
     for (i in 1:length(grades)){
       
@@ -75,13 +78,19 @@ GradeFun <- function(school, year, bar=TRUE){
       
     }
     
-    legend(x="topright", col=gradecols, lty=1,
+    legend(x="topleft", col=gradecols, lty=1,
            legend=c("Pre-K", "K", grades[-c(1,2)]), ncol=2,
-           border=FALSE, bty="n", pch=myPoints, cex=0.75)
+           border=FALSE, bty="n", pch=myPoints, cex=1)
+    
+    par(mar=c(4,4,0,0))
     
     plot(2006:2013, 2006:2013, 
          type="n", ylim=c(0,100), xlim=c(2011,2013),
-         xlab= "Year", ylab= "Consent form return rate", xaxt="n")
+         xlab= NA, ylab= "Consent form return rate", xaxt="n",
+         cex.axis=1.5)
+    text(x=2012, y = 10, labels=paste0("Consent form return rate ","(", school, ")" ),
+         cex=1.5)
+    
     axis(side=1, at=2011:2013, labels=2011:2013)
     
     for (i in 1:length(grades)){
@@ -94,7 +103,6 @@ GradeFun <- function(school, year, bar=TRUE){
       
     }
     
-    title( main = paste0(school, " (", year, ")"), outer=TRUE, line=-1)
   }else{
     
     
