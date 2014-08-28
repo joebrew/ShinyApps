@@ -46,6 +46,99 @@ ir$immRate_grade.1 <- factor(ir$immRate_grade.1)
 # FUNCTION FOR PLOTTING BY GRADE
 #######################
 
+
+GradeFun <- function(school, year, bar=TRUE){
+  
+
+    
+    grades <- c(".1", 0:12)
+    gradecols <- colorRampPalette(brewer.pal(8, "Dark2"))(length(grades)) 
+    gradecols <- adjustcolor(gradecols, alpha.f=0.7)
+    
+    
+    if(!bar){
+    par(mfrow=c(1,2))
+    plot(2006:2013, 2006:2013, 
+         type="n", ylim=c(0,100), xlim=c(2011,2013),
+         xlab= "Year", ylab= "Immunization rate",
+         xaxt="n")
+    axis(side=1, at=2011:2013, labels=2011:2013)
+    for (i in 1:length(grades)){
+      
+      myVals <- as.numeric(as.character(ir[which(ir$school == school), paste0("immRate_grade", grades[i])]))
+      myYears <- as.numeric(as.character(ir$year[which(ir$school == school)]))
+      myPoints <- 12:25
+      lines(myYears, myVals, type = "l", col=gradecols[i])
+      points(myYears, myVals, col=gradecols[i],pch=myPoints)
+      
+      
+      
+    }
+    
+    legend(x="topright", col=gradecols, lty=1,
+           legend=c("Pre-K", "K", grades[-c(1,2)]), ncol=2,
+           border=FALSE, bty="n", pch=myPoints, cex=0.75)
+    
+    plot(2006:2013, 2006:2013, 
+         type="n", ylim=c(0,100), xlim=c(2011,2013),
+         xlab= "Year", ylab= "Consent form return rate", xaxt="n")
+    axis(side=1, at=2011:2013, labels=2011:2013)
+    
+    for (i in 1:length(grades)){
+      
+      myVals <- as.numeric(as.character(ir[which(ir$school == school), paste0("cfrr_grade", grades[i])]))
+      myYears <- as.numeric(as.character(ir$year[which(ir$school == school)]))
+      
+      lines(myYears, myVals, type = "l", col=gradecols[i])
+      points(myYears, myVals, col=gradecols[i], pch=myPoints)
+      
+    }
+    
+    title( main = paste(school, year), outer=TRUE, line=-1)
+  }else{
+    
+    
+    par(mfrow=c(1,1))
+    tempVals <- vector(length=length(grades), mode="numeric")
+    tempImm <- vector(length=length(grades), mode="numeric")
+    
+    for (i in 1:length(grades)){
+      tempVals[i] <- as.numeric(as.character(ir[which(ir$school == school & 
+                                                        ir$year == year),
+                                                paste0("cfrr_grade", grades[i])]))
+      tempImm[i] <- as.numeric(as.character(ir[which(ir$school == school & 
+                                                       ir$year == year),
+                                               paste0("immRate_grade", grades[i])]))
+      
+    }
+    
+    grades[which(grades == ".1")] <- "Pre-K"
+    grades[which(grades == 0)] <- "K"
+    
+    
+    bp <- barplot(tempVals[which(!is.na(tempVals))], 
+                  names.arg=grades[which(!is.na(tempVals))],
+                  border=NA, ylim=c(0,100), ylab="Percentage",
+                  xlab="Grade",
+                  main = paste(school, year))
+    barplot(tempImm[which(!is.na(tempImm))], 
+            col=adjustcolor("blue", alpha.f=0.4), add=TRUE,
+            border=NA)
+    text(bp[,1], tempVals[which(!is.na(tempVals))], pos=1,
+         labels=round(tempVals[which(!is.na(tempVals))], digits=2),
+         col = adjustcolor("black", alpha.f=0.7))
+    text(bp[,1], tempImm[which(!is.na(tempImm))], pos=1,
+         labels=round(tempImm[which(!is.na(tempImm))], digits=2),
+         col = adjustcolor("black", alpha.f=0.7))
+    
+  }
+  
+}
+
+GradeFun("LITTLEWOOD ELEM.", 2011, bar=FALSE)
+
+
+
 grades <- c(".1", 0:12)
 gradecols <- colorRampPalette(brewer.pal(8, "Dark2"))(length(grades)) 
 gradecols <- adjustcolor(gradecols, alpha.f=0.7)
@@ -101,8 +194,25 @@ for (i in 1:length(grades)){
                                            paste0("immRate_grade", grades[i])]))
 
 }
-barplot(tempVals[which(!is.na(tempVals))], names.arg=grades[which(!is.na(tempVals))])
-barplot(tempImm[which(!is.na(tempImm))], col=adjustcolor("blue", alpha.f=0.6), add=TRUE)
+
+grades[which(grades == ".1")] <- "Pre-K"
+grades[which(grades == 0)] <- "K"
+
+
+bp <- barplot(tempVals[which(!is.na(tempVals))], 
+        names.arg=grades[which(!is.na(tempVals))],
+        border=NA, ylim=c(0,100), ylab="Percentage",
+        xlab="Grade",
+        main = paste("LITTLEWOOD ELEM.", "2013"))
+barplot(tempImm[which(!is.na(tempImm))], 
+        col=adjustcolor("blue", alpha.f=0.4), add=TRUE,
+        border=NA)
+text(bp[,1], tempVals[which(!is.na(tempVals))], pos=1,
+     labels=round(tempVals[which(!is.na(tempVals))], digits=2),
+     col = adjustcolor("black", alpha.f=0.7))
+text(bp[,1], tempImm[which(!is.na(tempImm))], pos=1,
+     labels=round(tempImm[which(!is.na(tempImm))], digits=2),
+     col = adjustcolor("black", alpha.f=0.7))
 
 
 # 
