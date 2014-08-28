@@ -1,0 +1,9 @@
+{
+    "path" : "~/ShinyApps/controlflu",
+    "sortOrder" : [
+        {
+            "ascending" : true,
+            "columnIndex" : 2
+        }
+    ]
+}

@@ -1,4 +1,4 @@
-#setwd("C:/Users/BrewJR/Documents/ShinyApps/controlflu/dirty")
+#setwd("C:/Users/BrewJR/Documents/ShinyApps/controlfluteams/dirty")
 
 
 library(plyr)
@@ -108,8 +108,29 @@ ir$team2014.1 <- NULL
 ir$school.1 <- NULL
 
 
+# FIX CFRR BY YEAR
+ir$cfrr2 <- NA
+
+for (i in unique(sort(ir$year))){
+  for (j in unique(ir$id)){
+    ir$cfrr2[which(ir$year == i & ir$id == j)] <-
+      weighted.mean(x = cl$cfrr[which(cl$id == j & cl$year == i)], 
+                    w = cl$Total.Pop[which(cl$id == j & cl$year == i)],
+                    na.rm = TRUE)
+  }
+}
+
+# THEY'RE NOT PERFECT MATCHES, BUT LET'S ROLL WITH IT..
+
+lines(0:100, 0:100)
+
+# REPLACE
+ir$cfrr_brad <- ir$cfrr
+ir$cfrr <- ir$cfrr2
+ir$cfrr2 <- NULL
+
 # WRITE CSVS FOR APP
-#setwd("C:/Users/BrewJR/Documents/ShinyApps/controlflu/")
+#setwd("C:/Users/BrewJR/Documents/ShinyApps/controlfluteams/")
 write.csv(cf, "cfrr.csv")
 write.csv(ir, "ir.csv")
 write.csv(cl, "cl.csv")

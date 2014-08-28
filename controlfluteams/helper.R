@@ -20,10 +20,10 @@ suppressPackageStartupMessages(library(googleVis))
 # ir$team2014 <- factor(ir$team2014)
 
 # READ LOCALLY  - CHANGE LATER
-#setwd("C:/Users/BrewJR/Documents/ShinyApps/controlflu")
+#setwd("C:/Users/BrewJR/Documents/ShinyApps/controlfluteams")
 ir <- read.csv("ir.csv")
 cf <- read.csv("cfrr.csv")
-
+cl <- read.csv("cl.csv")
 
 #make team factor
 ir$team2014 <- factor(ir$team2014)
@@ -44,12 +44,8 @@ ir$immRate_grade.1 <- factor(ir$immRate_grade.1)
 #######################
 # FUNCTION FOR PLOTTING BY GRADE
 #######################
-
-
 GradeFun <- function(school, year, bar=TRUE){
-  
 
-    
     grades <- c(".1", 0:12)
     gradecols <- colorRampPalette(brewer.pal(8, "Dark2"))(length(grades)) 
     gradecols <- adjustcolor(gradecols, alpha.f=0.7)
@@ -62,7 +58,10 @@ GradeFun <- function(school, year, bar=TRUE){
          type="n", ylim=c(0,100), xlim=c(2011,2013),
          xlab= NA, ylab= "Immunization rate",
          xaxt="n", cex.axis=1.5)
-    text(x=2012, y = 10, labels=paste0("Immunization rate ","(", school, ")" ), cex=1.5)
+    
+    text(x=2012, y = 15, labels=paste0("Immunization rate "),
+         cex=1.5)
+    text(x= 2012, y = 5, labels = paste0( "(", school, ")"))
     
     axis(side=1, at=2011:2013, labels=2011:2013)
     for (i in 1:length(grades)){
@@ -87,8 +86,9 @@ GradeFun <- function(school, year, bar=TRUE){
          type="n", ylim=c(0,100), xlim=c(2011,2013),
          xlab= NA, ylab= "Consent form return rate", xaxt="n",
          cex.axis=1.5)
-    text(x=2012, y = 10, labels=paste0("Consent form return rate ","(", school, ")" ),
+    text(x=2012, y = 15, labels=paste0("Consent form return rate "),
          cex=1.5)
+    text(x= 2012, y = 5, labels = paste0( "(", school, ")"))
     
     axis(side=1, at=2011:2013, labels=2011:2013)
     
@@ -97,66 +97,168 @@ GradeFun <- function(school, year, bar=TRUE){
       myVals <- as.numeric(as.character(ir[which(ir$school == school), paste0("cfrr_grade", grades[i])]))
       myYears <- as.numeric(as.character(ir$year[which(ir$school == school)]))
       
-      lines(myYears, myVals, type = "l", col=gradecols[i])
+      lines(myYears, myVals,  lty = 1, col=gradecols[i])
       points(myYears, myVals, col=gradecols[i], pch=myPoints)
       
     }
     
   }else{
     
+    if(length(ir$cfrr[which(ir$year == year & ir$school == school)]) == 0){
+      return(NULL)
+    }else{
     
-    #par(mfrow=c(1,1))
-    tempVals <- vector(length=length(grades), mode="numeric")
-    tempImm <- vector(length=length(grades), mode="numeric")
-    
-    for (i in 1:length(grades)){
-      tempVals[i] <- as.numeric(as.character(ir[which(ir$school == school & 
-                                                        ir$year == year),
-                                                paste0("cfrr_grade", grades[i])]))
-      tempImm[i] <- as.numeric(as.character(ir[which(ir$school == school & 
-                                                       ir$year == year),
-                                               paste0("immRate_grade", grades[i])]))
+    if(!is.na(ir$cfrr[which(ir$year == year & ir$school == school)])){
+      #par(mfrow=c(1,1))
+      tempVals <- vector(length=length(grades), mode="numeric")
+      tempImm <- vector(length=length(grades), mode="numeric")
       
-    }
+      for (i in 1:length(grades)){
+        tempVals[i] <- as.numeric(as.character(ir[which(ir$school == school & 
+                                                          ir$year == year),
+                                                  paste0("cfrr_grade", grades[i])]))
+        tempImm[i] <- as.numeric(as.character(ir[which(ir$school == school & 
+                                                         ir$year == year),
+                                                 paste0("immRate_grade", grades[i])]))
+        
+      }
+      
+      grades[which(grades == ".1")] <- "Pre-K"
+      grades[which(grades == 0)] <- "K"
+      
+      
+      bp <- barplot(tempVals[which(!is.na(tempVals))], 
+                    names.arg=grades[which(!is.na(tempVals))],
+                    border=NA, ylim=c(0,100), ylab="Percentage",
+                    xlab="Grade",
+                    main = paste0(school, " (", year, ")"))
+      barplot(tempImm[which(!is.na(tempImm))], 
+              col=adjustcolor("blue", alpha.f=0.4), add=TRUE,
+              border=NA)
+      text(bp[,1], tempVals[which(!is.na(tempVals))], pos=1,
+           labels=round(tempVals[which(!is.na(tempVals))], digits=2),
+           col = adjustcolor("black", alpha.f=0.7))
+      text(bp[,1], tempImm[which(!is.na(tempImm))], pos=1,
+           labels=round(tempImm[which(!is.na(tempImm))], digits=2),
+           col = adjustcolor("black", alpha.f=0.7))
+      legend(x="topleft",
+             fill=adjustcolor(c("black", "blue"), alpha.f=0.7), 
+             legend=c("CFRR", "IR"), bty= "n", border = FALSE, cex=0.75)
+      
+    }else{return(NULL)}
     
-    grades[which(grades == ".1")] <- "Pre-K"
-    grades[which(grades == 0)] <- "K"
-    
-    
-    bp <- barplot(tempVals[which(!is.na(tempVals))], 
-                  names.arg=grades[which(!is.na(tempVals))],
-                  border=NA, ylim=c(0,100), ylab="Percentage",
-                  xlab="Grade",
-                  main = paste0(school, " (", year, ")"))
-    barplot(tempImm[which(!is.na(tempImm))], 
-            col=adjustcolor("blue", alpha.f=0.4), add=TRUE,
-            border=NA)
-    text(bp[,1], tempVals[which(!is.na(tempVals))], pos=1,
-         labels=round(tempVals[which(!is.na(tempVals))], digits=2),
-         col = adjustcolor("black", alpha.f=0.7))
-    text(bp[,1], tempImm[which(!is.na(tempImm))], pos=1,
-         labels=round(tempImm[which(!is.na(tempImm))], digits=2),
-         col = adjustcolor("black", alpha.f=0.7))
-    
+
+  }
   }
   
 }
 
-#GradeFun("LITTLEWOOD ELEM.", 2012, bar=TRUE)
+#GradeFun("B'NAI ISRAEL", 2011, bar=TRUE)
 
-########## FIGURE OUT THE TEAM STUFF
-# x <- ir[which(as.numeric(ir$team2014) == as.numeric(3) ),]
-# x <- unique(sort(x$school[which(!is.na(x$immRate[which(x$year == 2013)]))]))
-# 
-# par(mar=c(5,4,4,1))
-# par(mfrow=c(ceiling(length(x)/3), 3))
-# 
-# for (i in x){
-#   GradeFun(i, 2013)
-# }
-# 
-# GradeFun("WILES ELEM.", 2013)
-# 
+######################
+# FREE REDUCED LUNCH FUN
+######################
+par(mar=c(5,4,2,1))
+LunchFun <- function(school, year=2013){
+  
+  # THIS DOES ONLY 2013
+  
+  type <- ir$type[which(ir$school == school)][1]
+  
+  frl <- ir$frLunch13[which(ir$school != school & ir$year == year
+                            & ir$type == type)]
+  
+  cfrr <-  ir$cfrr[which(ir$school != school & ir$year == year &
+                           ir$type == type)]
+  
+  
+  
+  frl_school <- ir$frLunch13[which(ir$school == school & ir$year == year)]
+  cfrr_school <-  ir$cfrr[which(ir$school == school & ir$year == year)]
+  
+  
+  schoolcol <- adjustcolor("darkred", alpha.f=0.6)
+  othercol <- adjustcolor("black", alpha.f=0.3)
+  
+  plot(0:100, 0:100, 
+       xlab = "Percent free/reduced lunch",
+       ylab = "Consent form return rate", 
+       main = paste0("Free/reduced lunch and CFRR (", year, ")"),
+       xlim=c(0,100),
+       ylim=c(0,100), type="n")
+  points(frl, cfrr, col=othercol, pch=16, cex = 2)
+  points(frl_school, cfrr_school, pch=16, col=schoolcol, cex=3)
+  
+  legend(x="bottomleft",
+         pt.cex=c(2,3),
+         pch=16,
+         col=c(othercol, schoolcol),
+         legend=c(paste0(school, " (", year, ")"),
+                  paste0("Other ", type, " schools (", year, ")")), 
+         cex=0.8)
+}
+
+#LunchFun("LITTLEWOOD ELEM.", 2013)
+
+
+#######################
+# CFRR AND IR BY CLASSROOM
+#######################
+ScatterFun <- function(school, year=2013){
+  
+
+  
+  type <- as.character(ir$type[which(ir$school == school)][1])
+  
+  newcl <- cl[which(as.character(cl$type) == type & cl$year == year),]
+  schoolcl <- newcl[which(newcl$id == ir$id[which(ir$school == school )][1]),]
+  
+  schoolcol <- adjustcolor("darkred", alpha.f=0.6)
+  othercol <- adjustcolor("black", alpha.f=0.3)
+  
+  meancfrr <- weighted.mean(newcl$cfrr, newcl$Total.Pop, na.rm=T)
+  meanir <- weighted.mean(newcl$immRate, newcl$Total.Pop, na.rm=T)
+  
+  schoolmeancfrr <- weighted.mean(schoolcl$cfrr, schoolcl$Total.Pop, na.rm=T)
+  schoolmeanir <- weighted.mean(schoolcl$immRate, schoolcl$Total.Pop, na.rm=T)
+  
+  
+  plot(0:100, 0:100, 
+       xlab = "CFRR",
+       ylab = "IR", 
+       xlim=c(0,100),
+       ylim=c(0,100), type="n")
+  
+  points(newcl$cfrr, newcl$immRate, pch=16, 
+       col=adjustcolor(othercol, alpha.f=0.2),
+       cex=(newcl$Total.Pop)^(1)/10)
+  points(schoolcl$cfrr, schoolcl$immRate, 
+         col=schoolcol,
+         cex=schoolcl$Total.Pop^(1)/10,
+         pch=16)
+  
+  legend(x="bottomleft",
+         col=c(othercol, schoolcol),
+         pch=16,
+         legend=c(paste0("Other ", type, " schools"), school),
+         border=FALSE,  cex=0.7)
+  
+  legend(x="topleft",
+         col=c(othercol, schoolcol),
+         lty=1, lwd=3,
+         legend=c(paste0("Other ", type, " schools weighted mean"), paste0(school, " mean")),
+         border=FALSE, bty= "n", cex=0.7)
+  
+  
+  abline(h=meanir, col=othercol, lwd=3)
+  abline(v=meancfrr, col=othercol, lwd=3)
+  
+  abline(h=schoolmeanir, col=adjustcolor(schoolcol, alpha.f=0.6), lwd=3)
+  abline(v=schoolmeancfrr, col=adjustcolor(schoolcol, alpha.f=0.6), lwd=3)
+  
+}
+
+#ScatterFun("LITTLEWOOD ELEM.", 2013)
 
 #######################
 # FUNCTION FOR PLOTTING EACH TEAM'S TRAJECTORIES
