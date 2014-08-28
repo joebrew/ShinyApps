@@ -94,11 +94,11 @@ GradeFun <- function(school, year, bar=TRUE){
       
     }
     
-    title( main = paste(school, year), outer=TRUE, line=-1)
+    title( main = paste0(school, " (", year, ")"), outer=TRUE, line=-1)
   }else{
     
     
-    par(mfrow=c(1,1))
+    #par(mfrow=c(1,1))
     tempVals <- vector(length=length(grades), mode="numeric")
     tempImm <- vector(length=length(grades), mode="numeric")
     
@@ -120,7 +120,7 @@ GradeFun <- function(school, year, bar=TRUE){
                   names.arg=grades[which(!is.na(tempVals))],
                   border=NA, ylim=c(0,100), ylab="Percentage",
                   xlab="Grade",
-                  main = paste(school, year))
+                  main = paste0(school, " (", year, ")"))
     barplot(tempImm[which(!is.na(tempImm))], 
             col=adjustcolor("blue", alpha.f=0.4), add=TRUE,
             border=NA)
@@ -135,150 +135,21 @@ GradeFun <- function(school, year, bar=TRUE){
   
 }
 
-GradeFun("LITTLEWOOD ELEM.", 2011, bar=FALSE)
+#GradeFun("LITTLEWOOD ELEM.", 2012, bar=TRUE)
 
-
-
-grades <- c(".1", 0:12)
-gradecols <- colorRampPalette(brewer.pal(8, "Dark2"))(length(grades)) 
-gradecols <- adjustcolor(gradecols, alpha.f=0.7)
-
-
-par(mfrow=c(1,2))
-plot(2006:2013, 2006:2013, 
-     type="n", ylim=c(0,100), xlim=c(2011,2013),
-     xlab= "Year", ylab= "Immunization rate",
-     xaxt="n")
-axis(side=1, at=2011:2013, labels=2011:2013)
-for (i in 1:length(grades)){
-  
-  myVals <- as.numeric(as.character(ir[which(ir$school == "LITTLEWOOD ELEM."), paste0("immRate_grade", grades[i])]))
-  myYears <- as.numeric(as.character(ir$year[which(ir$school == "LITTLEWOOD ELEM.")]))
-  myPoints <- 12:25
-  lines(myYears, myVals, type = "l", col=gradecols[i])
-  points(myYears, myVals, col=gradecols[i],pch=myPoints)
-  
-  
-  
-}
-
-legend(x="topright", col=gradecols, lty=1,
-       legend=c("Pre-K", "K", grades[-c(1,2)]), ncol=2,
-       border=FALSE, bty="n", pch=myPoints, cex=0.75)
-
-plot(2006:2013, 2006:2013, 
-     type="n", ylim=c(0,100), xlim=c(2011,2013),
-     xlab= "Year", ylab= "Consent form return rate", xaxt="n")
-axis(side=1, at=2011:2013, labels=2011:2013)
-
-for (i in 1:length(grades)){
-  
-  myVals <- as.numeric(as.character(ir[which(ir$school == "LITTLEWOOD ELEM."), paste0("cfrr_grade", grades[i])]))
-  myYears <- as.numeric(as.character(ir$year[which(ir$school == "LITTLEWOOD ELEM.")]))
-  
-  lines(myYears, myVals, type = "l", col=gradecols[i])
-  points(myYears, myVals, col=gradecols[i], pch=myPoints)
-  
-}
-
-par(mfrow=c(1,1))
-tempVals <- vector(length=length(grades), mode="numeric")
-tempImm <- vector(length=length(grades), mode="numeric")
-
-for (i in 1:length(grades)){
-  tempVals[i] <- as.numeric(as.character(ir[which(ir$school == "LITTLEWOOD ELEM." & 
-                                               ir$year == 2013),
-                                       paste0("cfrr_grade", grades[i])]))
-  tempImm[i] <- as.numeric(as.character(ir[which(ir$school == "LITTLEWOOD ELEM." & 
-                                                   ir$year == 2013),
-                                           paste0("immRate_grade", grades[i])]))
-
-}
-
-grades[which(grades == ".1")] <- "Pre-K"
-grades[which(grades == 0)] <- "K"
-
-
-bp <- barplot(tempVals[which(!is.na(tempVals))], 
-        names.arg=grades[which(!is.na(tempVals))],
-        border=NA, ylim=c(0,100), ylab="Percentage",
-        xlab="Grade",
-        main = paste("LITTLEWOOD ELEM.", "2013"))
-barplot(tempImm[which(!is.na(tempImm))], 
-        col=adjustcolor("blue", alpha.f=0.4), add=TRUE,
-        border=NA)
-text(bp[,1], tempVals[which(!is.na(tempVals))], pos=1,
-     labels=round(tempVals[which(!is.na(tempVals))], digits=2),
-     col = adjustcolor("black", alpha.f=0.7))
-text(bp[,1], tempImm[which(!is.na(tempImm))], pos=1,
-     labels=round(tempImm[which(!is.na(tempImm))], digits=2),
-     col = adjustcolor("black", alpha.f=0.7))
-
-
+########## FIGURE OUT THE TEAM STUFF
+# x <- ir[which(as.numeric(ir$team2014) == as.numeric(3) ),]
+# x <- unique(sort(x$school[which(!is.na(x$immRate[which(x$year == 2013)]))]))
 # 
+# par(mar=c(5,4,4,1))
+# par(mfrow=c(ceiling(length(x)/3), 3))
 # 
-# plot(x = 2006:2013, 
-#      y = seq(0,100, length=length(2006:2013)),
-#      type = "n",
-#      xlab = "Year",
-#      ylab = "Immunization rate",
-#      ylim=c(0,100), main="All years")
-# 
-# x <- ir[which(ir$team2014 == 4),]
-# 
-# ids <- unique(sort(x$id))
-# grades <- -1:12
-# 
-# for (i in ids){
-#   for (j in grades){
-#     
-#     lines(x[which(x$id == ids[i]), paste0("year")],
-#           x[which(x$id == ids[i]), paste0("cfrr_grade", j)])
-#     
-#     
-#   }
+# for (i in x){
+#   GradeFun(i, 2013)
 # }
 # 
-# lines(x[which(x$id == ids[2]), paste0("year")],
-#       x[which(x$id == ids[2]), paste0("cfrr_grade", 2)])
+# GradeFun("WILES ELEM.", 2013)
 # 
-# 
-# GradeFun <- function(team=1, data=ir){
-#   plot(x = 2006:2013, 
-#        y = seq(0,100, length=length(2006:2013)),
-#        type = "n",
-#        xlab = "Year",
-#        ylab = "Immunization rate",
-#        ylim=c(0,100), main="All years")
-#   
-#   # PLOT LINES
-#   
-#   x <- data[which(data$team2014 == team),]
-#   
-#   for (i in -1:12){
-#     
-#     xx <- x$year[which(x[,paste0("immRate_grade", i)])]
-#     yy <- x$immRate[, paste0("immRate_grade", i)]
-#     
-#   }
-#   
-#   for (i in 1:length(schools)){
-#     
-#     xx <- x$year[which(x$school == schools[i] )]
-#     yy <- x$immRate[which(x$school == schools[i] )]
-#     #x$color[which(x$school == schools[i])] <- mycols[i]
-#     
-#     cc <- x$color[which(x$school == schools[i])][1]
-#     lines(xx, yy, col=cc, lwd=1)
-#     points(xx, yy, col=cc, pch=16, cex=1)    
-#   }  
-#     
-#   abline(v=2006:2013, col=adjustcolor("black", alpha.f=0.1))
-#   abline(h=seq(0,100,20), col=adjustcolor("black", alpha.f=0.1))    
-#   
-# }
-# 
-# plot(ir$cfrr_grade1, ir$immRate_grade1)
 
 #######################
 # FUNCTION FOR PLOTTING EACH TEAM'S TRAJECTORIES

@@ -74,7 +74,10 @@ shinyUI(pageWithSidebar(
                      "is to identify schools which are performing significantly better or worse than expected,",
                      "so as to either copy successful strategies or target specific interventions for improvement."),
                h2("Coming on or before August 28.")
-               )
+               ),
+      tabPanel("By grade",
+               plotOutput("plot5"),
+               plotOutput("plot6"))
       
       #,
       #tabPanel("Details",htmlOutput("linech")
