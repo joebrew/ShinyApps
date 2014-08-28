@@ -73,7 +73,7 @@ shinyUI(pageWithSidebar(
                      "age of student population, poverty, and funding source (public vs. private).  The purpose",
                      "is to identify schools which are performing significantly better or worse than expected,",
                      "so as to either copy successful strategies or target specific interventions for improvement."),
-               h2("Coming on or before August 28.")
+               h2("Coming on or before August 31.")
                ),
       tabPanel("By grade",
                plotOutput("plot5"),
