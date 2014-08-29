@@ -14,25 +14,25 @@ shinyUI(pageWithSidebar(
       "1"="1",
       "2"="2",
       "3"="3",
-      "4"="4")),
+      "4"="4"))#,
     
-    selectInput("grade", "Grade",c(
-      "Pre-k"="-1",
-      "K"="0",
-      "1"="1",
-      "2"="2",
-      "3"="3",
-      "4"="4",
-      "5"="5",
-      "5"="5",
-      "6"="6",
-      "7"="7",
-      "8"="8",
-      "9"="9",
-      "10"="10",
-      "11"="11",
-      "12"="12"      
-      ))
+#     selectInput("grade", "Grade",c(
+#       "Pre-k"="-1",
+#       "K"="0",
+#       "1"="1",
+#       "2"="2",
+#       "3"="3",
+#       "4"="4",
+#       "5"="5",
+#       "5"="5",
+#       "6"="6",
+#       "7"="7",
+#       "8"="8",
+#       "9"="9",
+#       "10"="10",
+#       "11"="11",
+#       "12"="12"      
+#       ))
     
 #     sliderInput("year", "Year", 
 #                 min=2006, max=2013, value=2006, step=1,
@@ -64,7 +64,7 @@ shinyUI(pageWithSidebar(
                h4("All years"),
                dataTableOutput("table1")),
       
-      tabPanel("All teams",
+      tabPanel("Explorer (all schools)",
                htmlOutput("motionchart2")),
       tabPanel("Expected vs. observed",
                h4("Under construction"),

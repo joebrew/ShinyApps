@@ -148,7 +148,7 @@ shinyServer(function (input, output) {
                     timevar = "year",
                     xvar = "year",
                     yvar = "immRate",
-                    colorvar = "cfrr",
+                    colorvar = "team2014",
                     sizevar = "totMem")
 
   })
