@@ -16,6 +16,8 @@ shinyUI(pageWithSidebar(
       "3"="3",
       "4"="4"))#,
     
+#     htmlOutput("selectUI")
+    
 #     selectInput("grade", "Grade",c(
 #       "Pre-k"="-1",
 #       "K"="0",

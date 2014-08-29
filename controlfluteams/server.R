@@ -2,9 +2,13 @@ library(shiny)
 suppressPackageStartupMessages(library(googleVis))
 
 
-shinyServer(function (input, output) {
+shinyServer(function (input, output#, 
+                      #session
+                      ) {
   
   source("helper.R")
+  
+
   
   ########
   mydata <- reactive({
@@ -16,6 +20,12 @@ shinyServer(function (input, output) {
     mydata()[which(mydata()$year == 2013),]
     })
   
+  ########
+  
+#   output$selectUI <- renderUI({ 
+#     selectInput("team", "Select your school", mydata()$school)
+#   })
+#   
   #######
   output$plot1 <- renderPlot({
     TeamFun(team = as.numeric(input$team), data = mydata(), bar=FALSE)
@@ -178,9 +188,18 @@ shinyServer(function (input, output) {
                     sizevar = "totMem")
     
   })
-
-
   
+  
+
+    
+#     observe({
+#       # This will change the value of input$partnerName to searchResult()[,1]
+#       updateTextInput(session, "partnerName", 
+#                       label = "Select your choice", 
+#                       value = mydata()$school)
+#     })
+    
+
   
 #     plot(M)
 #     
