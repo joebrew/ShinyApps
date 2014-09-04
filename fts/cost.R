@@ -11,8 +11,21 @@ costs <- read.csv("costs.csv")
 costs$cukes_lbs <- costs$cukes_cts /3
 
 #######
-# 
+# CORRECT LETTUCE WITH TRIM
 #######
+
+costs$lettuceWithTrim <- costs$lettuce * (1/.76)
+
+# 25 pounds of lettuce goes into one box
+# 40 pounds of cucumbers per box
+# DISTRIBUTORS DO 2-3$ PER BOX
+
+# EVEN THOUGH BOX COST ISNT REAL FOR FAMRERS, GIVE PER BOX COST
+
+# HOW MUCH DOES FARMERS LETTUCE COST (PER POUND) COMPARED TO DISTRIBUTOR LETTUCE
+
+# GET EVERYTHING INTO PER POUND COSTS
+
 #######
 # NUMBERS FROM KELLI
 ########
