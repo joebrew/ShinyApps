@@ -1,9 +1,24 @@
+setwd("C:/Users/BrewJR/Documents/ShinyApps/fts")
+
+#######
+# READ IN COSTS SPREADSHEET (SUPPLIED BY KELLI IN EMAIL)
+#######
+costs <- read.csv("costs.csv")
+
+#######
+# GIVE POUNDS COSTS TO CUCUMBERS
+#######
+costs$cukes_lbs <- costs$cukes_cts /3
+
+#######
+# 
+#######
 #######
 # NUMBERS FROM KELLI
 ########
-veg <- c("rom", "dgl", "cuc")
-dist <- c(1.74, 3.65, 2.38)
-farm <- c(1.06, 1.06, 0.60)
+veg <- c("lettuce", "cuc")
+dist <- c(1.74,  2.38)
+farm <- c(1.06, 0.60)
 
 #######
 # BIND INTO DATAFRAME
