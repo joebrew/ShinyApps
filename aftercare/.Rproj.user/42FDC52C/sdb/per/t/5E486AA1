@@ -1,0 +1,17 @@
+{
+    "contents" : "source(\"helper.R\")\n\n\nteacherPay <- 14\nstudentCost <- 7\n\nfor (i in ts$day){\n  for (j in c(30,60,90,120)){\n    income <- Hourfy(ts[which(ts$day == i),paste0(\"x\", j)])*studentCost\n    expense <- Hourfy(j)*teacherPay\n    roi <- income - expense\n    \n    ts[which(ts$day == i), paste0(\"roi\", j)] <- roi\n    \n    \n  }\n}\n\nts2 <- ts[, grepl(\"roi|day\", colnames(ts))]\n\n\ncolnames(ts2) <- c(\"day\", \"3:30\", \"4:00\", \"4:30\", \"5:00\")\nts2\n\n# BEST SOLUTION - TUE-THU UNTIL 5PM\nbp <- barplot(ts2[,\"5:00\"], names.arg= ts2$day, ylab=\"Revenue/Loss\", \n              border = NA, col=adjustcolor(\"darkgreen\", alpha.f=0.6),\n              main = \"Revenue/loss for HP with after school until 5:00pm\")\nabline(h=0)\ntext(bp[,1], 5, labels=paste0(\"$\",ts2[,\"5:00\"]))\n",
+    "created" : 1410316125028.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1825931906",
+    "id" : "5E486AA1",
+    "lastKnownWriteTime" : 1410316968,
+    "path" : "~/shinyapps/aftercare/graphic.R",
+    "project_path" : "graphic.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

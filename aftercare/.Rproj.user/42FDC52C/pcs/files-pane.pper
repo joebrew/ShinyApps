@@ -1,0 +1,9 @@
+{
+    "path" : "~/shinyapps/aftercare",
+    "sortOrder" : [
+        {
+            "ascending" : true,
+            "columnIndex" : 2
+        }
+    ]
+}

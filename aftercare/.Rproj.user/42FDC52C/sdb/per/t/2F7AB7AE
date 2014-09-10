@@ -1,0 +1,16 @@
+{
+    "contents" : "\n# This is the user-interface definition of a Shiny web application.\n# You can find out more about building applications with Shiny here:\n#\n# http://shiny.rstudio.com\n#\n\nlibrary(shiny)\n\nshinyUI(fluidPage(\n\n  # Application title\n  titlePanel(\"After care options\"),\n\n  # Sidebar with a slider input for number of bins\n  sidebarLayout(\n    sidebarPanel(\n      sliderInput(\"teacher\",\n                  \"Teacher:\",\n                  min = 10,\n                  max = 30,\n                  value = 12),\n      \n      sliderInput(\"student\",\n                  \"Student:\",\n                  min = 5,\n                  max = 10,\n                  value = 7)\n    ),\n\n    # Show a plot of the generated distribution\n    mainPanel(\n      tabsetPanel(\n        tabPanel(\"Table\",\n                 h3(\"Cost/profit for school\"),\n                 tableOutput(\"table1\")\n        ),\n        \n      tabPanel(\"Visual\",\n               h3(\"Cost/profit for school\"),\n               plotOutput(\"plot1\")\n               )\n)\n    )\n  )\n))\n",
+    "created" : 1410303342862.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2155189461",
+    "id" : "2F7AB7AE",
+    "lastKnownWriteTime" : 1410316289,
+    "path" : "~/shinyapps/aftercare/ui.R",
+    "project_path" : "ui.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

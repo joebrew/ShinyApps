@@ -1,0 +1,16 @@
+{
+    "contents" : "\n# This is the user-interface definition of a Shiny web application.\n# You can find out more about building applications with Shiny here:\n#\n# http://shiny.rstudio.com\n#\n\nlibrary(shiny)\n\nshinyUI(fluidPage(\n\n  # Application title\n  titlePanel(\"F2s\"),\n\n  # Sidebar with a slider input for number of bins\n  sidebarLayout(\n    sidebarPanel(\n      selectInput(\"month\", \"Month\",c(\n        \"January\", \"February\", \"March\", \"April\",\n        \"May\", \"June\", \"July\", \"August\",\n        \"September\", \"October\", \"November\", \"Decmber\"), selected=\"August\"),\n      \n      h6(\"Download report (one month only)\"),\n      downloadButton('downloadData1', 'Download'),\n      h6(\"Download report (all months)\"),\n      downloadButton('downloadData2', 'Download')\n    ),\n\n    # Show a plot of the generated distribution\n    mainPanel(\n      tabsetPanel(\n        tabPanel(\"Monthly Overview\",\n          plotOutput(\"plot1\"),\n          dataTableOutput(\"table1\")\n          ),\n        \n        tabPanel(\"Monthly Details\",\n                 plotOutput(\"plot2\"),\n                 dataTableOutput(\"table2\")\n        ),\n        \n        tabPanel(\"All farms\",\n                 plotOutput(\"plot3\"),\n                 br(),\n                 br(),\n                 br(),\n                 br(),\n                 dataTableOutput(\"table3\")\n        )\n        \n        \n\n        )\n      \n\n    )\n  )\n))\n",
+    "created" : 1410304218936.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2547576414",
+    "id" : "8BB068B7",
+    "lastKnownWriteTime" : 1410303245,
+    "path" : "~/shinyapps/fts/ui.R",
+    "project_path" : null,
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}
