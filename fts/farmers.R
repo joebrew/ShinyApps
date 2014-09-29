@@ -178,3 +178,64 @@ farm <- join(x = farm,
 # REORDER COLUMN NAMES
 farm2 <- farm[,c(names(july), "month")]
 
+
+#############
+# ONE-OFF PLOT FOR KELLI (2014-09-29)
+#############
+# par(mfrow=c(1,1))
+# par(mar=c(0,0,0,0))
+# par(oma=c(0,3,2,0))
+# 
+# #mycols <- adjustcolor(colorRampPalette(brewer.pal(8, "Dark2"))(nrow(farm)), alpha.f=0.8)
+# mysize <- ifelse(farm$What.is.your.farm.s.total.harvestable.acreage. == "", 1,
+#                  ifelse(farm$What.is.your.farm.s.total.harvestable.acreage. == "1-9", 2,
+#                         ifelse(farm$What.is.your.farm.s.total.harvestable.acreage. == "1.5 Acres", 2,
+#                                ifelse(farm$What.is.your.farm.s.total.harvestable.acreage. == "10-49", 3,
+#                                       ifelse(farm$What.is.your.farm.s.total.harvestable.acreage. == "50-179", 4,
+#                                              ifelse(farm$What.is.your.farm.s.total.harvestable.acreage. == "180-499", 5,
+#                                                     ifelse(farm$What.is.your.farm.s.total.harvestable.acreage. == "500-999", 6,
+#                                                            ifelse(farm$What.is.your.farm.s.total.harvestable.acreage.  == "1000+", 7,
+#                                                                   1)))))))) 
+# 
+# mycols <- ifelse(farm$Have.you.ever.tried.to.sell.to.schools. == "", "black",
+#                  ifelse(farm$Have.you.ever.tried.to.sell.to.schools. == "No", "darkred",
+#                         ifelse(farm$Have.you.ever.tried.to.sell.to.schools. == "Yes", "darkgreen",
+#                                "black")))
+# mycols <- adjustcolor(mycols, alpha.f=0.3)
+# 
+# library(maps)
+# map("county", "fl", fill=TRUE, col="grey", border="white")
+# 
+# points(farm$lon, farm$lat, 
+#        col= adjustcolor("darkblue", alpha.f=0.6), #mycols,
+#        pch=1,cex = mysize/1.3)
+# 
+# # legend("bottomleft", pch=16, col=adjustcolor(c("black", "darkred", "darkgreen"), alpha.f=0.5),
+# #        legend=c("Unknown", "No", "Yes"),
+# #        title = "Ever tried to sell to schools?",
+# #        bty="n", border=FALSE, cex=0.9)
+# 
+# legend("left", pch=1, col=adjustcolor("blue", alpha.f=0.5), pt.cex=(1:7)/1.3,
+#        legend=c("Unknown", "1-9", "10-49", "50-179", "180-499", "500-999", "1000+"),
+#        title = "Total harverstable acreage",
+#        bty="n", border=FALSE, cex=0.9, y.intersp=1.6, ncol=2)
+# 
+# library(rgdal)
+# zip <-  readOGR('/home/joebrew/Documents/uf/phc6194/hw4', layer = 'tl_2010_12_zcta510', verbose = FALSE)
+# plot(zip)
+# 
+# farm_sp <- farm[which(!is.na(farm$lon) & !is.na(farm$lat)),]
+# farm_sp$lat <- as.numeric(farm_sp$lat)
+# farm_sp$lon <- as.numeric(farm_sp$lon)
+# farm_sp <- SpatialPointsDataFrame(farm_sp[,c("lon", "lat")], farm_sp,
+#                                              proj4string = CRS("+init=epsg:4326"))
+# 
+# 
+# plot(zip, fill = TRUE, col = "white", border = "grey")
+# 
+# points(farm_sp, 
+#        col = adjustcolor("darkred", alpha.f = 0.3), 
+#        #col = "black",
+#        #pch = 16,
+#        pch=16,
+#        cex = mysize/1.3)
