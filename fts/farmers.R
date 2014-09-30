@@ -5,7 +5,7 @@ library(RColorBrewer)
 # SET WD
 ##########
 # setwd("C:/Users/BrewJR/Documents/ShinyApps/fts")
-
+# setwd("/home/joebrew/Documents/ShinyApps/fts")
 ############
 # monthify function
 ############
@@ -178,10 +178,10 @@ farm <- join(x = farm,
 # REORDER COLUMN NAMES
 farm2 <- farm[,c(names(july), "month")]
 
-
-#############
-# ONE-OFF PLOT FOR KELLI (2014-09-29)
-#############
+# 
+# #############
+# # ONE-OFF PLOT FOR KELLI (2014-09-29)
+# #############
 # par(mfrow=c(1,1))
 # par(mar=c(0,0,0,0))
 # par(oma=c(0,3,2,0))
@@ -207,8 +207,9 @@ farm2 <- farm[,c(names(july), "month")]
 # map("county", "fl", fill=TRUE, col="grey", border="white")
 # 
 # points(farm$lon, farm$lat, 
-#        col= adjustcolor("darkblue", alpha.f=0.6), #mycols,
-#        pch=1,cex = mysize/1.3)
+#        col = adjustcolor(sample(rainbow(nrow(farm)) , nrow(farm)), alpha.f = 0.4),
+#        #col= adjustcolor("darkblue", alpha.f=0.7), #mycols,
+#        pch=16,cex = mysize/1.3)
 # 
 # # legend("bottomleft", pch=16, col=adjustcolor(c("black", "darkred", "darkgreen"), alpha.f=0.5),
 # #        legend=c("Unknown", "No", "Yes"),
