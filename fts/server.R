@@ -6,6 +6,7 @@
 #
 
 library(shiny)
+library(rCharts)
 
 shinyServer(function(input, output) {
   
@@ -21,7 +22,6 @@ shinyServer(function(input, output) {
   mydata_goodcolumns <- reactive({
     farm2[which(farm2$month == input$month),]
   })
-  
 
 
   ############

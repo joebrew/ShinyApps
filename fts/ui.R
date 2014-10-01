@@ -39,6 +39,10 @@ shinyUI(fluidPage(
                  dataTableOutput("table2")
         ),
         
+#         tabPanel("Under construction",
+#                  mapOutput("map_container")
+#         ),
+        
         tabPanel("All farms",
                  plotOutput("plot3"),
                  br(),
