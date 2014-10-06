@@ -5,12 +5,14 @@
 # http://shiny.rstudio.com
 #
 
-library(shiny)
-library(rCharts)
+require(shiny)
+require(rCharts)
 
 shinyServer(function(input, output) {
   
   source("farmers.R")
+  source("schools.R")
+  
   
   ########
   mydata <- reactive({
@@ -24,6 +26,63 @@ shinyServer(function(input, output) {
   })
 
 
+  ############
+  # LEAFLET CHART - FARMS
+  
+  output$myChart2 <- renderMap({
+    mymap <- Leaflet$new()
+    mymap$tileLayer(provider = "Stamen.TonerLite")
+    mymap$setView(c(27.85, -81.3), zoom = 6)
+    mymap$enablePopover(TRUE)
+#     mymap$marker(c(51.5, -0.09), bindPopup = "Hi. I am a popup")
+#     mymap$marker(c(51.495, -0.083), bindPopup = "Hi. I am another popup")
+#     
+    mymap$set(dom = 'myChart2')
+    for (i in which(!is.na(farm_geo$lat & is.na(farm_geo$lon)))){
+      mymap$marker(c(farm_geo$lat[i],
+                     farm_geo$lon[i]),
+                   bindPopup = paste0(as.character(farm_geo$Farm.name.[i]),
+                                      " (recruitment date: ", 
+                                      ifelse(is.na(farm_geo$timestamp[i]), 
+                                             "unknown",
+                                             format(as.Date(farm_geo$timestamp[i],
+                                                            format = "%Y-%m-%d"),
+                                                    "%b %d %Y")),") ",
+                                      "Nearest 5 schools: ",
+                                      as.character(farm_geo$nearest5schools[i])))
+      
+    }
+mymap
+  })
+
+
+############
+# LEAFLET CHART SCHOOLS
+
+output$myChart3 <- renderMap({
+  mymap <- Leaflet$new()
+  mymap$tileLayer(provider = "Stamen.TonerLite")
+  mymap$setView(c(27.85, -81.3), zoom = 6)
+  mymap$enablePopover(TRUE)
+  #     mymap$marker(c(51.5, -0.09), bindPopup = "Hi. I am a popup")
+  #     mymap$marker(c(51.495, -0.083), bindPopup = "Hi. I am another popup")
+  #     
+  mymap$set(dom = 'myChart3')
+  for (i in 1:nrow(schools)){
+    mymap$marker(c(schools$LATITUDE[i],
+                   schools$LONGITUDE[i]),
+                 bindPopup = paste0(as.character(schools$SCHOOL_NAME_SHORT[i]),
+                                    " (email: ", 
+                                    ifelse(is.na(schools$EMAIL_ADDRESS_PRI[i]), 
+                                           "unknown",
+                                           as.character(schools$EMAIL_ADDRESS_PRI[i])),")",
+                                    " Closest 5 farms: ", schools$nearest5farms[i]))
+    
+  }
+  mymap
+})
+  
+  
   ############
   output$plot1 <- renderPlot({
     par(mfrow=c(1,2))

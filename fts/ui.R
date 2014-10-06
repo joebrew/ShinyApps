@@ -6,6 +6,7 @@
 #
 
 library(shiny)
+library(rCharts)
 
 shinyUI(fluidPage(
 
@@ -29,14 +30,18 @@ shinyUI(fluidPage(
     # Show a plot of the generated distribution
     mainPanel(
       tabsetPanel(
-        tabPanel("Monthly Overview",
-          plotOutput("plot1"),
-          dataTableOutput("table1")
-          ),
         
-        tabPanel("Monthly Details",
-                 plotOutput("plot2"),
-                 dataTableOutput("table2")
+#         tabPanel("Monthly Details",
+#                  dataTableOutput("table2")
+#         ),
+#         
+        tabPanel("Interactive farm map (new!)", tags$style('.leaflet {height: 400px;}'),showOutput('myChart2', 'leaflet')),
+        
+        tabPanel("Interactive school map (new!)", tags$style('.leaflet {height: 400px;}'),showOutput('myChart3', 'leaflet')),
+        
+        tabPanel("Monthly Overview",
+                 plotOutput("plot1"),
+                 dataTableOutput("table1")
         ),
         
 #         tabPanel("Under construction",

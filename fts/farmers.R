@@ -178,6 +178,39 @@ farm <- join(x = farm,
 # REORDER COLUMN NAMES
 farm2 <- farm[,c(names(july), "month")]
 
+
+##############
+# GET NEAREST SCHOOLS
+###############
+farm_geo <- read.csv("farm_geo.csv")
+
+# RUN THE BELOW OCASIONALY, BUT TO SLOW TO RUN EACH TIME
+# NOTE, DO THE SAME IN SERVER.R AT THE BOTTOM
+
+# farm_geo <- farm
+# library(fields)
+# farm_geo$nearest5schools <- vector(length = nrow(farm_geo), mode = "character")
+# for (i in 1:nrow(farm_geo)){
+#   
+#   x1 <- cbind(farm_geo$lon[i], farm_geo$lat[i])
+#   x2 <- cbind(schools$LONGITUDE, schools$LATITUDE)
+#   
+#   x <- rdist.earth(x1, x2, miles = TRUE, R = NULL)
+#   x <- data.frame(t(x))
+#   names(x) <- "miles"
+#   x$ind <- as.numeric(row.names(x))
+#   x <- x[order(x$miles),]
+#   
+#   close_schools <- as.character(schools$SCHOOL_NAME_SHORT[x$ind[1:5]])
+#   close_distances <- x$miles[1:5]
+#   
+#   mytext <- paste0(close_schools, " (", round(close_distances, digits = 1), " miles); ", collapse = "")
+#   
+#   farm_geo$nearest5schools[i] <- mytext
+#   
+# }
+# write.csv(farm_geo, "farm_geo_geo.csv")
+
 # 
 # #############
 # # ONE-OFF PLOT FOR KELLI (2014-09-29)
