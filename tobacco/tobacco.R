@@ -4,13 +4,13 @@ library(car)
 
 #################
 # ## Setwd
-# if ( Sys.info()["sysname"] == "Linux" ){
-#   setwd("/home/joebrew/Documents/ShinyApps/tobacco")
-# } else {
-#   setwd("C:/Users/BrewJR/Documents/ShinyApps/tobacco")
-# }
-# 
-# mywd <- getwd()
+if ( Sys.info()["sysname"] == "Linux" ){
+  setwd("/home/joebrew/Documents/ShinyApps/tobacco")
+} else {
+  setwd("C:/Users/BrewJR/Documents/ShinyApps/tobacco")
+}
+
+mywd <- getwd()
 
 
 # Read in data
@@ -30,7 +30,7 @@ yesnos <- c(7,8, 12:31, 33:35)
 for (i in yesnos){
   comb[,i] <- Recode(comb[,i],
                      "1 = 'Yes';
-                      2 = 'No'")
+                     2 = 'No'")
 }
 
 # Size category
@@ -43,9 +43,9 @@ comb[,9] <- Recode(comb[,9],
                    "1 = 'Self'; 
                    2 = 'Fully';
                    0 = NA;
-                  ' ' = NA; 
-                  '' = NA; 
-                  '1- ' = NA;  
+                   ' ' = NA; 
+                   '' = NA; 
+                   '1- ' = NA;  
                    '1-' = 'Self';
                    '2l' = 'Fully'")
 
@@ -67,7 +67,7 @@ comb[,32] <- Recode(comb[,32], "
 
 # Insurance carrier
 comb[,10] <- Recode(comb[,10], 
-                   "'1' = 'UHC';
+                    "'1' = 'UHC';
                     '2' = 'Aetna';
                     '3' = 'Avmed';
                     '4' = 'BCBS';
@@ -132,31 +132,22 @@ simpasym <- function(n, p, z=1.96, cc=TRUE){
 ###################
 # WRITE FUNCTION FOR PLOTTING BARS
 ###################
-BarFun <- function(var, 
-                   by_var = NULL, 
-                   recode_var = NULL, 
-                   ref = NULL,
-                   cex.names = 1, 
-                   las = 1, 
-                   legend = FALSE, 
-                   rain = FALSE,
-                   border = "black", 
-                   percent = TRUE,
-                   legend.cex = 0.8, 
-                   legend.title = NULL,
-                   err.cex = 0.8,
-                   ylab = "Percent"){
+BarFun <- function(var, by_var = NULL, recode_var = NULL, ref = NULL,
+                   cex.names = 1, las = 1, legend = FALSE, rain = FALSE,
+                   border = "black", percent = TRUE,
+                   legend.cex = 0.8, legend.title = NULL,
+                   err.cex = 0.8){
   
-#   var <- comb[,"Insurance.Carrier"]
-#   by_var = comb[,5]
-#   ref <- NULL
-#   recode_var <- NULL
-#   cex.names = 1
-#   las = 1
-#   percent = TRUE
-#   border = "black"
-#   rain = TRUE
-#   legend = TRUE
+  #   var <- comb[,"Insurance.Carrier"]
+  #   by_var = comb[,5]
+  #   ref <- NULL
+  #   recode_var <- NULL
+  #   cex.names = 1
+  #   las = 1
+  #   percent = TRUE
+  #   border = "black"
+  #   rain = TRUE
+  #   legend = TRUE
   # Ensure it's treated as a character
   var <- as.character(var)
   
@@ -168,7 +159,7 @@ BarFun <- function(var,
   } else {
     var <- relevel(var, ref = ref)
   }
-    
+  
   # Make a table
   if(is.null(by_var)){
     var_table <- table(var)
@@ -198,37 +189,37 @@ BarFun <- function(var,
     ub <- ci$ub * rep(apply(var_table, 1, sum),2)#var_table#sum(var_table)
     
   }
-
+  
   
   # Assing positions based on relative value compared to others
   var_pos <- ifelse(var_prop < 0.5 * max(var_prop),
                     3, 1)
   
-
+  
   
   # Create color vector (first is always red if there are unknowns)
-#   if( var_table["Unknown"] > 0 ){
-#     my_colors <- c("Red", colorRampPalette(c("darkblue", "darkgreen"))(length(levels(var)) -1))
-#   } else {
-#   }
-
-if(is.null(by_var)){
-  my_colors <- colorRampPalette(c("darkblue", "darkgreen"))(length(levels(var)))
+  #   if( var_table["Unknown"] > 0 ){
+  #     my_colors <- c("Red", colorRampPalette(c("darkblue", "darkgreen"))(length(levels(var)) -1))
+  #   } else {
+  #   }
   
-  if(rain){
-    my_colors <- rainbow(length(levels(var)))
+  if(is.null(by_var)){
+    my_colors <- colorRampPalette(c("darkblue", "darkgreen"))(length(levels(var)))
+    
+    if(rain){
+      my_colors <- rainbow(length(levels(var)))
+    }
+    
+  }else{
+    my_colors <- colorRampPalette(c("darkblue", "darkgreen"))(length(levels(by_var)))
+    if(rain){
+      my_colors <- rainbow(length(levels(by_var)))
+    }
   }
   
-}else{
-  my_colors <- colorRampPalette(c("darkblue", "darkgreen"))(length(levels(by_var)))
-  if(rain){
-    my_colors <- rainbow(length(levels(by_var)))
-  }
-}
-
   my_colors <- adjustcolor(my_colors, alpha.f = 0.6)
-
-
+  
+  
   # Make barplot
   if(is.null(by_var)){
     
@@ -238,7 +229,7 @@ if(is.null(by_var)){
                     ylim = c(0, max(ci$ub)*120),
                     col = my_colors,
                     border = border,
-                    ylab = ylab,
+                    ylab = "Percent",
                     cex.names = cex.names,
                     las = las, 
                     beside = TRUE)
@@ -294,7 +285,7 @@ if(is.null(by_var)){
                     ylim = c(0, max(ub)*1.2),
                     col = my_colors,
                     border = border,
-                    ylab = ylab,
+                    ylab = "Percent",
                     cex.names = cex.names,
                     las = las, 
                     beside = TRUE)
@@ -339,9 +330,9 @@ if(is.null(by_var)){
       abline(h = 0)
       
     }
-   
+    
     # begin by_var
-  
+    
   } else{
     
     if(percent){
@@ -349,7 +340,7 @@ if(is.null(by_var)){
                     ylim = c(0, max(ci$ub)*120),
                     col = my_colors,
                     border = border,
-                    ylab = ylab,
+                    ylab = "Percent",
                     cex.names = cex.names,
                     las = las,
                     beside = TRUE)
@@ -400,7 +391,7 @@ if(is.null(by_var)){
                     ylim = c(0, max(ub)*1.2),
                     col = my_colors,
                     border = border,
-                    ylab = ylab,
+                    ylab = "Percent",
                     cex.names = cex.names,
                     las = las,
                     beside = TRUE)
@@ -657,19 +648,75 @@ if(is.null(by_var)){
 # 
 # 
 # 
+
+
 # 
-# ##########
-# # MAP FUNCTION
-# ##########
-# TractFun <- function(var, color){
+# ########## MAP STUFF
+# 
+# # Read in locations
+# loc <- read.csv("locations.csv")
+# 
+# # Make geographic version of comb
+# comb_geo <- cbind(comb, loc)
+# # coordinates(comb_geo) <- ~ lat + lon
+# 
+# # Clean up county column
+# comb_geo$County <- Recode(comb_geo$County,
+#                           " 'Alachua ' = 'Alachua';
+#                           'Baker ' = 'Baker';
+#                           'Bay ' = 'Bay';
+#                           'Bradford ' = 'Bradford';
+#                           'Charlotte County Public Schools' = 'Charlotte';
+#                           'Desoto' = 'DeSoto';
+#                           'Dixe' = 'Dixie';
+#                           'Escambia ' = 'Escambia';
+#                           'Gulf ' = 'Gulf';
+#                           'Hernando ' = 'Hernando';
+#                           'Leon ' = 'Leon';
+#                           'Levy ' = 'Levy';
+#                           'Liberty ' = 'Liberty';
+#                           'Orange ' = 'Orange';
+#                           'Osceola ' = 'Osceola';
+#                           'Pasco ' = 'Pasco';
+#                           'Pinellas ' = 'Pinellas';
+#                           'Saint Johns' = 'St. Johns';
+#                           'Saint Lucie' = 'St. Lucie';
+#                           'Wakulla ' = 'Wakulla'")
+# 
+# # Read in map
+# library(rgdal)
+# fl <- readOGR("FCTY2", "FCTY2")
+# fl$County <- fl$NAME
+# 
+# # Get counts by by county
+# library(dplyr)
+# 
+# combx <- tbl_df(comb)
+# combx$County <- factor(combx$County)
+# x <- combx %>%
+#   group_by(County) %>%
+#   summarise(x = n())
+# 
+# # ##########
+# # # MAP FUNCTION
+# # ##########
+# library(RColorBrewer)
+# library(classInt)
+# MapFun <- function(var, color = "Blues", percent = FALSE){
 #   plotvar <- var
 #   nclr <- 5
 #   plotclr <- brewer.pal(nclr, color)
 #   class <- classIntervals(plotvar, nclr, style = "quantile", dataPrecision=0) #use "equal" instead
 #   #class <- classIntervals(0:100, nclr, style="equal")
 #   colcode <- findColours(class, plotclr)
-#   legcode <- paste0(gsub(",", " - ", gsub("[[]|[]]|[)]", "", names(attr(colcode, "table")))), "%")
-#   plot(tract2, border=NA, col=colcode)
+#   if(percent){
+#     legcode <- paste0(gsub(",", " - ", gsub("[[]|[]]|[)]", "", names(attr(colcode, "table")))), "%")
+#   } else {
+#     legcode <- paste0(gsub(",", " - ", gsub("[[]|[]]|[)]", "", names(attr(colcode, "table")))))
+#     
+#   }
+#   
+#   plot(fl, border="darkgrey", col=colcode)
 #   legend("left", # position
 #          legend = legcode, #names(attr(colcode, "table")), 
 #          fill = attr(colcode, "palette"), 
@@ -677,3 +724,12 @@ if(is.null(by_var)){
 #          border=NA,
 #          bty = "n")
 # }
+# 
+# MapFun(var = x$x, color = "Blues",
+#        percent = FALSE)
+# 
+# x <- combx %>%
+#   group_by(County) %>%
+#   summarise(x = n())
+# 
+# 
