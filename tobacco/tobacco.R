@@ -3,14 +3,14 @@ library(RColorBrewer)
 library(car)
 
 #################
-## Setwd
-if ( Sys.info()["sysname"] == "Linux" ){
-  setwd("/home/joebrew/Documents/ShinyApps/tobacco")
-} else {
-  setwd("C:/Users/BrewJR/Documents/ShinyApps/tobacco")
-}
-
-mywd <- getwd()
+# ## Setwd
+# if ( Sys.info()["sysname"] == "Linux" ){
+#   setwd("/home/joebrew/Documents/ShinyApps/tobacco")
+# } else {
+#   setwd("C:/Users/BrewJR/Documents/ShinyApps/tobacco")
+# }
+# 
+# mywd <- getwd()
 
 
 # Read in data
@@ -132,11 +132,20 @@ simpasym <- function(n, p, z=1.96, cc=TRUE){
 ###################
 # WRITE FUNCTION FOR PLOTTING BARS
 ###################
-BarFun <- function(var, by_var = NULL, recode_var = NULL, ref = NULL,
-                   cex.names = 1, las = 1, legend = FALSE, rain = FALSE,
-                   border = "black", percent = TRUE,
-                   legend.cex = 0.8, legend.title = NULL,
-                   err.cex = 0.8){
+BarFun <- function(var, 
+                   by_var = NULL, 
+                   recode_var = NULL, 
+                   ref = NULL,
+                   cex.names = 1, 
+                   las = 1, 
+                   legend = FALSE, 
+                   rain = FALSE,
+                   border = "black", 
+                   percent = TRUE,
+                   legend.cex = 0.8, 
+                   legend.title = NULL,
+                   err.cex = 0.8,
+                   ylab = "Percent"){
   
 #   var <- comb[,"Insurance.Carrier"]
 #   by_var = comb[,5]
@@ -229,7 +238,7 @@ if(is.null(by_var)){
                     ylim = c(0, max(ci$ub)*120),
                     col = my_colors,
                     border = border,
-                    ylab = "Percent",
+                    ylab = ylab,
                     cex.names = cex.names,
                     las = las, 
                     beside = TRUE)
@@ -285,7 +294,7 @@ if(is.null(by_var)){
                     ylim = c(0, max(ub)*1.2),
                     col = my_colors,
                     border = border,
-                    ylab = "Percent",
+                    ylab = ylab,
                     cex.names = cex.names,
                     las = las, 
                     beside = TRUE)
@@ -340,7 +349,7 @@ if(is.null(by_var)){
                     ylim = c(0, max(ci$ub)*120),
                     col = my_colors,
                     border = border,
-                    ylab = "Percent",
+                    ylab = ylab,
                     cex.names = cex.names,
                     las = las,
                     beside = TRUE)
@@ -391,7 +400,7 @@ if(is.null(by_var)){
                     ylim = c(0, max(ub)*1.2),
                     col = my_colors,
                     border = border,
-                    ylab = "Percent",
+                    ylab = ylab,
                     cex.names = cex.names,
                     las = las,
                     beside = TRUE)
