@@ -4,13 +4,13 @@ library(car)
 
 #################
 # ## Setwd
-if ( Sys.info()["sysname"] == "Linux" ){
-  setwd("/home/joebrew/Documents/ShinyApps/tobacco")
-} else {
-  setwd("C:/Users/BrewJR/Documents/ShinyApps/tobacco")
-}
-
-mywd <- getwd()
+# if ( Sys.info()["sysname"] == "Linux" ){
+#   setwd("/home/joebrew/Documents/ShinyApps/tobacco")
+# } else {
+#   setwd("C:/Users/BrewJR/Documents/ShinyApps/tobacco")
+# }
+# 
+# mywd <- getwd()
 
 
 # Read in data
