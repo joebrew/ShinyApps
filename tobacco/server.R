@@ -28,11 +28,12 @@ shinyServer(function(input, output) {
              legend = input$legend, 
              rain = input$rain,
              border = "black", 
-             percent = input$percent,
+             percent = TRUE, #input$percent,
              legend.cex = input$legend.cex, 
              legend.title = input$legend.title,
-             err.cex = input$err.cex,
-             ylab = input$ylab)
+             err.cex = input$err.cex#,
+             #ylab = input$ylab
+             )
     } else {
       BarFun(var = comb[,as.numeric(input$xvar)],
              by_var = comb[,as.numeric(input$yvar)],
@@ -43,11 +44,12 @@ shinyServer(function(input, output) {
              legend = input$legend, 
              rain = input$rain,
              border = "black", 
-             percent = input$percent,
+             percent = TRUE, #input$percent,
              legend.cex = input$legend.cex, 
              legend.title = input$legend.title,
-             err.cex = input$err.cex,
-             ylab = input$ylab)
+             err.cex = input$err.cex#,
+             #ylab = input$ylab
+             )
       
     }
     

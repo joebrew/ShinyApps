@@ -7,10 +7,10 @@ shinyUI(pageWithSidebar(
   headerPanel("Tobacco data explorer"),
   
   sidebarPanel( 
-    tags$a(href="mailto:joseph.brew@flhealth.gov", "Joe Brew"                        
-    
-    #tags$img(src="https://docs.google.com/drawings/d/1z5OtlqZ8ex1QhHDtsCOvYMM2WgFsYgD1onjSi-Kus40/pub?w=534&h=89", height="100px"
-    ),
+#     tags$a(href="mailto:joseph.brew@flhealth.gov", "Joe Brew"                        
+#     
+#     #tags$img(src="https://docs.google.com/drawings/d/1z5OtlqZ8ex1QhHDtsCOvYMM2WgFsYgD1onjSi-Kus40/pub?w=534&h=89", height="100px"
+#     ),
 
     
     selectInput("xvar", "First variable", c(
@@ -50,29 +50,29 @@ shinyUI(pageWithSidebar(
                 "Extent of TFG policy coverage" = 32,
                 "E-cigs restricted by policy" = 33,
                 "Sliver FTCA" = 34,
-                "Gold FTCA" = 35,
-                "Baseline SOC benefit" = 36,
-                "Baseline SOC TFG policy" = 37,
-                "Baseline SOC promote and encourage" = 38,
-                "Baseline referral made to AHEC" = 39,
-                "Q1 SOC benefit" = 40,
-                "Q1 SOC TFG policy" = 41,
-                "Q1 SOC promote and encourage" = 42,
-                "Q1 referral to local AHEC" = 43,
-                "Q2 SOC benefit" = 44,
-                "Q2 TFG policy" = 45,
-                "Q2 promote and encourage" = 46,
-                "Q2 referral made to AHEC" = 47,
-                "Q3 SOC benefit" = 48,
-                "Q3 TFG policy" = 49,
-                "Q3 promote and encourage" = 50,
-                "Q3 referral to local AHEC" = 51,
-                "Q4 SOC benefit" = 52,
-                "Q4 SOC TFG policy" = 53,
-                "Q4 promte and encourage" = 54,
-                "Q4 referral to local AHEC" = 55,
-                "Describe progress" = 56,
-                "Plans to enage" = 57
+                "Gold FTCA" = 35#,
+#                 "Baseline SOC benefit" = 36,
+#                 "Baseline SOC TFG policy" = 37,
+#                 "Baseline SOC promote and encourage" = 38,
+#                 "Baseline referral made to AHEC" = 39,
+#                 "Q1 SOC benefit" = 40,
+#                 "Q1 SOC TFG policy" = 41,
+#                 "Q1 SOC promote and encourage" = 42,
+#                 "Q1 referral to local AHEC" = 43,
+#                 "Q2 SOC benefit" = 44,
+#                 "Q2 TFG policy" = 45,
+#                 "Q2 promote and encourage" = 46,
+#                 "Q2 referral made to AHEC" = 47,
+#                 "Q3 SOC benefit" = 48,
+#                 "Q3 TFG policy" = 49,
+#                 "Q3 promote and encourage" = 50,
+#                 "Q3 referral to local AHEC" = 51,
+#                 "Q4 SOC benefit" = 52,
+#                 "Q4 SOC TFG policy" = 53,
+#                 "Q4 promte and encourage" = 54,
+#                 "Q4 referral to local AHEC" = 55,
+#                 "Describe progress" = 56,
+#                 "Plans to enage" = 57
                 )),
     
     selectInput("yvar", "Cross variable (optional)", c(
@@ -112,29 +112,29 @@ shinyUI(pageWithSidebar(
       "Extent of TFG policy coverage" = 32,
       "E-cigs restricted by policy" = 33,
       "Sliver FTCA" = 34,
-      "Gold FTCA" = 35,
-      "Baseline SOC benefit" = 36,
-      "Baseline SOC TFG policy" = 37,
-      "Baseline SOC promote and encourage" = 38,
-      "Baseline referral made to AHEC" = 39,
-      "Q1 SOC benefit" = 40,
-      "Q1 SOC TFG policy" = 41,
-      "Q1 SOC promote and encourage" = 42,
-      "Q1 referral to local AHEC" = 43,
-      "Q2 SOC benefit" = 44,
-      "Q2 TFG policy" = 45,
-      "Q2 promote and encourage" = 46,
-      "Q2 referral made to AHEC" = 47,
-      "Q3 SOC benefit" = 48,
-      "Q3 TFG policy" = 49,
-      "Q3 promote and encourage" = 50,
-      "Q3 referral to local AHEC" = 51,
-      "Q4 SOC benefit" = 52,
-      "Q4 SOC TFG policy" = 53,
-      "Q4 promte and encourage" = 54,
-      "Q4 referral to local AHEC" = 55,
-      "Describe progress" = 56,
-      "Plans to enage" = 57
+      "Gold FTCA" = 35#,
+#       "Baseline SOC benefit" = 36,
+#       "Baseline SOC TFG policy" = 37,
+#       "Baseline SOC promote and encourage" = 38,
+#       "Baseline referral made to AHEC" = 39,
+#       "Q1 SOC benefit" = 40,
+#       "Q1 SOC TFG policy" = 41,
+#       "Q1 SOC promote and encourage" = 42,
+#       "Q1 referral to local AHEC" = 43,
+#       "Q2 SOC benefit" = 44,
+#       "Q2 TFG policy" = 45,
+#       "Q2 promote and encourage" = 46,
+#       "Q2 referral made to AHEC" = 47,
+#       "Q3 SOC benefit" = 48,
+#       "Q3 TFG policy" = 49,
+#       "Q3 promote and encourage" = 50,
+#       "Q3 referral to local AHEC" = 51,
+#       "Q4 SOC benefit" = 52,
+#       "Q4 SOC TFG policy" = 53,
+#       "Q4 promte and encourage" = 54,
+#       "Q4 referral to local AHEC" = 55,
+#       "Describe progress" = 56,
+#       "Plans to enage" = 57
     )),
     
     sliderInput("cex.names", "Size of names", 
@@ -160,9 +160,9 @@ shinyUI(pageWithSidebar(
       "Nope"=FALSE),
       selected = FALSE),
     
-    radioButtons("percent","Percent or absolute",c(
-      "percent"=TRUE,
-      "absolute"=FALSE)),
+#     radioButtons("percent","Percent or absolute",c(
+#       "percent"=TRUE,
+#       "absolute"=FALSE)),
     
     textInput("legend.title", "Legend title",
               value = NULL),
