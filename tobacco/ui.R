@@ -1,4 +1,5 @@
 library(shiny)
+library(rCharts)
 suppressPackageStartupMessages(library(googleVis))
 
 shinyUI(pageWithSidebar(
@@ -211,9 +212,12 @@ shinyUI(pageWithSidebar(
 
       #tabPanel("Details",htmlOutput("linech"),
       
-      tabPanel("Map",
+      tabPanel("Static map",
                #h4(textOutput("text2"), align="center"),
-               plotOutput("plot2"))
+               plotOutput("plot2")),
+      
+      tabPanel("Interactive map", tags$style('.leaflet {height: 400px;}'),showOutput('myChart2', 'leaflet'))
+      
 
       
       #,

@@ -16,6 +16,9 @@ library(car)
 # Read in data
 #comb <- read.csv("comb1.csv", stringsAsFactors = FALSE)
 comb <- read.csv("combined_corrected.csv", stringsAsFactors = FALSE)
+locations <- read.csv("locations.csv", stringsAsFactors = FALSE)
+comb <- cbind(comb,locations)
+
 comb[,1] <- NULL
 # Recode all 77, 88, 99
 for (i in 1:ncol(comb)){
