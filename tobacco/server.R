@@ -11,6 +11,9 @@ library(maps)
 library(rCharts)
 library(shiny)
 library(stringr)
+library(rgdal)
+library(classInt)
+library(RColorBrewer)
 
 shinyServer(function(input, output) {
 
@@ -110,10 +113,23 @@ shinyServer(function(input, output) {
   #############
   output$plot2 <- renderPlot({
    
-    mymap <- map("county", "florida")
-    title(main = "Under construction")
+    ChoroFun(var_index = as.numeric(input$xvar))
     
   })
+
+#############
+output$plot3 <- renderPlot({
+  
+  if(input$yvar == 0){
+    plot(fl, col = adjustcolor("grey", alpha.f =0.4), 
+         border = adjustcolor("black", alpha.f=0.2))
+    text(x = -83, y = 29, cex = 2, labels = "Pick a 'cross variable'\n to see a second map down here.")
+  } else{
+    ChoroFun(var_index = as.numeric(input$yvar))
+    
+  }
+  
+})
   
   
 

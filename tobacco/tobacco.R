@@ -655,84 +655,183 @@ BarFun <- function(var, by_var = NULL, recode_var = NULL, ref = NULL,
 
 # 
 # ########## MAP STUFF
-# 
-# # Read in locations
-# loc <- read.csv("locations.csv")
-# 
-# # Make geographic version of comb
-# comb_geo <- cbind(comb, loc)
-# # coordinates(comb_geo) <- ~ lat + lon
-# 
-# # Clean up county column
-# comb_geo$County <- Recode(comb_geo$County,
-#                           " 'Alachua ' = 'Alachua';
-#                           'Baker ' = 'Baker';
-#                           'Bay ' = 'Bay';
-#                           'Bradford ' = 'Bradford';
-#                           'Charlotte County Public Schools' = 'Charlotte';
-#                           'Desoto' = 'DeSoto';
-#                           'Dixe' = 'Dixie';
-#                           'Escambia ' = 'Escambia';
-#                           'Gulf ' = 'Gulf';
-#                           'Hernando ' = 'Hernando';
-#                           'Leon ' = 'Leon';
-#                           'Levy ' = 'Levy';
-#                           'Liberty ' = 'Liberty';
-#                           'Orange ' = 'Orange';
-#                           'Osceola ' = 'Osceola';
-#                           'Pasco ' = 'Pasco';
-#                           'Pinellas ' = 'Pinellas';
-#                           'Saint Johns' = 'St. Johns';
-#                           'Saint Lucie' = 'St. Lucie';
-#                           'Wakulla ' = 'Wakulla'")
-# 
-# # Read in map
-# library(rgdal)
-# fl <- readOGR("FCTY2", "FCTY2")
-# fl$County <- fl$NAME
-# 
-# # Get counts by by county
-# library(dplyr)
-# 
-# combx <- tbl_df(comb)
-# combx$County <- factor(combx$County)
-# x <- combx %>%
-#   group_by(County) %>%
-#   summarise(x = n())
-# 
-# # ##########
-# # # MAP FUNCTION
-# # ##########
-# library(RColorBrewer)
-# library(classInt)
-# MapFun <- function(var, color = "Blues", percent = FALSE){
-#   plotvar <- var
-#   nclr <- 5
-#   plotclr <- brewer.pal(nclr, color)
-#   class <- classIntervals(plotvar, nclr, style = "quantile", dataPrecision=0) #use "equal" instead
-#   #class <- classIntervals(0:100, nclr, style="equal")
-#   colcode <- findColours(class, plotclr)
-#   if(percent){
-#     legcode <- paste0(gsub(",", " - ", gsub("[[]|[]]|[)]", "", names(attr(colcode, "table")))), "%")
-#   } else {
-#     legcode <- paste0(gsub(",", " - ", gsub("[[]|[]]|[)]", "", names(attr(colcode, "table")))))
+library(rgdal)
+# Make geographic version of comb
+# comb_geo <- comb[which(!is.na(comb$lon) &
+#                          !is.na(comb$lat)),]
+# coordinates(comb_geo) <- ~ lon + lat
+
+# Clean up county column
+comb$County <- Recode(comb$County,
+                          " 'Alachua ' = 'Alachua';
+                          'Baker ' = 'Baker';
+                          'Bay ' = 'Bay';
+                          'Bradford ' = 'Bradford';
+                          'Charlotte County Public Schools' = 'Charlotte';
+                          'Desoto' = 'DeSoto';
+                          'Dixe' = 'Dixie';
+                          'Escambia ' = 'Escambia';
+                          'Gulf ' = 'Gulf';
+                          'Hernando ' = 'Hernando';
+                          'Leon ' = 'Leon';
+                          'Levy ' = 'Levy';
+                          'Liberty ' = 'Liberty';
+                          'Orange ' = 'Orange';
+                          'Osceola ' = 'Osceola';
+                          'Pasco ' = 'Pasco';
+                          'Pinellas ' = 'Pinellas';
+                          'Saint Johns' = 'St. Johns';
+                          'Saint Lucie' = 'St. Lucie';
+                          'Wakulla ' = 'Wakulla'")
+
+# Read in map
+library(rgdal)
+fl <- readOGR("FCTY2", "FCTY2")
+fl$County <- fl$NAME
+
+# ##########
+# # MAP FUNCTION
+# ##########
+library(RColorBrewer)
+library(classInt)
+MapFun <- function(var, color = "Blues", percent = TRUE,
+                   legend_title = NULL){
+  plotvar <- var
+  nclr <- 5
+  plotclr <- brewer.pal(nclr, color)
+  #class <- classIntervals(plotvar, nclr, style = "quantile", dataPrecision=0) #use "equal" instead
+  #class <- classIntervals(0:100, nclr, style="equal")
+  class <- classIntervals(plotvar, style = "equal", dataPrecision=0)
+  colcode <- findColours(class, plotclr)
+  if(percent){
+    legcode <- paste0(gsub(",", " - ", gsub("[[]|[]]|[)]", "", names(attr(colcode, "table")))), "%")
+  } else {
+    legcode <- paste0(gsub(",", " - ", gsub("[[]|[]]|[)]", "", names(attr(colcode, "table")))))
+    
+  }
+  
+  plot(fl, border="darkgrey", col=colcode)
+  
+  if(is.null(legend_title)){mytitle <- NA}else{mytitle <- legend_title}
+  legend("left", # position
+         legend = legcode, #names(attr(colcode, "table")), 
+         fill = attr(colcode, "palette"), 
+         cex = 1.0, 
+         border=NA,
+         bty = "n",
+         title = mytitle)
+}
+
+
+# Define titles
+map_titles <- c(
+  "County",
+  "Interview date" ,
+  "Employer" ,
+  "Number of employees" ,
+  "Large business (50+)?" ,
+  "Number of tobacco users" ,
+  "Does employer hire tobacco users?" ,
+  "Does employer provide health insurance?" ,
+  "Type of insurance" ,
+  "Insurance carrier" ,
+  "Employer sector" ,
+  "Any tobacco cessation coverage?" ,
+  "Patch NRT OTC covered?" ,
+  "Gum NRT OTC covered?" ,
+  "Lozenge NRT OTC covered?" ,
+  "OTC covered only?" ,
+  "Inhaler NRT Rx covered?" ,
+  "Nose spray Rx covered?" ,
+  "Bupropion Rx covered?" ,
+  "varenicline Rx covered?" ,
+  "Covered Rx only?" ,
+  "Covered both OTC and Rx?" ,
+  "Individual counseling covered?" ,
+  "Phone counseling covered?" ,
+  "Group counseling covered?" ,
+  "Web based counseling covered?" ,
+  "Covered some types of counseling?" ,
+  "Covered all types of counseling?" ,
+  "Covered at least 2 quit attempts per year?" ,
+  "Combination counseling and meds covered?" ,
+  "Any barriers to coverage of meds?" ,
+  "Extent of TFG policy coverage",
+  "E-cigs restricted by policy" ,
+  "Sliver FTCA" ,
+  "Gold FTCA" 
+)
+
+# Define which ones can be easily plotted
+factor_vars <- c(5, 7, 8, 12:31, 33:35)
+
+
+# APP-SPECIFIC PLOTTING FUNCTION
+ChoroFun <- function(var_index){
+  
+  if(var_index == 5){
+    comb[,var_index] <- Recode(comb[,var_index],
+                               "'Large' = 'Yes';
+                               'Small' = 'No'")
+  }
+  
+  # Yes/No or big/small variables
+  if(var_index %in% factor_vars){
+    
+    
+#     # Get overall distribution and most prevalent name
+#     temp_table <- table(comb[,var_index])
+#     #temp_table <- rev(sort(temp_table)) # this would screw up since others aren't sorted
+#     temp_name <- names(temp_table)[1]
 #     
-#   }
-#   
-#   plot(fl, border="darkgrey", col=colcode)
-#   legend("left", # position
-#          legend = legcode, #names(attr(colcode, "table")), 
-#          fill = attr(colcode, "palette"), 
-#          cex = 0.6, 
-#          border=NA,
-#          bty = "n")
-# }
-# 
-# MapFun(var = x$x, color = "Blues",
-#        percent = FALSE)
-# 
-# x <- combx %>%
-#   group_by(County) %>%
-#   summarise(x = n())
-# 
-# 
+#     # Create a list in order to populate with values for each county
+#     myvar <- list()
+#     
+#     # Loop through each county getting the distribution
+#     for (i in unique(fl$County)){
+#       x <- 100*prop.table(table(comb[which(comb$County == i),var_index]))
+#       myvar[[i]] <- ceiling(as.numeric(x[1]))
+#       #myvar
+#     }
+#     
+#     # Put list into vector mode
+#     mapvar <- as.numeric(unlist(myvar))
+#     
+    
+    # Create a list in order to populate with values for each county
+    myvar <- list()
+    
+    # Loop through each county getting the distribution
+    for (i in unique(fl$County)){
+      x <- 100*prop.table(table(comb[which(comb$County == i),var_index]))
+      if(is.na(x["Yes"])){
+        y <- 0
+      } else{
+        y <- x["Yes"]
+      }
+      myvar[[i]] <- ceiling(as.numeric(y))
+      #myvar
+    }
+    
+    # Put list into vector mode
+    mapvar <- as.numeric(unlist(myvar))
+        
+    # Plot
+    MapFun(var = mapvar, color = "Blues", percent = FALSE,
+           legend_title = paste0("% Yes"))
+    title(map_titles[var_index])
+    
+  } else { # FOR ALL OTHER VARIABLES
+    plot(fl,  col = adjustcolor("yellow", alpha.f =0.4), 
+         border = adjustcolor("black", alpha.f=0.2),
+         proj = "aitoff")
+
+    text(x = -83, y = 29, cex = 3, labels = "Cannot map multi-level\n categorical data, dude.")
+    
+  }
+  
+}
+
+
+
+

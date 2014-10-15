@@ -204,7 +204,7 @@ shinyUI(pageWithSidebar(
   
   mainPanel(
     tabsetPanel(
-      tabPanel("Univariate visuals",
+      tabPanel("Barcharts",
                #htmlOutput("motionchart1")
                plotOutput("plot1")
       ),
@@ -214,7 +214,8 @@ shinyUI(pageWithSidebar(
       
       tabPanel("Static map",
                #h4(textOutput("text2"), align="center"),
-               plotOutput("plot2")),
+               plotOutput("plot2"),
+               plotOutput("plot3")),
       
       tabPanel("Interactive map", tags$style('.leaflet {height: 400px;}'),showOutput('myChart2', 'leaflet'))
       
