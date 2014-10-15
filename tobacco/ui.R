@@ -212,7 +212,7 @@ shinyUI(pageWithSidebar(
 
       #tabPanel("Details",htmlOutput("linech"),
       
-      tabPanel("Static map",
+      tabPanel("Static maps",
                #h4(textOutput("text2"), align="center"),
                plotOutput("plot2"),
                plotOutput("plot3")),
