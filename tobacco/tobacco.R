@@ -19,6 +19,13 @@ comb <- read.csv("combined_corrected.csv", stringsAsFactors = FALSE)
 locations <- read.csv("locations.csv", stringsAsFactors = FALSE)
 comb <- cbind(comb,locations)
 
+# MAKE CRAZY LOCATIONS NA
+comb$lat[which(comb$lat > 32)] <- NA
+comb$lat[which(comb$lat < 20)] <- NA
+comb$lon[which(comb$lon > - 75)] <- NA
+comb$lon[which(comb$lon < -89)] <- NA
+
+
 comb[,1] <- NULL
 # Recode all 77, 88, 99
 for (i in 1:ncol(comb)){
@@ -441,131 +448,7 @@ BarFun <- function(var, by_var = NULL, recode_var = NULL, ref = NULL,
     }
   } 
 }
-# 
-# BarFun(comb[,"Insurance.Carrier"],
-#        comb[,5],
-#        ref = NULL,
-#        recode_var = NULL,
-#        cex.names = 0.6,
-#        las = 3,
-#        percent = TRUE,
-#        border = "black",
-#        #rain = TRUE,
-#        legend = TRUE,
-#        err.cex = 0.4,
-#        legend.title = "Employer size")
-# 
-# BarFun(comb[,5],
-#        comb[,"Insurance.Carrier"],
-#        ref = NULL,
-#        recode_var = NULL,
-#        cex.names = 0.6,
-#        las = 3,
-#        percent = TRUE,
-#        border = "black",
-#        #rain = TRUE,
-#        legend = TRUE,
-#        err.cex = 0.4,
-#        legend.title = "Employer size")
-# 
-# #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-# par(mfrow=c(1,1))
-# 
-# 
-# 
-# 
-# 
-# 
-# #1 . Size of employer and does employer provide health insurance
-# BarFun(comb[,5], by_var = comb[,8], legend = TRUE, rain = TRUE)
-# par(mfrow=c(1,2))
-# BarFun(comb[which(comb[,5] == "Small"),8])
-# title(main = "Small", cex.main = 0.8)
-# BarFun(comb[which(comb[,5] == "Large"),8])
-# title(main = "Large", cex.main = 0.8)
-# title(main = "Does your employeer provide health insurance?",
-#       outer = TRUE,
-#       line = -1)
-# par(mfrow = c(1,1))
-# 
-# # 2. Insurance carrier x size of employer
-# BarFun(comb[,"Insurance.Carrier"], by_var = comb[,8])
-# 
-# par(mfrow=c(1,2))
-# 
-# BarFun(var = comb[which(comb[,5] == "Small"),"Insurance.Carrier"],
-#        cex.names = 0.6,
-#        las = 3)
-# title(main = "Small", cex.main = 0.8)
-# 
-# BarFun(var = comb[which(comb[,5] == "Large"),"Insurance.Carrier"],
-#        cex.names = 0.6,
-#        las = 3)
-# title(main = "Large", cex.main = 0.8)
-# title(main = "Insurers by business size",
-#       outer = TRUE,
-#       line = -1)
-# 
-# #3 . Size of employeer by OTC only
-# par(mfrow=c(1,2))
-# BarFun(comb[which(comb[,5] == 1),16])
-# title(main = "Small", cex.main = 0.8)
-# BarFun(comb[which(comb[,5] == 2),16])
-# title(main = "Large", cex.main = 0.8)
-# title(main = "Covers OTC only",
-#       outer = TRUE,
-#       line = -1)
-# 
-# #4. Size of employer x Rx only
-# par(mfrow=c(1,2))
-# BarFun(comb[which(comb[,5] == 1),21])
-# title(main = "Small", cex.main = 0.8)
-# BarFun(comb[which(comb[,5] == 2),21])
-# title(main = "Large", cex.main = 0.8)
-# title(main = "Covers Rx only",
-#       outer = TRUE,
-#       line = -1)
-# 
-# # 5. Size of employer and combination OTC and RX
-# par(mfrow=c(1,2))
-# BarFun(comb[which(comb[,5] == 1),22])
-# title(main = "Small", cex.main = 0.8)
-# BarFun(comb[which(comb[,5] == 2),22])
-# title(main = "Large", cex.main = 0.8)
-# title(main = "Covers OTC and Rx",
-#       outer = TRUE,
-#       line = -1)
-# 
-# # 6. Size of employer and gold criteria met
-# par(mfrow=c(1,2))
-# BarFun(comb[which(comb[,5] == 1),35])
-# title(main = "Small", cex.main = 0.8)
-# BarFun(comb[which(comb[,5] == 2),35])
-# title(main = "Large", cex.main = 0.8)
-# title(main = "Gold criteria met",
-#       outer = TRUE,
-#       line = -1)
-# 
-# # 7. 
-# 
-# #8. 
-# 
-# # 9. Insurance carrier by OTC nly
-# par(mfrow=c(1,2))
-# BarFun(comb[which(comb[,10] == 1),16])
-# title(main = "Small", cex.main = 0.8)
-# BarFun(comb[which(comb[,10] == 2),16])
-# title(main = "Large", cex.main = 0.8)
-# title(main = "Covers OTC only",
-#       outer = TRUE,
-#       line = -1)
-# 
-# # 10. 
-# 
-# for (i in 7:57){
-#   BarFun(comb[,i])
-# }
-# 
+
 # ###############
 # # GEOCODING
 # ###############
@@ -576,45 +459,45 @@ BarFun <- function(var, by_var = NULL, recode_var = NULL, ref = NULL,
 # # merge with comb
 # comb <- cbind(comb, locations)
 # 
-# # THE BELOW ONLY NEEDS TO BE RUN ONCE:
-# # places <- paste0(comb$Name.of.Employer,
-# #                 ", ", 
-# #                 comb$County.Reporting,
-# #                 " ", "county",
-# #                 ", ",
-# #                 "Florida")
-# # 
-# # library(RCurl)
-# # library(RJSONIO)
-# # library(plyr)
-# # 
-# # url <- function(address, return.call = "json", sensor = "false") {
-# #   root <- "http://maps.google.com/maps/api/geocode/"
-# #   u <- paste(root, return.call, "?address=", address, "&sensor=", sensor, sep = "")
-# #   return(URLencode(u))
-# # }
-# # 
-# # geoCode <- function(address,verbose=FALSE) {
-# #   if(verbose) cat(address,"\n")
-# #   u <- url(address)
-# #   doc <- getURL(u)
-# #   x <- fromJSON(doc,simplify = FALSE)
-# #   if(x$status=="OK") {
-# #     lat <- x$results[[1]]$geometry$location$lat
-# #     lng <- x$results[[1]]$geometry$location$lng
-# #     location_type <- x$results[[1]]$geometry$location_type
-# #     formatted_address <- x$results[[1]]$formatted_address
-# #     return(c(lat, lng, location_type, formatted_address))
-# #   } else {
-# #     return(c(NA,NA,NA, NA))
-# #   }
-# # }
-# # 
-# # 
-# # locations <- ldply(places, function(x) geoCode(x))
-# # names(locations) <- c("lat","lon","location_type", "forAddress")
+# #THE BELOW ONLY NEEDS TO BE RUN ONCE:
+# places <- paste0(comb$Name.of.Employer,
+#                 ", ", 
+#                 comb$County.Reporting,
+#                 " ", "county",
+#                 ", ",
+#                 "Florida")
 # 
-# #write.csv(locations, "locations.csv")
+# library(RCurl)
+# library(RJSONIO)
+# library(plyr)
+# 
+# url <- function(address, return.call = "json", sensor = "false") {
+#   root <- "http://maps.google.com/maps/api/geocode/"
+#   u <- paste(root, return.call, "?address=", address, "&sensor=", sensor, sep = "")
+#   return(URLencode(u))
+# }
+# 
+# geoCode <- function(address,verbose=FALSE) {
+#   if(verbose) cat(address,"\n")
+#   u <- url(address)
+#   doc <- getURL(u)
+#   x <- fromJSON(doc,simplify = FALSE)
+#   if(x$status=="OK") {
+#     lat <- x$results[[1]]$geometry$location$lat
+#     lng <- x$results[[1]]$geometry$location$lng
+#     location_type <- x$results[[1]]$geometry$location_type
+#     formatted_address <- x$results[[1]]$formatted_address
+#     return(c(lat, lng, location_type, formatted_address))
+#   } else {
+#     return(c(NA,NA,NA, NA))
+#   }
+# }
+# 
+# 
+# locations <- ldply(places, function(x) geoCode(x))
+# names(locations) <- c("lat","lon","location_type", "forAddress")
+# # 
+# # #write.csv(locations, "locations.csv")
 # 
 # ###############
 # # MAP FUNCTION
