@@ -1,0 +1,7 @@
+Error in parse(text = lines, srcfile = srcfile) : 
+  /home/joebrew/ShinyApps/htmlColoma/server.R:37:0: unexpected end of input
+35: 
+36: })
+  ^
+Calls: runApp -> startAppDir -> sys.source -> parse
+Execution halted

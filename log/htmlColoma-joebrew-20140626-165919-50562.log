@@ -1,0 +1,5 @@
+Loading required package: RCurl
+Loading required package: bitops
+Error in eval(expr, envir, enclos) : object 'input' not found
+Calls: runApp -> startAppDir -> sys.source -> eval -> eval
+Execution halted

@@ -1,0 +1,17 @@
+
+Listening on http://127.0.0.1:40939
+Loading required package: nnet
+Loading required package: grid
+Loading required package: lattice
+Loading required package: survival
+Loading required package: splines
+Loading required package: Formula
+
+Attaching package: ‘Hmisc’
+
+The following object(s) are masked from ‘package:base’:
+
+    format.pval, round.POSIXt, trunc.POSIXt, units
+
+
+Execution halted
