@@ -33,3 +33,5 @@ for (i in 1:length(subject)){
 # Split string on spaces
 z <- data.frame(matrix(unlist(strsplit(z, split = "[+]")), ncol = 3, byrow = T))
 names(z) <- c("subject", "verb", "form")
+
+write.csv(z, "C:/Users/BrewJR/Desktop/z.csv")
