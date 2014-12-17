@@ -2,11 +2,11 @@
 #load in packages
 library(maps)
 library(classInt)
-library(RCurl)
+#library(RCurl)
 library(xtable)
-library(maps)
 library(RColorBrewer)
-options(RCurlOptions = list(cainfo = system.file("CurlSSL", "cacert.pem", package = "RCurl")))
+library(dplyr)
+#options(RCurlOptions = list(cainfo = system.file("CurlSSL", "cacert.pem", package = "RCurl")))
 
 ##############################
 #TWO STEPS TO MODELLING
@@ -394,6 +394,17 @@ load("model.RData")
 #   
 # }
 # 
+
+##################################
+# ADD A FLORIDA ROW TO FL
+##################################
+# state <- data.frame(county = "ENTIRE STATE")
+# vals <- apply(fl[,-1], 2, sum)
+# state <- cbind(state, data.frame(t(vals)) )
+# fl <- rbind(state, fl)
+# rm(state, vals, myCsv, myLink2, myLink3)
+
+
 # # SAVE IMAGE
 # #save.image("C:/Users/BrewJR/Documents/ShinyApps/sliv/model.RData")
 

@@ -1,11 +1,14 @@
 # server.R
 
+# turn off scientific notation
+options(scipen=999)
+
 #load in packages
 library(maps)
 library(classInt)
-library(RCurl)
+library(dplyr)
+#library(RCurl)
 library(xtable)
-library(maps)
 library(RColorBrewer)
 
 #source the model file
@@ -18,11 +21,23 @@ shinyServer(
     
     
     
+
+    
+    
     output$text2 <- renderText({ 
+      
+      if(input$var == "ENTIRE STATE"){
+        tempSchool <- dfSchool
+      } else{
+        tempSchool <- dfSchool[which(dfSchool$district == input$var),]
+      }
+      
+
+      
       paste("Program costs: $",
-            round(CostFun(totMem = sum(dfSchool$totMem[which(dfSchool$district == input$var)], na.rm=TRUE), 
-                          vfcPer = weighted.mean(dfSchool$vfcPer[which(dfSchool$district == input$var)],
-                                                 dfSchool$totMem[which(dfSchool$district == input$var)],
+            round(CostFun(totMem = sum(tempSchool$totMem, na.rm=TRUE), 
+                          vfcPer = weighted.mean(tempSchool$vfcPer,
+                                                 tempSchool$totMem,
                                                  na.rm=TRUE),
                           immRate = input$immRate,
                           privateVacCost = 17.5,
@@ -38,10 +53,18 @@ shinyServer(
     })
     
     output$text3 <- renderText({ 
+      
+      if(input$var == "ENTIRE STATE"){
+        tempSchool <- dfSchool
+      } else{
+        tempSchool <- dfSchool[which(dfSchool$district == input$var),]
+      }
+      
+      
       paste("Program gross revenue: $",
-            round(RevFun(totMem = sum(dfSchool$totMem[which(dfSchool$district == input$var)], na.rm=TRUE), 
-                         vfcPer = weighted.mean(dfSchool$vfcPer[which(dfSchool$district == input$var)],
-                                                dfSchool$totMem[which(dfSchool$district == input$var)],
+            round(RevFun(totMem = sum(tempSchool$totMem, na.rm=TRUE), 
+                         vfcPer = weighted.mean(tempSchool$vfcPer,
+                                                tempSchool$totMem,
                                                 na.rm=TRUE),
                          immRate = input$immRate,
                          privDenRate = 100 - input$sucBill,
@@ -55,10 +78,17 @@ shinyServer(
     })
     
     output$text4 <- renderText({ 
+      
+      if(input$var == "ENTIRE STATE"){
+        tempSchool <- dfSchool
+      } else{
+        tempSchool <- dfSchool[which(dfSchool$district == input$var),]
+      }
+      
       paste("Net surplus/deficit: $",
-            round(round(RevFun(totMem = sum(dfSchool$totMem[which(dfSchool$district == input$var)], na.rm=TRUE), 
-                               vfcPer = weighted.mean(dfSchool$vfcPer[which(dfSchool$district == input$var)],
-                                                      dfSchool$totMem[which(dfSchool$district == input$var)],
+            round(round(RevFun(totMem = sum(tempSchool$totMem, na.rm=TRUE), 
+                               vfcPer = weighted.mean(tempSchool$vfcPer,
+                                                      tempSchool$totMem,
                                                       na.rm=TRUE),
                                immRate = input$immRate,
                                privDenRate = 100 - input$sucBill,
@@ -67,9 +97,9 @@ shinyServer(
                                privAvgRe = 39.39,
                                vfcAvgRe = 5), 
                         digits=2) - 
-                    round(CostFun(totMem = sum(dfSchool$totMem[which(dfSchool$district == input$var)], na.rm=TRUE), 
-                                  vfcPer = weighted.mean(dfSchool$vfcPer[which(dfSchool$district == input$var)],
-                                                         dfSchool$totMem[which(dfSchool$district == input$var)],
+                    round(CostFun(totMem = sum(tempSchool$totMem, na.rm=TRUE), 
+                                  vfcPer = weighted.mean(tempSchool$vfcPer,
+                                                         tempSchool$totMem,
                                                          na.rm=TRUE),
                                   immRate = input$immRate,
                                   privateVacCost = 17.5,
@@ -85,17 +115,32 @@ shinyServer(
     })
     
     output$text5 <- renderText({ 
+      
+      if(input$var == "ENTIRE STATE"){
+        tempSchool <- dfSchool
+      } else{
+        tempSchool <- dfSchool[which(dfSchool$district == input$var),]
+      }
+      
+      
       paste(
         "Number of students:",
-        sum(dfSchool$totMem[which(dfSchool$district == input$var)], na.rm=TRUE)
+        sum(tempSchool$totMem, na.rm=TRUE)
       )
     })
     
     output$text6 <- renderText({ 
+      
+      if(input$var == "ENTIRE STATE"){
+        tempSchool <- dfSchool
+      } else{
+        tempSchool <- dfSchool[which(dfSchool$district == input$var),]
+      }
+      
       paste(
         "Percent with private health insurance:",
-        paste(round(100 - weighted.mean(dfSchool$vfcPer[which(dfSchool$district == input$var)],
-                                        dfSchool$totMem[which(dfSchool$district == input$var)], 
+        paste(round(100 - weighted.mean(tempSchool$vfcPer,
+                                        tempSchool$totMem, 
                                         na.rm=TRUE), digits=2)),
         "%"
         
@@ -104,21 +149,37 @@ shinyServer(
     
     
     output$text6b <- renderText({ 
+      
+      if(input$var == "ENTIRE STATE"){
+        tempSchool <- dfSchool
+      } else{
+        tempSchool <- dfSchool[which(dfSchool$district == input$var),]
+      }
+      
+      
       paste(
         "Number of schools:",
-        nrow(dfSchool[which(dfSchool$district == input$var),])
+        nrow(tempSchool)
         
       )
     })
     
     
     output$text7 <- renderText({ 
+      
+      if(input$var == "ENTIRE STATE"){
+        tempSchool <- dfSchool
+      } else{
+        tempSchool <- dfSchool[which(dfSchool$district == input$var),]
+      }
+      
+      
       paste(
         "Vaccine purchase cost: $",
         
-        round(VacFun(totMem = sum(dfSchool$totMem[which(dfSchool$district == input$var)], na.rm=TRUE), 
-                     vfcPer = weighted.mean(dfSchool$vfcPer[which(dfSchool$district == input$var)],
-                                            dfSchool$totMem[which(dfSchool$district == input$var)],
+        round(VacFun(totMem = sum(tempSchool$totMem, na.rm=TRUE), 
+                     vfcPer = weighted.mean(tempSchool$vfcPer,
+                                            tempSchool$totMem,
                                             na.rm=TRUE),
                      immRate = input$immRate,
                      privateVacCost = 17.5), 
@@ -131,12 +192,20 @@ shinyServer(
     
     
     output$text8 <- renderText({ 
+      
+      if(input$var == "ENTIRE STATE"){
+        tempSchool <- dfSchool
+      } else{
+        tempSchool <- dfSchool[which(dfSchool$district == input$var),]
+      }
+      
+      
       paste(
         "Other program costs: $",
         
-        round(OtherCostFun(totMem = sum(dfSchool$totMem[which(dfSchool$district == input$var)], na.rm=TRUE), 
-                           vfcPer = weighted.mean(dfSchool$vfcPer[which(dfSchool$district == input$var)],
-                                                  dfSchool$totMem[which(dfSchool$district == input$var)],
+        round(OtherCostFun(totMem = sum(tempSchool$totMem, na.rm=TRUE), 
+                           vfcPer = weighted.mean(tempSchool$vfcPer,
+                                                  tempSchool$totMem,
                                                   na.rm=TRUE),
                            immRate = input$immRate,
                            delivCost = .05,
@@ -155,12 +224,19 @@ shinyServer(
     
     
     output$text8b <- renderText({ 
+      
+      if(input$var == "ENTIRE STATE"){
+        tempSchool <- dfSchool
+      } else{
+        tempSchool <- dfSchool[which(dfSchool$district == input$var),]
+      }
+      
       paste(
         "Total costs: $",
         
-        round(CostFun(totMem = sum(dfSchool$totMem[which(dfSchool$district == input$var)], na.rm=TRUE), 
-                      vfcPer = weighted.mean(dfSchool$vfcPer[which(dfSchool$district == input$var)],
-                                             dfSchool$totMem[which(dfSchool$district == input$var)],
+        round(CostFun(totMem = sum(tempSchool$totMem, na.rm=TRUE), 
+                      vfcPer = weighted.mean(tempSchool$vfcPer,
+                                             tempSchool$totMem,
                                              na.rm=TRUE),
                       immRate = input$immRate,
                       privateVacCost = 17.5,
@@ -177,10 +253,17 @@ shinyServer(
     
     
     output$text9 <- renderText({ 
+      
+      if(input$var == "ENTIRE STATE"){
+        tempSchool <- dfSchool
+      } else{
+        tempSchool <- dfSchool[which(dfSchool$district == input$var),]
+      }
+      
       paste("Revenue from billing private insurers: $",
-            round(privateRevFun(totMem = sum(dfSchool$totMem[which(dfSchool$district == input$var)], na.rm=TRUE), 
-                                vfcPer = weighted.mean(dfSchool$vfcPer[which(dfSchool$district == input$var)],
-                                                       dfSchool$totMem[which(dfSchool$district == input$var)],
+            round(privateRevFun(totMem = sum(tempSchool$totMem, na.rm=TRUE), 
+                                vfcPer = weighted.mean(tempSchool$vfcPer,
+                                                       tempSchool$totMem,
                                                        na.rm=TRUE),
                                 immRate = input$immRate,
                                 privDenRate = 100 - input$sucBill,
@@ -193,10 +276,17 @@ shinyServer(
     })
     
     output$text10 <- renderText({ 
+      
+      if(input$var == "ENTIRE STATE"){
+        tempSchool <- dfSchool
+      } else{
+        tempSchool <- dfSchool[which(dfSchool$district == input$var),]
+      }
+      
       paste("Revenue for VFC administration: $",
-            round(vfcRevFun(totMem = sum(dfSchool$totMem[which(dfSchool$district == input$var)], na.rm=TRUE), 
-                            vfcPer = weighted.mean(dfSchool$vfcPer[which(dfSchool$district == input$var)],
-                                                   dfSchool$totMem[which(dfSchool$district == input$var)],
+            round(vfcRevFun(totMem = sum(tempSchool$totMem, na.rm=TRUE), 
+                            vfcPer = weighted.mean(tempSchool$vfcPer,
+                                                   tempSchool$totMem,
                                                    na.rm=TRUE),
                             immRate = input$immRate,
                             privDenRate = 100 - input$sucBill,
@@ -209,10 +299,17 @@ shinyServer(
     
     
     output$text11 <- renderText({ 
+      
+      if(input$var == "ENTIRE STATE"){
+        tempSchool <- dfSchool
+      } else{
+        tempSchool <- dfSchool[which(dfSchool$district == input$var),]
+      }
+      
       paste("Total gross revenue: $",
-            round(RevFun(totMem = sum(dfSchool$totMem[which(dfSchool$district == input$var)], na.rm=TRUE), 
-                         vfcPer = weighted.mean(dfSchool$vfcPer[which(dfSchool$district == input$var)],
-                                                dfSchool$totMem[which(dfSchool$district == input$var)],
+            round(RevFun(totMem = sum(tempSchool$totMem, na.rm=TRUE), 
+                         vfcPer = weighted.mean(tempSchool$vfcPer,
+                                                tempSchool$totMem,
                                                 na.rm=TRUE),
                          immRate = input$immRate,
                          privDenRate = 100 - input$sucBill,
@@ -249,42 +346,87 @@ shinyServer(
     output$plot1 <- renderPlot({
       
       par(mfrow=c(1,2))
-      myMap$color <- ifelse(myMap$county == input$var,
-                            "blue",
-                            "grey")
+      
+      if(input$var == "ENTIRE STATE"){
+        myMap$color  <- rep("blue", length(myMap$county))
+      } else{
+        myMap$color <- ifelse(myMap$county == input$var,
+                              "blue",
+                              "grey")
+      }
+
       
       map("county", "florida", border="darkgrey", fill=TRUE, col=myMap$color)
       
       
-      barplot(
-        c(round(CostFun(totMem = sum(dfSchool$totMem[which(dfSchool$district == input$var)], na.rm=TRUE), 
-                        vfcPer = weighted.mean(dfSchool$vfcPer[which(dfSchool$district == input$var)],
-                                               dfSchool$totMem[which(dfSchool$district == input$var)],
-                                               na.rm=TRUE),
-                        immRate = input$immRate,
-                        privateVacCost = 17.5,
-                        delivCost = .05,
-                        billCost = 5.23,
-                        printCost = .1,
-                        storageCost = .05,
-                        nursePerHour = 25,
-                        randp=input$randp), 
-                digits=0), 
-          round(RevFun(totMem = sum(dfSchool$totMem[which(dfSchool$district == input$var)], na.rm=TRUE), 
-                       vfcPer = weighted.mean(dfSchool$vfcPer[which(dfSchool$district == input$var)],
-                                              dfSchool$totMem[which(dfSchool$district == input$var)],
-                                              na.rm=TRUE),
-                       immRate = input$immRate,
-                       privDenRate = 100 - input$sucBill,
-                       privUnbillableRate = 5.123104,
-                       vfcDenRate = 20,
-                       privAvgRe = 39.39,
-                       vfcAvgRe = 5), 
-                digits=0)), 
-        names.arg=c("Costs", "Revenue"),
-        border="darkgrey",
-        col=adjustcolor(c("darkred", "darkgreen"))
-      )      
+      if(input$var == "ENTIRE STATE"){
+        tempSchool <- dfSchool
+      } else{
+        tempSchool <- dfSchool[which(dfSchool$district == input$var),]
+      }
+      
+      
+      
+      red <- round(CostFun(totMem = sum(tempSchool$totMem, na.rm=TRUE), 
+                           vfcPer = weighted.mean(tempSchool$vfcPer,
+                                                  tempSchool$totMem,
+                                                  na.rm=TRUE),
+                           immRate = input$immRate,
+                           privateVacCost = 17.5,
+                           delivCost = .05,
+                           billCost = 5.23,
+                           printCost = .1,
+                           storageCost = .05,
+                           nursePerHour = 25,
+                           randp=input$randp), 
+                   digits=0)
+      green <- round(RevFun(totMem = sum(tempSchool$totMem, na.rm=TRUE), 
+                            vfcPer = weighted.mean(tempSchool$vfcPer,
+                                                   tempSchool$totMem,
+                                                   na.rm=TRUE),
+                            immRate = input$immRate,
+                            privDenRate = 100 - input$sucBill,
+                            privUnbillableRate = 5.123104,
+                            vfcDenRate = 20,
+                            privAvgRe = 39.39,
+                            vfcAvgRe = 5), 
+                     digits=0)
+      bp_elements <- c(red, green)
+      bp <- barplot(bp_elements, 
+                    ylim = c(0, max(bp_elements)*1.1),
+                    cex.lab = 0.6,
+                    cex.axis = 0.6,
+                    names.arg=c("Costs", "Revenue"),
+                    border="darkgrey",
+                    col=adjustcolor(c("darkred", "darkgreen"), alpha.f = 0.6)) 
+      abline(h=seq(0, max(bp_elements), length = 5), 
+             col = adjustcolor("black", alpha.f = 0.2),
+             lty = 2)
+      box("plot")
+      text(x = bp[,1],
+           y = bp_elements,
+           pos = 1,
+           labels = paste0("$", round(bp_elements)),
+           cex = 0.55,
+           col = adjustcolor("black", alpha.f = 0.6))
+      rev <- abs(green - red)
+      if(green - red >= 0){
+        rev_label <- "Net program revenue\nof "
+      } else{
+        rev_label <- "Net program cost\nof "
+      }
+      lines(x = bp[,1],
+            y = bp_elements,
+            col = adjustcolor("black", alpha.f = 0.4))
+      points(x = bp[,1],
+            y = bp_elements,
+            col = adjustcolor("black", alpha.f = 0.4),
+            pch = 16)
+      text(x = mean(bp[,1]),
+           y = max(bp_elements)*1.05,
+           labels = paste0(rev_label, " $", rev),
+           col = adjustcolor("black", alpha.f = 0.6),
+           cex = 0.7)
     })
     
     
@@ -293,19 +435,26 @@ shinyServer(
       
       par(mfrow=c(1,2))
       
+      if(input$var == "ENTIRE STATE"){
+        tempfl <- fl
+      } else{
+        tempfl <- fl[which(fl$county == input$var),]
+      }
+      
+      
       
       #CASES AVERTED
       plot(1:2, 1:2,
            xlim=c(0,100),
-           ylim=c(0,max(fl$cases[which(fl$county == input$var)])),
+           ylim=c(0,max(tempfl$cases)),
            type="n",
            xlab="SLIV Immunization rate",
            ylab="Influenza cases (annual)")
       
       for (i in 1:100){
         points(x = i,
-               y = max(fl$cases[which(fl$county == input$var)])  - CasesFun(county = input$var, 
-                                                                            immRate = i),
+               y = max(tempfl$cases)  - CasesFun(county = input$var, 
+                                                 immRate = i),
                pch=16,
                cex=0.5,
                col=adjustcolor("black", alpha.f=0.5))
@@ -541,29 +690,89 @@ shinyServer(
       par(mar=c(6,4,1,1))
       par(oma=c(8,1,1,1))
       
-      temp <- dfSchool[which(dfSchool$district == input$var),]
-      temp <- temp[order(temp$totMem),]
+      if(input$var == "ENTIRE STATE"){
+        temp <- dfSchool
+        temp <- temp %>%
+          group_by(district) %>%
+          summarise(totMem = sum(totMem, na.rm = TRUE),
+                    free = sum(free, na.rm = TRUE),
+                    reduced = sum(reduced, na.rm = TRUE))
+        # Add the per columns
+        temp <- temp %>%
+          mutate(frper = (free + reduced) / totMem * 100)
+        temp$vfcPer <- temp$frper * (1/1.173212)
+        
+        # Order
+        temp <- temp[order(temp$totMem),]
+        
+        # Plot
+        barplot(temp$totMem,
+                yaxt="n",
+                xaxt="n",
+                names.arg=NA,
+                cex.axis = 0.5,
+                cex.lab = 0.5,
+                ylim = c(0, max(temp$totMem, na.rm = TRUE)*1.1))
+        barplot(temp$totMem*temp$vfcPer/100,
+                names.arg=temp$district,
+                cex.names=ifelse(nrow(temp)>100,
+                                 0.1,
+                                 0.5),
+                las=3,
+                add=TRUE,
+                col=adjustcolor("darkred", alpha.f=0.4),
+                border=NA,
+                ylab="Students",
+                cex.axis = 0.5,
+                cex.lab = 0.5)
+        abline(h= seq(0,max(temp$totMem, na.rm = T), length = 5),
+               col = adjustcolor("black", alpha.f = 0.2),
+               lty = 2)
+        
+        legend(x="topleft",
+               fill=adjustcolor("darkred", alpha.f=0.5),
+               border=NA,
+               legend="VFC eligible",
+               bty="n")
+        box("plot")
+        
+        
+      } else {
+        temp <- dfSchool[which(dfSchool$district == input$var),]
+        temp <- temp[order(temp$totMem),]
+        
+        barplot(temp$totMem,
+                yaxt="n",
+                xaxt="n",
+                names.arg=NA,
+                cex.axis = 0.5,
+                cex.lab = 0.5,
+                ylim = c(0, max(temp$totMem, na.rm = TRUE)*1.1))
+        barplot(temp$totMem*temp$vfcPer/100,
+                names.arg=temp$School,
+                cex.names=ifelse(nrow(temp)>100,
+                                 0.1,
+                                 0.5),
+                las=3,
+                add=TRUE,
+                col=adjustcolor("darkred", alpha.f=0.4),
+                border=NA,
+                ylab="Students",
+                cex.axis = 0.5,
+                cex.lab = 0.5)
+        abline(h= seq(0,max(temp$totMem, na.rm = T), length = 5),
+               col = adjustcolor("black", alpha.f = 0.2),
+               lty = 2)
+        
+        legend(x="topleft",
+               fill=adjustcolor("darkred", alpha.f=0.5),
+               border=NA,
+               legend="VFC eligible",
+               bty="n")
+        box("plot")
+      }
       
-      barplot(temp$totMem,
-              yaxt="n",
-              xaxt="n",
-              names.arg=NA)
-      barplot(temp$totMem*temp$vfcPer/100,
-              names.arg=temp$School,
-              cex.names=ifelse(nrow(temp)>100,
-                               0.1,
-                               0.5),
-              las=3,
-              add=TRUE,
-              col=adjustcolor("darkred", alpha.f=0.4),
-              border=NA,
-              ylab="Students")
       
-      legend(x="topleft",
-             fill=adjustcolor("darkred", alpha.f=0.5),
-             border="darkgrey",
-             legend="VFC eligible",
-             bty="n")
       
       
     })
@@ -575,54 +784,101 @@ shinyServer(
       par(mar=c(5,3,5,3))
       par(oma=c(0,0,0,0))
       
-      pie(c(
-        VacFun(totMem = sum(dfSchool$totMem[which(dfSchool$district == input$var)], na.rm=TRUE), 
-               vfcPer = weighted.mean(dfSchool$vfcPer[which(dfSchool$district == input$var)],
-                                      dfSchool$totMem[which(dfSchool$district == input$var)],
-                                      na.rm=TRUE),
-               immRate = input$immRate,
-               privateVacCost = 17.5),
-        OtherCostFun(totMem = sum(dfSchool$totMem[which(dfSchool$district == input$var)], na.rm=TRUE), 
-                     vfcPer = weighted.mean(dfSchool$vfcPer[which(dfSchool$district == input$var)],
-                                            dfSchool$totMem[which(dfSchool$district == input$var)],
-                                            na.rm=TRUE),
-                     immRate = input$immRate,
-                     delivCost = .05,
-                     billCost = 5.23,
-                     printCost = .1,
-                     storageCost = .05,
-                     nursePerHour = 25,
-                     randp=input$randp)),
-        labels=c("Vaccine purchase", 
+      if(input$var == "ENTIRE STATE"){
+        tempSchool <- dfSchool
+      } else{
+        tempSchool <- dfSchool[which(dfSchool$district == input$var),]
+      }
+      
+      red <- VacFun(totMem = sum(tempSchool$totMem, na.rm=TRUE), 
+                    vfcPer = weighted.mean(tempSchool$vfcPer,
+                                           tempSchool$totMem,
+                                           na.rm=TRUE),
+                    immRate = input$immRate,
+                    privateVacCost = 17.5)
+      green <- OtherCostFun(totMem = sum(tempSchool$totMem, na.rm=TRUE), 
+                            vfcPer = weighted.mean(tempSchool$vfcPer,
+                                                   tempSchool$totMem,
+                                                   na.rm=TRUE),
+                            immRate = input$immRate,
+                            delivCost = .05,
+                            billCost = 5.23,
+                            printCost = .1,
+                            storageCost = .05,
+                            nursePerHour = 25,
+                            randp=input$randp)
+      bp_elements <- c(red, green)
+      
+      bp <- barplot(bp_elements,
+        names.arg=c("Vaccine purchase", 
                  "Other costs"),
-        main="Program costs"
-      )
+        main="Program costs",
+        ylim = c(0, max(bp_elements)*1.1),
+        col = adjustcolor("darkred", alpha.f = 0.6))
+      
+      text(x = bp[,1],
+           y = bp_elements,
+           pos = 1,
+           col = adjustcolor("black", alpha.f = 0.6),
+           labels = paste0("$", round(bp_elements, digits = -2)))
+      text(x = bp[,1],
+           y = bp_elements,
+           pos = 3,
+           col = adjustcolor("black", alpha.f = 0.6),
+           labels = paste0(round(bp_elements/sum(bp_elements)*100), "%"))
+      
+      abline(h=seq(0, max(bp_elements), length = 5), 
+             col = adjustcolor("black", alpha.f = 0.2),
+             lty = 2)
+      
+      box("plot")
       
       
       #REVENUE
-      pie(c(privateRevFun(totMem = sum(dfSchool$totMem[which(dfSchool$district == input$var)], na.rm=TRUE), 
-                          vfcPer = weighted.mean(dfSchool$vfcPer[which(dfSchool$district == input$var)],
-                                                 dfSchool$totMem[which(dfSchool$district == input$var)],
-                                                 na.rm=TRUE),
-                          immRate = input$immRate,
-                          privDenRate = 100 - input$sucBill,
-                          privUnbillableRate = 5.123104,
-                          vfcDenRate = 20,
-                          privAvgRe = 39.39,
-                          vfcAvgRe = 5),
-            vfcRevFun(totMem = sum(dfSchool$totMem[which(dfSchool$district == input$var)], na.rm=TRUE), 
-                      vfcPer = weighted.mean(dfSchool$vfcPer[which(dfSchool$district == input$var)],
-                                             dfSchool$totMem[which(dfSchool$district == input$var)],
-                                             na.rm=TRUE),
-                      immRate = input$immRate,
-                      privDenRate = 100 - input$sucBill,
-                      privUnbillableRate = 5.123104,
-                      vfcDenRate = 20,
-                      privAvgRe = 39.39,
-                      vfcAvgRe = 5)),
-          labels=c("Billing\nprivate insurers",
-                   "Billing\nfor VFC\nadministration"),
-          main="Revenue sources")
+      red <- privateRevFun(totMem = sum(tempSchool$totMem, na.rm=TRUE), 
+                           vfcPer = weighted.mean(tempSchool$vfcPer,
+                                                  tempSchool$totMem,
+                                                  na.rm=TRUE),
+                           immRate = input$immRate,
+                           privDenRate = 100 - input$sucBill,
+                           privUnbillableRate = 5.123104,
+                           vfcDenRate = 20,
+                           privAvgRe = 39.39,
+                           vfcAvgRe = 5)
+      green <- vfcRevFun(totMem = sum(tempSchool$totMem, na.rm=TRUE), 
+                         vfcPer = weighted.mean(tempSchool$vfcPer,
+                                                tempSchool$totMem,
+                                                na.rm=TRUE),
+                         immRate = input$immRate,
+                         privDenRate = 100 - input$sucBill,
+                         privUnbillableRate = 5.123104,
+                         vfcDenRate = 20,
+                         privAvgRe = 39.39,
+                         vfcAvgRe = 5)
+      bp_elements <- c(red, green)
+      bp <- barplot(bp_elements,
+          names.arg=c("Billing\nprivate insurers",
+                   "Billing\nfor VFC"),
+          main="Revenue sources",
+          ylim = c(0, max(bp_elements)*1.1),
+          col = adjustcolor("darkgreen", alpha.f = 0.6))
+      
+      text(x = bp[,1],
+           y = bp_elements,
+           pos = 1,
+           col = adjustcolor("black", alpha.f = 0.6),
+           labels = paste0("$", round(bp_elements, digits = -2)))
+      text(x = bp[,1],
+           y = bp_elements,
+           pos = 3,
+           col = adjustcolor("black", alpha.f = 0.6),
+           labels = paste0(round(bp_elements/sum(bp_elements)*100), "%"))
+      
+      abline(h=seq(0, max(bp_elements), length = 5), 
+             col = adjustcolor("black", alpha.f = 0.2),
+             lty = 2)
+      
+      box("plot")
       
       
     })
@@ -633,10 +889,17 @@ shinyServer(
     # Generate an HTML table view of the data
     output$table1 <- renderDataTable({
       
+      if(input$var == "ENTIRE STATE"){
+        temp <- dfSchool
+      } else {
+        temp <- dfSchool[which(dfSchool$district == input$var),]
+      }
+      
+      temp <- temp[order(temp$totMem),]
       
       
-      dfSchool$Cost <- round(CostFun(totMem = dfSchool$totMem, 
-                                     vfcPer = dfSchool$vfcPer,
+      temp$Cost <- round(CostFun(totMem = temp$totMem, 
+                                     vfcPer = temp$vfcPer,
                                      immRate = input$immRate,
                                      privateVacCost = 17.5,
                                      delivCost = .05,
@@ -648,8 +911,8 @@ shinyServer(
                              digits=0)
       
       
-      dfSchool$Revenue <- round(RevFun(totMem = dfSchool$totMem, 
-                                       vfcPer = dfSchool$vfcPer,
+      temp$Revenue <- round(RevFun(totMem = temp$totMem, 
+                                       vfcPer = temp$vfcPer,
                                        immRate = input$immRate,
                                        privDenRate = 100 - input$sucBill,
                                        privUnbillableRate = 5.123104,
@@ -659,13 +922,13 @@ shinyServer(
                                 digits=0)
       
       
-      dfSchool$priv <- 100 - dfSchool$vfcPer
+      temp$priv <- 100 - temp$vfcPer
       
       
       ##############################
-      ### Make dfSchool2
+      ### Make temp2
       ##############################
-      dfSchool2 <- dfSchool[,c("district",
+      temp2 <- temp[,c("district",
                                "School",
                                "totMem",
                                "vfcPer",
@@ -673,29 +936,29 @@ shinyServer(
                                "Cost",
                                "Revenue")]
       
-      dfSchool2$vfcPer <- paste0(round(dfSchool2$vfcPer, digits=1), "%")
-      dfSchool2$priv <- paste0(round(dfSchool2$priv, digits=1), "%")
+      temp2$vfcPer <- paste0(round(temp2$vfcPer, digits=1), "%")
+      temp2$priv <- paste0(round(temp2$priv, digits=1), "%")
       
-      dfSchool2$totMem <- gsub(".00","",as.character(dfSchool2$totMem))
+      temp2$totMem <- gsub(".00","",as.character(temp2$totMem))
       
       
-      colnames(dfSchool2) <-
+      colnames(temp2) <-
         c("District", "School", "Students", "Percent VFC", 
           "Percent Private", "Cost",
           "Revenue")
       
-      dfSchool2$Net <- round(dfSchool2$Revenue - dfSchool2$Cost, digits=0)
+      temp2$Net <- round(temp2$Revenue - temp2$Cost, digits=0)
       
-      dfSchool2$Revenue <- paste0("$", dfSchool2$Revenue)
-      dfSchool2$Cost <- paste0("$", dfSchool2$Cost)
-      dfSchool2$Net <- paste0("$", dfSchool2$Net)
-      
-      
-      dfSchool2 <- dfSchool2[order(dfSchool2$School),]
+      temp2$Revenue <- paste0("$", temp2$Revenue)
+      temp2$Cost <- paste0("$", temp2$Cost)
+      temp2$Net <- paste0("$", temp2$Net)
       
       
+      temp2 <- temp2[order(temp2$District),]
       
-      data.frame(dfSchool2[which(dfSchool2$District == input$var),])
+      
+      
+      data.frame(temp2)
     })
     
     

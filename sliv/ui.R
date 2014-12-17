@@ -11,7 +11,7 @@ shinyUI(pageWithSidebar(
   sidebarPanel(
     
     "",
-    
+    # 
     tags$img(src="https://docs.google.com/drawings/d/1z5OtlqZ8ex1QhHDtsCOvYMM2WgFsYgD1onjSi-Kus40/pub?w=534&h=89", height="100px"),
     
     br(),
@@ -27,7 +27,7 @@ shinyUI(pageWithSidebar(
     
     selectInput("var", 
                 label = "Choose a county",
-                choices = c("ALACHUA","BAKER","BAY","BRADFORD",
+                choices = c("ENTIRE STATE", "ALACHUA","BAKER","BAY","BRADFORD",
                             "BREVARD","BROWARD","CALHOUN","CHARLOTTE",
                             "CITRUS","CLAY","COLLIER","COLUMBIA",
                             "DESOTO","DIXIE","DUVAL",
@@ -46,7 +46,7 @@ shinyUI(pageWithSidebar(
                             "ST. JOHNS","ST. LUCIE","SUMTER","SUWANNEE",
                             "TAYLOR","UNION","VOLUSIA",
                             "WAKULLA","WALTON","WASHINGTON"),
-                selected = "ALACHUA"),
+                selected = "ENTIRE STATE"),
     
     
     # IMMUNIZATION RATE
@@ -263,38 +263,38 @@ shinyUI(pageWithSidebar(
                
                
                
-      ),
+      )
       
-      tabPanel("Obtaining High Immunization Rates",
-               
-               
-               
-               p(paste("The first year of a program that distributes parental consent forms and immunizes those children who have signed forms achieve",
-                       "rates usually in the 15 - 25% range for elementary and middle schools, and lower rates for high schools. After several years of",
-                       "community awareness these rates reach the 30 - 40% range (Alabama, Hawaii and Gainesville private elementary schools).",
-                       "These rates are achieved with minimal disruption and involvement of school personnel,",
-                       "whether the immunization is provided by private companies or health departments. Achieving higher rates requires extra effort.")),
-               
-               p(paste("In Alachua County we have achieved 60% immunization rates in some elementary and middle schools and another 10 - 15% in physicians' offices",
-                       ", thus achieving the greater than 70% rate, predicted by mathematical modeling studies,",
-                       "to be sufficient to prevent flu outbreaks in the community (Longini IM, Jr. A Theoretic Framework to Consider the Effect of Immunizing Schoolchildren Against Influenza: Implications for Research. Pediatrics 2012; 129;S63-S67.). Two strategies have led to this result.",
-                       "The first is using a consent form that asks the parent to identify whether or not they want their child immunized, and requests that the form be returned irrespective of the answer.",
-                       "The second is to have the forms reviewed and to pursue non-returned forms.",
-                       "The optimal way to do this probably varies widely depending on community resources.",
-                       "Alachua is unique in having a nurse in every school, plus nursing and public health student volunteers. Were a county not to have volunteers, then \"Review and Pursue\" activities could be costly",
-                       "(which is why we've included a \"Review and Pursue\" slider on the main page).  One possibility for funding these activities would be to appoint a part-time flu program coordinator, selected by the principal, and paid depending on the number of students the coordinator is responsbile for.",
-                       "Such funds would help involved the schools in the program, and avoid the program being seen as an unfunded mandate. Another possibility is to reward teachers and/or classes that achieve 100% form return rates.",
-                       "Other possibilities include mobilizing local volunteers, such as parents and/or Medical Reserve Corps members to coordinate the program. ",
-                       "Given appropriate funding, the University of Florida Emerging Pathogens Institute is prepared to create an online training program for such coordinators.")),
-               
-               p(paste("To raise high school rates we have developed a one 50 minute class activity, taught by biology teachers, that almost doubles students intent to be immunized.",
-                       "It includes a \"Community Immunity card game\" that simulates a flu outbreak without and with 50% immunization rates.",
-                       "Students learn that getting immunized not only protect them, but their friend and family as well.  ",
-                       "The game and associated power point presentations are available at www.controlflu.com."))
-               
-               
-               
-      )   
+#       tabPanel("Obtaining High Immunization Rates",
+#                
+#                
+#                
+#                p(paste("The first year of a program that distributes parental consent forms and immunizes those children who have signed forms achieve",
+#                        "rates usually in the 15 - 25% range for elementary and middle schools, and lower rates for high schools. After several years of",
+#                        "community awareness these rates reach the 30 - 40% range (Alabama, Hawaii and Gainesville private elementary schools).",
+#                        "These rates are achieved with minimal disruption and involvement of school personnel,",
+#                        "whether the immunization is provided by private companies or health departments. Achieving higher rates requires extra effort.")),
+#                
+#                p(paste("In Alachua County we have achieved 60% immunization rates in some elementary and middle schools and another 10 - 15% in physicians' offices",
+#                        ", thus achieving the greater than 70% rate, predicted by mathematical modeling studies,",
+#                        "to be sufficient to prevent flu outbreaks in the community (Longini IM, Jr. A Theoretic Framework to Consider the Effect of Immunizing Schoolchildren Against Influenza: Implications for Research. Pediatrics 2012; 129;S63-S67.). Two strategies have led to this result.",
+#                        "The first is using a consent form that asks the parent to identify whether or not they want their child immunized, and requests that the form be returned irrespective of the answer.",
+#                        "The second is to have the forms reviewed and to pursue non-returned forms.",
+#                        "The optimal way to do this probably varies widely depending on community resources.",
+#                        "Alachua is unique in having a nurse in every school, plus nursing and public health student volunteers. Were a county not to have volunteers, then \"Review and Pursue\" activities could be costly",
+#                        "(which is why we've included a \"Review and Pursue\" slider on the main page).  One possibility for funding these activities would be to appoint a part-time flu program coordinator, selected by the principal, and paid depending on the number of students the coordinator is responsbile for.",
+#                        "Such funds would help involved the schools in the program, and avoid the program being seen as an unfunded mandate. Another possibility is to reward teachers and/or classes that achieve 100% form return rates.",
+#                        "Other possibilities include mobilizing local volunteers, such as parents and/or Medical Reserve Corps members to coordinate the program. ",
+#                        "Given appropriate funding, the University of Florida Emerging Pathogens Institute is prepared to create an online training program for such coordinators.")),
+#                
+#                p(paste("To raise high school rates we have developed a one 50 minute class activity, taught by biology teachers, that almost doubles students intent to be immunized.",
+#                        "It includes a \"Community Immunity card game\" that simulates a flu outbreak without and with 50% immunization rates.",
+#                        "Students learn that getting immunized not only protect them, but their friend and family as well.  ",
+#                        "The game and associated power point presentations are available at www.controlflu.com."))
+#                
+#                
+#                
+#       )   
       
                )
     
