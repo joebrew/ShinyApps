@@ -631,7 +631,7 @@ shinyServer(
     
     
     # Generate an HTML table view of the data
-    output$table1 <- renderTable({
+    output$table1 <- renderDataTable({
       
       
       

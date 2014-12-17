@@ -160,7 +160,7 @@ shinyUI(pageWithSidebar(
                textOutput("text5"),
                textOutput("text6"),
                textOutput("text6b"),
-               tableOutput("table1")
+               dataTableOutput("table1")
       ),
       
       tabPanel("Details",
