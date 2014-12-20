@@ -8,13 +8,19 @@
 library(shiny)
 library(rCharts)
 
+root <- getwd() #"/home/joebrew/Documents/ShinyApps/sliv2"
+setwd(root)
+
 shinyUI(fluidPage(
 
   # Application title
-  titlePanel("F2s"),
+  titlePanel("SLIV Florida"),
 
   # Sidebar with a slider input for number of bins
   sidebarLayout(
+    
+
+    
     sidebarPanel(
       
       selectInput("county", 
@@ -60,9 +66,8 @@ shinyUI(fluidPage(
         
         tabPanel("Map 2", tags$style('.leaflet {height: 400px;}'),showOutput('myChart2', 'leaflet')),
         
-        #tabPanel("Map 3", tags$style('.leaflet {height: 400px;}'),showOutput('myChart3', 'leaflet'))
-        tabPanel("Map 3", mapOutput('myChart3'))
-
+        tabPanel("Map 3", 
+                 htmlOutput("help"))
         )
       )
   )

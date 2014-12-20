@@ -25,7 +25,7 @@ require(rCharts)
 #####
 schools <- read.csv("schools.csv")
 
-shinyServer(function(input, output) {
+shinyServer(function(input, output, session) {
   
 
   
@@ -119,47 +119,66 @@ download_dir<-paste0(getwd(), "/counties")
 file_name <- list.files(download_dir, pattern=".shp", full.names=FALSE)
 file_name <- gsub(".shp", "", file_name)
 
+www_dir <- paste0(getwd(), "/www")
+
 #  Write data to GeoJSON
-leafdat <- paste(download_dir, "/", file_name, ".geojson", sep="") 
-zipgj <- toGeoJSON(data = fl, dest = paste0(getwd(),"/output"))
+leafdat <- paste(www_dir, "/", file_name, ".geojson", sep="") 
+zipgj <- toGeoJSON(data = fl, dest = paste0(getwd(),"/www"))
 
 #####
 # ESTABLISH CHOROPLETH PARAMETERS
 #####
 #  Create the cuts
-cuts<-round(quantile(fl$var, probs = seq(0, 1, 0.20), na.rm = FALSE), 0)
+cuts <- round(quantile(fl$var, probs = seq(0, 1, 0.20), na.rm = FALSE), 0)
 cuts[1] <- 0 #  for this example make first cut zero
 
 #  Fields to include in the popup
-popup <- c("NAME", "var")
+popup <- c("NAME", "var", "x_centroid", "y_centroid")
 
 #  Gradulated style based on an attribute
 sty <- styleGrad(prop="var", breaks=cuts, right=FALSE, style.par="col",
                  style.val=brewer.pal(5, "Reds"), leg="var", lwd=1)
 
-#####
-# CREATE LEAFLET CLASS MAP OBJECT
-#####
-output$myChart3 <- renderMap({
-  
-  #  Create the map and load into browser
-  leaflet(data=zipgj, dest=download_dir, style=sty,
-                 title="index", base.map=c("mqsat", "osm", "tls", "mqosm", "toner", "water"), 
-                 incl.data=TRUE,  popup=popup)
-  
-# #   mymap <- Leaflet$new()
+
+#output$myChart3 <- renderMap({
+#   mymap <- Leaflet$new()
 #   mymap$tileLayer(provider = "Stamen.TonerLite")
 #   mymap$setView(c(27.85, -81.3), zoom = 6)
 #   mymap$enablePopover(TRUE)
 #   #     mymap$marker(c(51.5, -0.09), bindPopup = "Hi. I am a popup")
 #   #     mymap$marker(c(51.495, -0.083), bindPopup = "Hi. I am another popup")
 #   #     
-#    mymap$set(dom = 'myChart3')
+#   mymap$set(dom = 'myChart3')
   
+  #  Create the map and load into browser
+
+leaflet(data=zipgj, dest=www_dir, style=sty,
+        title="index", base.map=c("mqsat", "osm", "tls", "mqosm", "toner", "water"), 
+        incl.data=TRUE,  popup=popup,
+        controls=c("zoom", "scale"))
+
+addResourcePath("library", paste0(root, "/www/index"))
+output$help <- renderUI({
+  tags$iframe(
+    seamless="seamless",
+    src="library/index.html",
+    height = "600",
+    width = "100%")
 })
 
+# getPage<-function() {
+#   return(includeHTML(paste0(root, "/www/index/index.html")))
+# }
+# output$inc<-renderUI({getPage()})
+
+
   
- 
+#   map
+# })
+
+
+
+
 
 output$downloadData1 <- downloadHandler(
   
