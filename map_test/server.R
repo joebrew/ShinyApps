@@ -1,31 +1,25 @@
-
-  
 library(leaflet)
 library(RColorBrewer)
 library(maps)
 library(ggplot2)
 library(rgdal)
+library(leafletR)
+library(rgeos) #for simplification
+library(sp)
+library(ggmap)
 
+################## NEW STUFF
 rm(list = ls())
 
-# fl <- readOGR("counties", "FCTY2")
-# 
-# # convert to lat lon
-# fl <- spTransform(fl, CRS("+init=epsg:4326"))  
-# 
-# # get x and y
-# # fl$x <- coordinates(fl)[,1]
-# # fl$y <- coordinates(fl)[,2]
-# fl$id <- 1:67
-# fl_df <- fortify(fl, region = "id")
-# each_county <- fl#split(fl_df, fl_df$group)
 
+################## MY STUFF
+rm(list = ls())
 
 fl <- map("county","fl", plot=FALSE, fill=TRUE)
 fl$names <- gsub(":|florida,|main", "", fl$names ) 
 fl$names <- gsub("spit", "", fl$names)
 fl_df <- fortify(fl, region = 'id')
-#each_county <- split(fl_df, fl_df$region)
+each_county <- split(fl_df, fl_df$region)
 
 shinyServer(function(input, output, session) {
   map <- createLeafletMap(session, "map")
@@ -61,18 +55,20 @@ shinyServer(function(input, output, session) {
       return()
     }
     
-    stateOver <- eachState[[eventOver$id]]
+    stateOver <- each_county[[eventOver$id]]
     map$addPolygon(stateOver$lat, stateOver$long, 'sameID') 
     output$eventOverInfo <- renderPrint({(eventOver$id)})    
   })
 })
 
 
-rm(list = ls())
-states <- map("state", plot=FALSE, fill=TRUE)
-states$names <- gsub(':', '.', states$names ) 
-statesDF <- fortify(states, region = 'id')
-eachState <- split(statesDF, statesDF$region)
+
+######### ORIGINAL TEMPLATE
+# rm(list = ls())
+# states <- map("state", plot=FALSE, fill=TRUE)
+# states$names <- gsub(':', '.', states$names ) 
+# statesDF <- fortify(states, region = 'id')
+# eachState <- split(statesDF, statesDF$region)
 
 # shinyServer(function(input, output, session) {
 #   map <- createLeafletMap(session, "map")
