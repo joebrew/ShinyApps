@@ -44,7 +44,7 @@ shinyUI(fluidPage(
                               "ST. JOHNS","ST. LUCIE","SUMTER","SUWANNEE",
                               "TAYLOR","UNION","VOLUSIA",
                               "WAKULLA","WALTON","WASHINGTON"),
-                  selected = "ENTIRE STATE"),
+                  selected = "ALACHUA"),
       
       # IMMUNIZATION RATE
       sliderInput("ir", 

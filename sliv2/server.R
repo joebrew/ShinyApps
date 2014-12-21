@@ -1,10 +1,4 @@
-
-# This is the server logic for a Shiny web application.
-# You can find out more about building applications with Shiny here:
-#
-# http://shiny.rstudio.com
-#
-
+#####
 # ATTACH LIBRARIES (some of these need to be installed from github, jcheng, ramnathv, etc.)
 #####
 library(leaflet)
@@ -19,16 +13,13 @@ library(ggmap)
 require(shiny)
 require(rCharts)
 
-
 #####
 # READ IN GEOCODED SCHOOL DATA
 #####
 schools <- read.csv("schools.csv")
 
 shinyServer(function(input, output, session) {
-  
-
-  
+    
 #   ########
 #   mydata <- reactive({
 #     farm[which(farm$month == input$month),]
@@ -50,7 +41,6 @@ shinyServer(function(input, output, session) {
     
 mymap
   })
-
 
 ############
 # LEAFLET MAP 2
@@ -138,67 +128,35 @@ popup <- c("NAME", "var", "x_centroid", "y_centroid")
 #  Gradulated style based on an attribute
 sty <- styleGrad(prop="var", breaks=cuts, right=FALSE, style.par="col",
                  style.val=brewer.pal(5, "Reds"), leg="var", lwd=1)
-
-
-#output$myChart3 <- renderMap({
-#   mymap <- Leaflet$new()
-#   mymap$tileLayer(provider = "Stamen.TonerLite")
-#   mymap$setView(c(27.85, -81.3), zoom = 6)
-#   mymap$enablePopover(TRUE)
-#   #     mymap$marker(c(51.5, -0.09), bindPopup = "Hi. I am a popup")
-#   #     mymap$marker(c(51.495, -0.083), bindPopup = "Hi. I am another popup")
-#   #     
-#   mymap$set(dom = 'myChart3')
-  
-  #  Create the map and load into browser
-
+#####
+# GENERATE HTML FILE WITH LEAFLET MAP
+#####
 leaflet(data=zipgj, dest=www_dir, style=sty,
         title="index", base.map=c("mqsat", "osm", "tls", "mqosm", "toner", "water"), 
         incl.data=TRUE,  popup=popup,
         controls=c("zoom", "scale"))
 
+# Define path to html file
 addResourcePath("library", paste0(root, "/www/index"))
+
+# Render html leaflet map into iframe
 output$help <- renderUI({
   tags$iframe(
     seamless="seamless",
+    #src = "https://localhost://www/index/index.html", # doesn't work
     src="library/index.html",
     height = "600",
     width = "100%")
 })
 
-# getPage<-function() {
-#   return(includeHTML(paste0(root, "/www/index/index.html")))
-# }
-# output$inc<-renderUI({getPage()})
-
-
-  
-#   map
-# })
-
-
-
 
 
 output$downloadData1 <- downloadHandler(
-  
-  
   filename = function() { paste(input$county, '.csv', sep='') },
   content = function(file) {
     write.csv(mydata_goodcolumns(), file)
   }
 )
 
-
-###########
-
-output$downloadData2 <- downloadHandler(
-
-  
-  filename = function() { paste("all_months", '.csv', sep='') },
-  content = function(file) {
-    write.csv(farm2, file)
-  }
-)
 
 })
