@@ -17,6 +17,8 @@ library(dplyr)
 # Load image for faster running
 load("model.RData")
 
+#
+
 # ##############################
 # ##1. write the model (with personnel costs)
 # ##############################
