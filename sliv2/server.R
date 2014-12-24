@@ -12,6 +12,7 @@ library(sp)
 library(ggmap)
 require(shiny)
 require(rCharts)
+library(leafletR)
 
 #####
 # READ IN GEOCODED SCHOOL DATA
@@ -133,20 +134,20 @@ sty <- styleGrad(prop="var", breaks=cuts, right=FALSE, style.par="col",
 #####
 leaflet(data=zipgj, dest=www_dir, style=sty,
         title="index", base.map=c("mqsat", "osm", "tls", "mqosm", "toner", "water"), 
-        incl.data=TRUE,  popup=popup,
-        controls=c("zoom", "scale"))
+        incl.data=TRUE,  popup=popup)
 
 # Define path to html file
 addResourcePath("library", paste0(root, "/www/index"))
 
 # Render html leaflet map into iframe
 output$help <- renderUI({
-  tags$iframe(
-    seamless="seamless",
-    #src = "https://localhost://www/index/index.html", # doesn't work
-    src="library/index.html",
-    height = "600",
-    width = "100%")
+  tags$script("library/index.html")
+#   tags$iframe(
+#     seamless="seamless",
+#     #src = "https://localhost://www/index/index.html", # doesn't work
+#     src="library/index.html",
+#     height = "600",
+#     width = "100%")
 })
 
 
