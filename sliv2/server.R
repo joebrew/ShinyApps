@@ -141,10 +141,12 @@ addResourcePath("library", paste0(root, "/www/index"))
 
 # Render html leaflet map into iframe
 output$help <- renderUI({
-  tags$script("library/index.html")
+
+  div(includeHTML(paste0(root, "/www/index/index.html")))
+  
+  # only works locally
 #   tags$iframe(
 #     seamless="seamless",
-#     #src = "https://localhost://www/index/index.html", # doesn't work
 #     src="library/index.html",
 #     height = "600",
 #     width = "100%")
