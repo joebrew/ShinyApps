@@ -9,6 +9,7 @@ shinyServer(function(input, output) {
     downloadHandler(filename = "report.pdf",
                     content = function(file){
                       # generate PDF
+                      Sweave2knitr("report.Rnw", "report.Rnw")
                       knit2pdf("report.Rnw")
                       
                       # copy pdf to 'file'

@@ -13,8 +13,9 @@ shinyUI(pageWithSidebar(
                br(),
                
                "The source code is available on ",
-               a(href = "https://github.com/joebrew/ShinyApps",
+               a(href = "https://github.com/joebrew/ShinyApps/tree/master/minimal",
                  "GitHub."),
+               br(),
                downloadButton("downloadPDF", "Download your report, you asshole!")
   ),
   
