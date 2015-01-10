@@ -1,0 +1,44 @@
+%\documentclass[17pt]{extarticle}
+\documentclass[17pt]{article}
+
+\pagestyle {empty}
+
+\begin{document}
+%\SweaveOpts{concordance=TRUE}
+
+% \title{random title}
+% \maketitle
+
+\begin{center}
+\begin{large}
+\textbf{Eric's favorite things}
+\end{large}
+\end{center}
+
+Eric's favorite fish is a \Sexpr{input$fish}. \\
+
+Eric's favorite color is \Sexpr{as.character(input$color)}.  \\
+
+Eric's favorite number is \Sexpr{input$number}.  Here is a stupid barplot showing Eric's stupid favorite number:
+
+
+<<echo = FALSE, fig = TRUE>>=
+
+my_colors <- rep("grey", 10)
+my_colors[input$number] <- "pink"
+barplot(1:10, col = my_colors,
+        names.arg = 1:10)
+box("plot")
+legend("topleft",
+       fill = c("pink", "grey"),
+       legend = c("Favorite number", "Other numbers"))
+
+
+@
+
+This report was generated on \Sexpr{format(Sys.Date(), format = "%B %d, %Y")}. \\
+
+
+This report was authored by \Sexpr{Sys.info()["user"]} and generated on a \Sexpr{paste(Sys.info()["sysname"], Sys.info()["release"], Sys.info()["machine"])} machine.
+
+\end{document}
