@@ -1,0 +1,16 @@
+\documentclass{article}
+
+\begin{document}
+
+<<include=FALSE>>=
+library(knitr)
+opts_chunk$set(
+concordance=TRUE
+)
+@
+
+
+Bangarang methods test
+
+
+\end{document}
