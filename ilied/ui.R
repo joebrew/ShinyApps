@@ -9,7 +9,7 @@ library(shiny)
 shinyUI(fluidPage(
   
   # Application title
-  titlePanel("SLIV programs can save money and lives in Florida"),
+  titlePanel("SLIV programs save money and lives"),
   
   # Sidebar with a slider input for number of bins
   sidebarLayout(
@@ -81,7 +81,72 @@ shinyUI(fluidPage(
                     value = FALSE),
         helpText("Check the above box to show what would happen if the county/state achieved Alachua's pediatric immunization levels")
         
-      )),
+      ),
+      
+      conditionalPanel(
+        condition = "input.tabs == 'Billing and sustainability'",
+        
+        selectInput("var", 
+                    label = "Choose a county",
+                    choices = c("ENTIRE STATE", "ALACHUA","BAKER","BAY","BRADFORD",
+                                "BREVARD","BROWARD","CALHOUN","CHARLOTTE",
+                                "CITRUS","CLAY","COLLIER","COLUMBIA",
+                                "DESOTO","DIXIE","DUVAL",
+                                "ESCAMBIA",
+                                "FLAGLER","FRANKLIN",
+                                "GADSDEN","GILCHRIST",
+                                "GLADES","GULF","HAMILTON","HARDEE",
+                                "HENDRY","HERNANDO","HIGHLANDS","HILLSBOROUGH",
+                                "HOLMES","INDIAN RIVER","JACKSON","JEFFERSON",
+                                "LAFAYETTE","LAKE","LEE","LEON","LEVY",
+                                "LIBERTY","MADISON","MANATEE","MARION",
+                                "MARTIN","MIAMI-DADE","MONROE","NASSAU",
+                                "OKALOOSA","OKEECHOBEE","ORANGE","OSCEOLA",
+                                "PALM BEACH","PASCO","PINELLAS","POLK",
+                                "PUTNAM","SANTA ROSA","SARASOTA","SEMINOLE",
+                                "ST. JOHNS","ST. LUCIE","SUMTER","SUWANNEE",
+                                "TAYLOR","UNION","VOLUSIA",
+                                "WAKULLA","WALTON","WASHINGTON"),
+                    selected = "ENTIRE STATE"),
+        
+        # IMMUNIZATION RATE
+        sliderInput("immRate", 
+                    label=strong("Projected immunization rate:"), 
+                    min=0, max=100, value=30),
+        helpText("(usually 10-60%)", align="center"),
+        br(),
+        
+        # SUCCESSFUL BILLING RATE    
+        sliderInput("sucBill", 
+                    label = strong("Successful (private) billing rate"),
+                    min = 0, max = 100, value = 88),
+        helpText("(80-90% if you pre-emptively arrange contracts)"),
+        br(),
+        
+        
+        # REVIEW AND PURSUE COSTS
+        sliderInput("randp", 
+                    label=strong("\'Review and pursue\' cost per enrolled student"), 
+                    min=0, max=5, value=1, step = 0.1),
+        
+        helpText(paste(
+          "\'Review and pursue\' refers to the (time-consuming) act of",
+          "contacting families with an unreturned consent form to ensure that",
+          "they had a chance to consider having their child immunized.",
+          "In our experience, achieving an immunization rate of greater than 30%,",
+          "requires that $1-2 per enrolled student be spent on",
+          "\'Review and pursue\' activites."
+        ),
+        helpText("___________"),
+        
+        p("joseph.brew@flhealth.gov"),
+        tags$div(
+          HTML("<a href='https://joebrew.shinyapps.io/sliv'>Main statewide SLIV page</a>")
+        )
+        
+      )
+      )
+      ),
         
 
     # Show a plot of the generated distribution
@@ -128,6 +193,14 @@ shinyUI(fluidPage(
                            plotOutput("plot4"),
                            plotOutput("plot5"),
                            p("Cuc H. Tran, Jonathan D. Sugimoto, Juliet R. C. Pulliam, Kathleen A. Ryan, Paul D. Myers, Joan B. Castleman, Randell Doty, Jackie Johnson, Jim Stringfellow, Nadia Kovacevich, Joe Brew, Lai Ling Cheung, Brad Caron, Gloria Lipori, Christopher A. Harle, Charles Alexander, Yang Yang, Ira M. Longini, M. Elizabeth Halloran, J. Glenn Morris, Parker A. Small. School-Located Influenza Vaccination Reduces Community Risk for Influenza and Influenza-Like Illness Emergency Care Visits. PLoS ONE, 2014; 9 (12): e114479 DOI: 10.1371/journal.pone.0114479")
+                           
+                           
+                  ),
+                  
+                  tabPanel("Billing and sustainability",
+                           h4("Under construction."),
+                           plotOutput("bill1"),
+                           plotOutput("bill2")
                            
                            
                   )
