@@ -88,9 +88,21 @@ shinyUI(fluidPage(
     mainPanel(
       tabsetPanel(id="tabs",
                   tabPanel("Introduction",
-                           h4("Both mathematical projections and real-world observation show that immunizing youth is the best way to protect the entire community from influenza outbreaks."),
+                           h4(paste("Both mathematical projections and real-world observation", 
+                                     "show that immunizing youth is the best way to protect the",  
+                                     "entire community from influenza outbreaks.")),
+                           br(),
+                           h4(paste("Click on the 'Mathematical projections' tab to see what",
+                                    "kind of savings could be made at the state level",
+                                    "according to statistical models.")),
+                           h4(paste("Click on the 'Alachua-based projections' tab to see",
+                                    "what could happen if all counties had ILI ED rates similar",
+                                    "to Alachua.")),
+                           
+                           br(),
+                           h3("Overview of Alachua's 'Control Flu' program"),
                            tags$div(
-                             HTML('<iframe src="<iframe src="https://docs.google.com/presentation/d/1U5by_VrMm5ubla4Sa0HXbTUmUfss66Skgr3CnsTf_xo/embed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="749" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>')
+                             HTML('<iframe src="https://docs.google.com/presentation/d/1U5by_VrMm5ubla4Sa0HXbTUmUfss66Skgr3CnsTf_xo/embed?start=false&loop=false&delayms=3000" frameborder="0" width="480" height="389" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>')
                            )
                           #htmlOutput("motionchart1") 
                           ),
