@@ -145,7 +145,17 @@ shinyUI(fluidPage(
         )
         
       )
+      ),
+      
+      conditionalPanel(
+        condition = "input.tabs == 'Absenteeism'",
+        p("joseph.brew@flhealth.gov"),
+        tags$div(
+          HTML("<a href='https://joebrew.shinyapps.io/sliv'>Main statewide SLIV page</a>")
+        )        
       )
+      
+      
       ),
         
 
@@ -189,7 +199,12 @@ shinyUI(fluidPage(
                   tabPanel("Alachua-based projections",
                            h4("As described in a recently published article (Tran et al, 2014), Alachua County's high pediatric immunization rates have lead to significant reductions in emergency room visits for influenza-like illness."),
                            br(),
-                           h5("Visualize the current rate of ED visits for ILI by county, as well as the potential savings if all counties could achieve Alachua's success:"),
+                           h5(paste("Visualize the current rate of ED visits for ILI by county,", 
+                                    "as well as the potential savings if all counties could", 
+                                    "achieve Alachua's success")),
+                           h6(paste("Note that for privacy purposes, the age-specific 'observed' values are simply",
+                                    "each counties' share of the statewide rates (and may not",
+                                    "accurately reflect that counties true rate).")),
                            plotOutput("plot4"),
                            plotOutput("plot5"),
                            p("Cuc H. Tran, Jonathan D. Sugimoto, Juliet R. C. Pulliam, Kathleen A. Ryan, Paul D. Myers, Joan B. Castleman, Randell Doty, Jackie Johnson, Jim Stringfellow, Nadia Kovacevich, Joe Brew, Lai Ling Cheung, Brad Caron, Gloria Lipori, Christopher A. Harle, Charles Alexander, Yang Yang, Ira M. Longini, M. Elizabeth Halloran, J. Glenn Morris, Parker A. Small. School-Located Influenza Vaccination Reduces Community Risk for Influenza and Influenza-Like Illness Emergency Care Visits. PLoS ONE, 2014; 9 (12): e114479 DOI: 10.1371/journal.pone.0114479")
@@ -198,11 +213,12 @@ shinyUI(fluidPage(
                   ),
                   
                   tabPanel("Billing and sustainability",
-                           h4("Under construction."),
+                           h4("If administered efficiently, a program can pay for itself."),
                            plotOutput("bill1"),
-                           plotOutput("bill2")
-                           
-                           
+                           plotOutput("bill2")       
+                  ),
+                  tabPanel("Absenteeism",
+                           h4("Under construction.")       
                   )
                   
                   
