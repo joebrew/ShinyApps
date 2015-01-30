@@ -10,21 +10,56 @@ library(shiny)
 shinyUI(fluidPage(
 
   # Application title
-  titlePanel("Old Faithful Geyser Data"),
+  titlePanel("After care"),
 
   # Sidebar with a slider input for number of bins
   sidebarLayout(
     sidebarPanel(
-      sliderInput("bins",
-                  "Number of bins:",
-                  min = 1,
-                  max = 50,
-                  value = 30)
+      selectInput("student",
+                  "Student:",
+                  c('AMMALIA',
+                  'AUDREY',
+                  'AUGUSTUS',
+                  'AVI',
+                  'BENNETT',
+                  'BRADEN',
+                  'CASEY',
+                  'DEVONEY',
+                  'DIGBY',
+                  'EILIN',
+                  'ELEANOR',
+                  'GRADY',
+                  'HUDSON',
+                  'JAELYN',
+                  'JOJO',
+                  'JONAS',
+                  'KATE',
+                  'LAUTARO',
+                  'LAYLA',
+                  'LEILA',
+                  'MAX',
+                  'NAOMI GOBLE',
+                  'NATHAN GOBLE',
+                  'OWEN H',
+                  'OWEN R',
+                  'PHETHRA',
+                  'QUENTIN',
+                  'SAWYER',
+                  'SAWYER ',
+                  'SIMINI',
+                  'TALEA',
+                  'TAYEKO',
+                  'TOMMY',
+                  'ZOLTHAN')),
+      checkboxInput("show_vals",
+                    "Show dollar amount",
+                    value = FALSE)
     ),
 
     # Show a plot of the generated distribution
     mainPanel(
-      plotOutput("distPlot")
+      plotOutput("distPlot"),
+      tableOutput("table")
     )
   )
 ))
