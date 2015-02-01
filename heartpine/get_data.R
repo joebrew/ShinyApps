@@ -10,28 +10,28 @@ roster_link <- "https://docs.google.com/spreadsheets/d/1xjNKkqKghhI_kY76CSph9W_j
 #####
 # DEFINE FUNCTION TO READ DATA FROM https://docs.google.com/spreadsheets/d/1X6Zj3GqwjVAjiYYk_eMoeW4txWi9pmEHd0mqhbk1br4/pubhtml?gid=187478485&single=true
 #####
-# get_google <- function(myLink){
-#   csvLink <- gsub("/pubhtml", "/export?&format=csv", myLink)
-#   myCsv <- getURL(csvLink)
-#   df <- read.csv(textConnection(myCsv), stringsAsFactors = FALSE)
-#   if("date" %in% names(df)){
-#     #df$date <- as.Date(df$date, format = "%m/%d/%Y")
-#   }
-#   df$name <- toupper(df$name)
-#   return(df)
-# }
-# 
+get_google <- function(myLink){
+  csvLink <- gsub("/pubhtml", "/export?&format=csv", myLink)
+  myCsv <- getURL(csvLink)
+  df <- read.csv(textConnection(myCsv), stringsAsFactors = FALSE)
+  if("date" %in% names(df)){
+    #df$date <- as.Date(df$date, format = "%m/%d/%Y")
+  }
+  df$name <- toupper(df$name)
+  return(df)
+}
+
 
 #####
 # READ IN DATA
 #####
-# stay <- get_google(stay_link)
-# pay <- get_google(pay_link)
-# roster <- get_google(roster_link)
+stay <- get_google(stay_link)
+pay <- get_google(pay_link)
+roster <- get_google(roster_link)
+# stay <- read.csv("jan30/stay.csv")
+# pay <- read.csv("jan30/pay.csv")
+# roster <- read.csv("jan30/roster.csv")
 
-stay <- read.csv("jan30/stay.csv")
-pay <- read.csv("jan30/pay.csv")
-roster <- read.csv("jan30/roster.csv")
 
 #####
 # Clean up
@@ -57,7 +57,8 @@ roster$name <- Recode(roster$name,
                       "
                       'NATHAN' = 'NATHAN GOBLE';
                       'NAOMI' = 'NAOMI GOBLE';
-                      'ZOLTAHN' = 'ZOLTHAN'
+                      'ZOLTAHN' = 'ZOLTHAN';
+                      'SAWYER ' = 'SAWYER'
                       ")
 
 # Merge roster to stay
@@ -109,7 +110,7 @@ for (j in unique(sort(stay$name))){
   # Now deal with other months
   if(nrow(newyear) > 0){
     newyear$price <- 
-      get_new_price(df = nosep)
+      get_new_price(df = newyear)
   }
   
   # Combine all three pay periods together
@@ -117,4 +118,14 @@ for (j in unique(sort(stay$name))){
   
   # Merge into df
   df <- rbind(df, new_df)
+}
+
+#### GET PAYMENTS
+paid <- function(name){
+  sum(pay$amount[which(pay$name == name)], na.rm = TRUE)
+}
+
+payment_df <- function(name){
+  temp <- pay[which(pay$name == name),]
+  return(temp)
 }

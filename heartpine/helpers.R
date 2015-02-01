@@ -141,12 +141,19 @@ visualize <- function(name, data = df, show_vals = FALSE){
        label_days[which(!is.na(time))],
        tick= FALSE,
        line = -1,
-       cex.axis = 0.5)
+       cex.axis = 0.85)
   axis(side = 1,
        at = bp[which(label_days == 15),1],
        labels = label_months,
        line = 0,
        tick = FALSE)
+  
+  # TOTALS
+  title(main = paste0("Total: $", sum(data$price, na.rm = TRUE), "\n",
+                      "Paid: $", paid(name), "   |   ",
+                      "Due: $", sum(data$price, na.rm = TRUE) - paid(name)),
+        col = adjustcolor("darkred", alpha.f = 0.7),
+        cex.main = 1.4)
   
   # Add values
   if(show_vals){
@@ -157,15 +164,7 @@ visualize <- function(name, data = df, show_vals = FALSE){
          labels = data$price,
          pos = 3,
          col = adjustcolor("black", alpha.f = 0.6),
-         cex = 0.5)
-    
-    # total in upper right
-    legend(x = "topright",
-           pch = NA,
-           legend = paste0("Total: $", sum(data$price, na.rm = TRUE)),
-           bty = "n",
-           col = adjustcolor("darkred", alpha.f = 0.7),
-           cex = 2)
+         cex = 0.8)
   }
   
   #   # Draw supposed pickup time
@@ -173,4 +172,6 @@ visualize <- function(name, data = df, show_vals = FALSE){
          lty = 1,
          col = adjustcolor("white", alpha.f = 0.5))
 
+
+  
 }

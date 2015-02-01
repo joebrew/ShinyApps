@@ -23,7 +23,7 @@ shinyUI(fluidPage(
                   'AVI',
                   'BENNETT',
                   'BRADEN',
-                  'CASEY',
+                  'KASEY',
                   'DEVONEY',
                   'DIGBY',
                   'EILIN',
@@ -37,29 +37,32 @@ shinyUI(fluidPage(
                   'LAUTARO',
                   'LAYLA',
                   'LEILA',
-                  'MAX',
+                  'MAXWELL',
                   'NAOMI GOBLE',
                   'NATHAN GOBLE',
                   'OWEN H',
                   'OWEN R',
                   'PHETHRA',
                   'QUENTIN',
+                  'RILEY',
                   'SAWYER',
-                  'SAWYER ',
                   'SIMINI',
                   'TALEA',
                   'TAYEKO',
                   'TOMMY',
-                  'ZOLTHAN')),
+                  'ZOLTAHN')),
       checkboxInput("show_vals",
                     "Show dollar amount",
+                    value = TRUE),
+      checkboxInput("show_payments",
+                    "Show Payments",
                     value = FALSE)
     ),
 
     # Show a plot of the generated distribution
     mainPanel(
       plotOutput("distPlot"),
-      tableOutput("table")
+      dataTableOutput("table")
     )
   )
 ))
