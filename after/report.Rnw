@@ -1,0 +1,70 @@
+%\documentclass[17pt]{extarticle}
+\documentclass[17pt]{article}
+
+\pagestyle{empty}
+
+\begin{document}
+
+<<include=FALSE>>=
+library(knitr)
+opts_chunk$set(
+concordance=TRUE
+)
+@
+
+%\SweaveOpts{concordance=TRUE}
+
+% \title{random title}
+% \maketitle
+
+\begin{center}
+\begin{large}
+\textbf{\Sexpr{paste0(input$student)}}
+\end{large}
+\end{center}
+
+<<echo = FALSE>>=
+library(xtable)
+@
+
+<<echo = FALSE>>=
+visualize(input$student, data = df, show_vals = input$show_vals)
+@
+
+<<eval = TRUE, results='asis', echo = FALSE>>=
+x <- df[which(df$name == input$student),]
+      #x$date <- as.character(x$date)
+      x$time <- paste0(x$time_hour,":", x$time_minute)
+      x <- x[,c("date", "time", "pre_paid", "price")]
+      x$time[which(nchar(x$time) == 3)] <- paste0(x$time[which(nchar(x$time) == 3)], "0")
+      x$date <- format(x$date, format = "%b %d, %Y")
+      x$price <- paste0("$", x$price)
+      row.names(x) <- NULL
+      
+print(xtable(x, caption = "After care history"), include.row.names = FALSE)
+@
+
+<<eval = TRUE, results='asis', echo = FALSE>>=
+      x <- payment_df(input$student)
+      if(nrow(x) > 0 ){
+        x$amount <- paste0("$", x$amount)
+        x$date <- format(x$date, format = "%b %d, %Y")
+        x$name <- NULL
+        #names(x)[3] <- "amount paid"
+        #x$date <- as.character(x$date)
+        
+        row.names(x) <- NULL
+      } else{
+        x <- data.frame("Status" = "No payments on record")
+      }
+      
+print(xtable(x, caption = "Payment history"), include.row.names = FALSE)
+@
+
+
+% This report was generated on \Sexpr{format(Sys.Date(), format = "%B %d, %Y")}. \\
+% 
+% 
+% This report was authored by \Sexpr{Sys.info()["user"]} and generated on a \Sexpr{paste(Sys.info()["sysname"], Sys.info()["release"], Sys.info()["machine"])} machine.
+
+\end{document}

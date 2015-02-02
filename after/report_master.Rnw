@@ -1,0 +1,66 @@
+%\documentclass[17pt]{extarticle}
+\documentclass[17pt]{article}
+%\usepackage{geometry}
+
+\pagestyle{empty}
+
+\begin{document}
+
+<<include=FALSE>>=
+library(knitr)
+opts_chunk$set(
+concordance=TRUE
+)
+@
+
+
+%\SweaveOpts{concordance=TRUE}
+
+% \title{random title}
+% \maketitle
+%\newgeometry{margin=1cm}
+
+\begin{center}
+\begin{large}
+\textbf{Master report}
+\end{large}
+\end{center}
+
+<<echo = FALSE>>=
+library(xtable)
+library(dplyr)
+@
+
+<<eval = TRUE, results='asis', echo = FALSE>>=
+
+x <- df %>% group_by(name) %>%
+  summarise("total_price" = sum(price, na.rm = TRUE))
+y <- pay %>% group_by(name) %>%
+  summarise("total_paid" = sum(amount, na.rm = TRUE))
+x <- left_join(x = x,
+               y = y,
+               by = "name")
+x$total_paid[which(is.na(x$total_paid))] <- 0
+x$due <- x$total_price - x$total_paid
+print(xtable(x, caption = "All students"), include.row.names = FALSE, size = "\\tiny",
+      caption.placement = getOption("xtable.caption.placement", "top"))
+
+@
+
+<<eval = TRUE, results='asis', echo = FALSE>>=
+x <- apply(x[,-1], 2, sum)
+x <- data.frame(x)
+
+print(xtable(x, caption = "Totals"), include.row.names = FALSE, size = "\\tiny",
+      caption.placement = getOption("xtable.caption.placement", "top"))
+
+@
+
+
+
+% This report was generated on \Sexpr{format(Sys.Date(), format = "%B %d, %Y")}. \\
+% 
+% 
+% This report was authored by \Sexpr{Sys.info()["user"]} and generated on a \Sexpr{paste(Sys.info()["sysname"], Sys.info()["release"], Sys.info()["machine"])} machine.
+
+\end{document}

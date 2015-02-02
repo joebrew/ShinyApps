@@ -31,12 +31,15 @@ shinyServer(function(input, output) {
       x
     } else{
       x <- payment_df(input$student)
-      x$amount <- paste0("$", x$amount)
-      names(x)[3] <- "amount paid"
-      #x$date <- as.character(x$date)
-     
-      row.names(x) <- NULL
+      if(nrow(x) > 0 ){
+        x$amount <- paste0("$", x$amount)
+        names(x)[3] <- "amount paid"
+        #x$date <- as.character(x$date)
+        
+        row.names(x) <- NULL
+      }
       x
+      
     }
 
   }, options = list(paging = FALSE, searching = FALSE))
