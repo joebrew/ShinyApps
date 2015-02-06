@@ -48,6 +48,10 @@ stay$name <- toupper(stay$name)
 # Clean up time_minute
 stay$time_minute[which(is.na(stay$time_minute))] <- 0
 
+# Ensure numeric
+stay$time_hour <- as.numeric(stay$time_hour)
+stay$time_minute <- as.numeric(stay$time_minute)
+
 # Get month
 stay$month <- as.numeric(format(stay$date, "%m"))
 
@@ -69,8 +73,10 @@ stay <- left_join(x = stay,
 
 # Fix grades (if they're not there!!! THIS NEEDS TO BE FIXED)
 # Sawyer, Casey, Max, Phethra
-stay$grade[which(is.na(stay$grade))] <- 5
+stay$grade <- as.numeric(stay$grade)
 
+stay$grade[which(is.na(stay$grade))] <- 5
+stay$grade <- as.numeric(stay$grade)
 
 # Strategy: deal with stay first, pay later
 

@@ -18,7 +18,9 @@ get_september_price <- function(df){
 
     # Turn to price
     price <- 0
-    if(temp_minutes == 0){
+    if(is.null(temp_minutes) | is.na(temp_minutes)){
+      price <- 0
+    } else if(temp_minutes == 0){
       price <- 0
     } else  if(temp_minutes <= 15){
       price <- 5
@@ -61,7 +63,8 @@ get_other_price <- function(df){
     # Add minutes for late
     temp_minutes <- df$time_minute[i]
     late_fee <- 0
-    if(temp_minutes == 0){
+    if(is.null(temp_minutes) | is.na(temp_minutes)){
+      price <- 0} else if(temp_minutes == 0){
       late_fee <- 0
     } else  if(temp_minutes <= 15){
       late_fee <- 5
@@ -91,7 +94,8 @@ get_new_price <- function(df){
     # Add minutes for late
     temp_minutes <- df$time_minute[i]
     late_fee <- 0
-    if(temp_minutes == 0){
+    if(is.null(temp_minutes) | is.na(temp_minutes)){
+      price <- 0} else if(temp_minutes == 0){
       late_fee <- 0
     } else  if(temp_minutes <= 15){
       late_fee <- 5
