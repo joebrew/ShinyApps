@@ -48,9 +48,15 @@ get_other_price <- function(df){
     if(df$pre_paid[i] == "yes"){
       if(df$time_hour[i] == 4){
         price <- 5 
+        if(df$sibling[i]){
+          price <- price - 1
+        }
       }
       if(df$time_hour[i] == 5){
         price <- 12
+        if(df$sibling[i]){
+          price <- price - 2
+        }
       }
     } else{ # non-pre-paid
       if(df$time_hour[i] == 4){
@@ -88,8 +94,14 @@ get_new_price <- function(df){
     price <- 0
     if(df$pre_paid[i] == "yes"){
         price <- 5 
+        if(df$sibling[i]){
+          price <- price - 1
+        }
     } else{ # non-pre-paid
         price <- 7 
+        if(df$sibling[i]){
+          price <- price - 1
+        }
       }
     # Add minutes for late
     temp_minutes <- df$time_minute[i]

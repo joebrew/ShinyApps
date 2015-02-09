@@ -7,8 +7,8 @@
 
 library(shiny)
 library(knitr)
-source("get_data.R")
 source("helpers.R")
+source("get_data.R")
 shinyServer(function(input, output) {
 
     

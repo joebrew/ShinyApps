@@ -36,6 +36,10 @@ roster <- get_google(roster_link)
 #####
 # Clean up
 #####
+
+# CLEAN UP SIBLING
+stay$sibling <- stay$sibling == "yes"
+
 # Fix dates
 pay$date <- as.Date(pay$date, format = "%m/%d/%Y")
 stay$date <- as.Date(stay$date, format = "%m/%d/%Y")
@@ -135,3 +139,4 @@ payment_df <- function(name){
   temp <- pay[which(pay$name == name),]
   return(temp)
 }
+
