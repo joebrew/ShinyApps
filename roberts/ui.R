@@ -30,7 +30,7 @@ shinyUI(pageWithSidebar(
                plotOutput("plot1")),
       
       tabPanel("Absenteeism Rate",
-               h4(textOutput("text1"), align="center"),
+               h4("text1", align="center"),
                plotOutput("plot2")),
       
 
