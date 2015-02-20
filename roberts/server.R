@@ -12,14 +12,17 @@ shinyServer(function (input, output#,
   
   ########
   mydata <- reactive({
-    ir[which(ir$team2014 == as.numeric(as.character(input$team))),]
+    
+    if(input$type == "all"){
+      ir
+    } else {
+      ir[which(ir$type == input$type),]
+    }
+    
     })
   
   #######
-  mydata13 <- reactive({
-    mydata()[which(mydata()$year == 2013),]
-    })
-  
+
   ########
   
 #   output$selectUI <- renderUI({ 
@@ -28,91 +31,47 @@ shinyServer(function (input, output#,
 #   
   #######
   output$plot1 <- renderPlot({
-    TeamFun(team = as.numeric(input$team), data = mydata(), bar=FALSE)
+
+    barplot(1:10)
     })
   
   #######
   output$plot2 <- renderPlot({
-    par(mar=c(9,4,1,1))
-
-    TeamFun(team = as.numeric(input$team), data = mydata(), bar=TRUE)
+    barplot(1:10)
   })
   
   #######
   output$plot3 <- renderPlot({
-    TeamFun(team = as.numeric(input$team), data = mydata(), cf=TRUE, bar=FALSE)
-  })
+    barplot(1:30)
+    
+    })
   
   #######
   output$plot4 <- renderPlot({
-    par(mar=c(9,4,1,1))
-    
-    TeamFun(team = as.numeric(input$team), data = mydata(), cf=TRUE, bar=TRUE)
-  })
+    barplot(1:40)
+    })
   
   #######
   output$plot5 <- renderPlot({
     
-    x <- ir[which(as.numeric(ir$team2014) == as.numeric(input$team) ),]
-    x <- unique(sort(x$school[which(!is.na(x$immRate[which(x$year == 2013)]))]))
-    x <- x[which(x != "NEWBERRY ELEM.")] #NOT SURE WHY NEWBERRY ELEM DOESN'T WORK
-    x <- x[1:3]
-    
-    par(mar=c(5,4,4,1))
-    par(mfrow=c(ceiling(length(x)/3), 3))
-    
-    for (i in x){
-      GradeFun(i, 2013)
-    }
-    
+    plot(1:10, 11:20)
   })
   
   #######
   output$plot6 <- renderPlot({
     
-    x <- ir[which(as.numeric(ir$team2014) == as.numeric(input$team) ),]
-    x <- unique(sort(x$school[which(!is.na(x$immRate[which(x$year == 2013)]))]))
-    x <- x[which(x != "NEWBERRY ELEM.")] #NOT SURE WHY NEWBERRY ELEM DOESN'T WORK
-    x <- x[4:6]
-    
-    par(mar=c(5,4,4,1))
-    par(mfrow=c(ceiling(length(x)/3), 3))
-    
-    for (i in x){
-      GradeFun(i, 2013)
-    }
-    
+    barplot(5:25)
   })
   
   #######
   output$plot7 <- renderPlot({
-    
-    x <- ir[which(as.numeric(ir$team2014) == as.numeric(input$team) ),]
-    x <- unique(sort(x$school[which(!is.na(x$immRate[which(x$year == 2013)]))]))
-    x <- x[which(x != "NEWBERRY ELEM.")] #NOT SURE WHY NEWBERRY ELEM DOESN'T WORK
-    x <- x[1:3]
-    
-    par(mfrow=c(length(x), 2))
-    
-    for (i in x){
-      GradeFun(i, 2013, bar=FALSE)
-    }
-    
+    barplot(1:10)
   }, height=1000)
   
   #######
   output$plot8 <- renderPlot({
     
-    x <- ir[which(as.numeric(ir$team2014) == as.numeric(input$team) ),]
-    x <- unique(sort(x$school[which(!is.na(x$immRate[which(x$year == 2013)]))]))
-    x <- x[which(x != "NEWBERRY ELEM.")] #NOT SURE WHY NEWBERRY ELEM DOESN'T WORK
-    x <- x[4:6]
-    
-    par(mfrow=c(length(x), 2))
-    
-    for (i in x){
-      GradeFun(i, 2013, bar=FALSE)
-    }
+    barplot(1:10)
     
   }, height = 1000)
   
@@ -123,21 +82,20 @@ shinyServer(function (input, output#,
 
   ########
   output$text1 <- renderText({
-    paste("Team", input$team, "immunization rate overview")
+    paste("Team", input$type, "immunization rate overview")
   })
   
   ########
   output$text2 <- renderText({
-    paste("Team", input$team, "consent form return rate overview")
+    paste("Team", input$type, "consent form return rate overview")
   })
   
 
   ########
   output$table1 <- renderDataTable({
-    x <- as.data.frame(mydata())
-    x[which(x$team2014 == input$team),]
-    x <- x[,c("school", "year", "immRate", "cfrr", "totMem")]
-    x <- x[order(x$school),]
+    
+    mydata()
+    
   })
   
   ########
@@ -146,9 +104,9 @@ shinyServer(function (input, output#,
     gvisMotionChart(data = mydata(), 
                     idvar = "school", 
                     timevar = "year",
-                    xvar = "year",
+                    xvar = "frLunch13",
                     yvar = "immRate",
-                    colorvar = "team2014",
+                    colorvar = "gradeRange",
                     sizevar = "totMem")
 
   })
