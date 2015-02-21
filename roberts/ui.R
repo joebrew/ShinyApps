@@ -14,11 +14,12 @@ shinyUI(fluidPage(
       
         radioButtons("type","Age group",c(
           "all" = "all",
-          "prek" = "prek",
+          #"prek" = "prek",
           "elem"="elem",
           "mid"="mid",
-          "high"="high",
-          "multi"="multi"))
+          "high"="high"
+          #"multi"="multi"
+          ))
         ),
       
       conditionalPanel(
@@ -31,7 +32,7 @@ shinyUI(fluidPage(
         sliderInput("flu_days","Length of flu season",
                     min = 0,
                     max = 180,
-                    value = 60)
+                    value = 48)
       ),
       
       
@@ -51,10 +52,14 @@ shinyUI(fluidPage(
       
       tabPanel("Absenteeism rate",
                h4("Predicted absenteeism rates (average year)", align="center"),
-               plotOutput("plot1")),
+               plotOutput("plot3"),
+               plotOutput("plot2")
+               #plotOutput("plot1")
+               ),
       
 
       tabPanel("Raw data",
+               plotOutput("plot4"),
                h4("All years"),
                dataTableOutput("table1"))
       
