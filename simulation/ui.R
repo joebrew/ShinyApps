@@ -24,7 +24,8 @@ shinyUI(fluidPage(
       helpText('Now, click below to see the portfolio value of our new data.'),
       checkboxInput('show_new',
                     'Show new distribution',
-                    value = FALSE)
+                    value = FALSE),
+      helpText('Slide the % female up or down to see how it changes')
     ),
 
     # Show a plot of the generated distribution
